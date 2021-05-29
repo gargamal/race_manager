@@ -20,7 +20,7 @@ scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 2 )
 
 [node name="detect_limit_left" type="RayCast2D" parent="."]
-position = Vector2( 64, -24 )
+position = Vector2( 72, -24 )
 scale = Vector2( 0.2, 0.2 )
 enabled = true
 cast_to = Vector2( 500, 0 )
@@ -28,7 +28,7 @@ collision_mask = 3
 collide_with_areas = true
 
 [node name="detect_limit_rigth" type="RayCast2D" parent="."]
-position = Vector2( 64, 24 )
+position = Vector2( 72, 24 )
 scale = Vector2( 0.2, 0.2 )
 enabled = true
 cast_to = Vector2( 500, 0 )
@@ -36,21 +36,21 @@ collision_mask = 5
 collide_with_areas = true
 
 [node name="detect_car_left" type="RayCast2D" parent="."]
-position = Vector2( 64, -16 )
+position = Vector2( 72, -16 )
 scale = Vector2( 0.2, 0.2 )
 enabled = true
 cast_to = Vector2( 500, 0 )
 collision_mask = 11
 
 [node name="detect_car_right" type="RayCast2D" parent="."]
-position = Vector2( 64, 16 )
+position = Vector2( 72, 16 )
 scale = Vector2( 0.2, 0.2 )
 enabled = true
 cast_to = Vector2( 500, 0 )
 collision_mask = 13
 
 [node name="detect_turn_left" type="RayCast2D" parent="."]
-position = Vector2( 64, -24 )
+position = Vector2( 40, -24 )
 scale = Vector2( 0.2, 0.2 )
 enabled = true
 cast_to = Vector2( 500, -500 )
@@ -58,7 +58,7 @@ collision_mask = 15
 collide_with_areas = true
 
 [node name="detect_turn_rigth" type="RayCast2D" parent="."]
-position = Vector2( 64, 24 )
+position = Vector2( 40, 24 )
 scale = Vector2( 0.2, 0.2 )
 enabled = true
 cast_to = Vector2( 500, 500 )

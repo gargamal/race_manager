@@ -7,14 +7,6 @@ export(float) var accelerate_G := 2.0
 export(float) var direction_angle_degree := 20.0
 
 
-var sys_time := 0.0
-var velocity := Vector2.ZERO
-var direction_angle := 0.0
-var gravar_sys_time := 0.0
-var road_type = ROAD_TYPE.ROAD
-var gravar_nb_turn := 0
-var time_max_speed := 0.0
-
 const SCALE = 20
 const COEF_BRAKE = 1.05
 const GRAVAR_COEF_BRAKE = 1.1
@@ -27,6 +19,16 @@ const GRAVAR_SPEED = 40.0
 const GRAVAR_ANGLE = PI * 8.0 / 360.0
 enum DIRECTION { TURN_LEFT, TURN_RIGHT, TURN_AND_BRAKE_LEFT, TURN_AND_BRAKE_RIGHT, DONT_TURN, BRAKE }
 enum ROAD_TYPE { INNER, OUTER, ROAD }
+
+
+var sys_time := 0.0
+var velocity := Vector2.ZERO
+var direction_angle := 0.0
+var gravar_sys_time := 0.0
+var road_type = ROAD_TYPE.ROAD
+var gravar_nb_turn := 0
+var time_max_speed := 0.0
+var current_direction := 0
 
 
 func _ready():
@@ -184,7 +186,14 @@ func direction() -> int:
 	else:
 		var direction_out_limit = direction_out_limit()
 		direction = direction_out_limit
+		
+	# Pour eviter l'effet zigzag
+	if current_direction == DIRECTION.TURN_LEFT and direction == DIRECTION.TURN_RIGHT or current_direction == DIRECTION.TURN_RIGHT and direction == DIRECTION.TURN_LEFT:
+		direction = DIRECTION.DONT_TURN
+	elif current_direction == DIRECTION.TURN_AND_BRAKE_LEFT and direction == DIRECTION.TURN_AND_BRAKE_RIGHT or current_direction == DIRECTION.TURN_AND_BRAKE_RIGHT and direction == DIRECTION.TURN_AND_BRAKE_LEFT:
+		direction = DIRECTION.BRAKE
 	
+	current_direction = direction
 	return direction
 
 
@@ -208,6 +217,7 @@ func direction_colision() -> int:
 	var car_on_right = is_col_on_right and $detect_turn_rigth.get_collider().is_in_group("car") and dist_right < CAR_WIDTH / 2.0
 	
 	if is_col_with_another_car_and_dont_touch_limit():
+		
 		if car_on_left and car_on_right:
 			return DIRECTION.BRAKE
 		elif car_on_left:
