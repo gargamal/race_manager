@@ -31,16 +31,14 @@ node_path = NodePath("../path_road")
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
 position = Vector2( -1224, -936 )
 car_name = "voiture 2"
-max_speed = 90.0
-accelerate_G = 2.5
-brake_G = 4.5
+max_speed = 75.0
+accelerate_G = 5.0
 direction_angle_degree = 30.0
 
 [node name="car_2" parent="." instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
 position = Vector2( -960, -1008 )
 car_name = "voiture 1"
-direction_angle_degree = 25.0
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
