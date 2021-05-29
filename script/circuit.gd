@@ -4,6 +4,7 @@ extends Line2D
 export(int)var border_width := 500
 export(NodePath) var node_path
 
+var polygon_interior
 
 func _ready():
 	var node := get_node(node_path)
@@ -13,6 +14,21 @@ func _ready():
 		$limit_interior/col.polygon = build_interior(polygon)
 		$limit_exterior/col.polygon = build_exterior(polygon)
 		self.points = polygon
+
+
+func get_nearest_point(target :Vector2) -> Vector2:
+	var distance_squared = target.distance_squared_to(points[0])
+	var nearest_point = points[0]
+	var next_point = points[1]
+	var idx = 0
+	
+	for point in points:
+		if target.distance_squared_to(point) < distance_squared:
+			nearest_point = point
+			next_point = points[idx + 1 if idx + 1 < points.size() - 1 else 0]
+		idx += 1
+	
+	return (next_point - nearest_point).normalized()
 
 
 func get_polygon_adjust(path_road) -> Array:

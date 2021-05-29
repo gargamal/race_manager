@@ -12,8 +12,9 @@ const COEF_BRAKE = 1.05
 const GRAVAR_COEF_BRAKE = 1.1
 const CAR_HEIGHT = 500
 const CAR_WIDTH = 150
-const LIMIT_BEFORE_ZERO_VELOCITY = 0.1
-const MIN_SPEED = 5.0
+const LIMIT_CIRCUIT_WIDTH = 120
+const LIMIT_BEFORE_ZERO_VELOCITY = 0.01
+const MIN_SPEED = 0.01
 const SPEED_MAX_TURN = 40
 const GRAVAR_SPEED = 40.0
 const GRAVAR_ANGLE = PI * 8.0 / 360.0
@@ -40,6 +41,8 @@ func _ready():
 	$detect_car_left.enabled = true
 	$detect_car_right.cast_to = size_car_ray_cast
 	$detect_car_right.enabled = true
+	$detect_crash.cast_to = size_car_ray_cast
+	$detect_crash.enabled = true
 	
 	var circuit_width = get_parent().get_node("circuit").width
 	var circuit_with_ray_cast = circuit_width * 4.0
@@ -62,16 +65,29 @@ func _physics_process(delta):
 	var direction = direction()
 	if ROAD_TYPE.ROAD == road_type:
 		if direction == DIRECTION.BRAKE:
-			brake()
+			if velocity.length() / SCALE < MIN_SPEED:
+				accelerate(delta)
+			else:
+				brake()
 			
 		elif direction == DIRECTION.TURN_LEFT or direction == DIRECTION.TURN_RIGHT:
 			accelerate(delta)
 			turn(direction, direction_angle)
 			
 		elif direction == DIRECTION.TURN_AND_BRAKE_LEFT or direction == DIRECTION.TURN_AND_BRAKE_RIGHT:
-			turn_and_brake(direction)
+			if velocity.length() / SCALE < MIN_SPEED:
+				accelerate(delta)
+				turn(direction, direction_angle)
+			else:
+				turn_and_brake(direction)
 			
 		else:
+			var is_col_on_left = $detect_turn_left.is_colliding() and not $detect_turn_left.get_collider().is_in_group("car")
+			var is_col_on_right = $detect_turn_rigth.is_colliding() and not $detect_turn_rigth.get_collider().is_in_group("car")
+			if is_col_on_left and is_col_on_right:
+				var dist = get_distance_collision($detect_turn_left) - get_distance_collision($detect_turn_rigth)
+				if dist > LIMIT_CIRCUIT_WIDTH :
+					turn(DIRECTION.TURN_LEFT if sign(dist) >= 0 else DIRECTION.TURN_RIGHT, PI / 360.0)
 			accelerate(delta)
 	
 	else:
@@ -92,10 +108,10 @@ func _physics_process(delta):
 	if collision  and collision.collider is KinematicBody2D and collision.collider.is_in_group("car"):
 		var angle = collision.normal.angle()
 		var bounce = velocity.bounce(collision.normal).normalized().angle()
-		if 0.0 < angle and angle < PI / 4.0:
-			turn(DIRECTION.TURN_LEFT, bounce / 3.0)
-		elif 0.0 > angle and angle > -PI / 4.0:
-			turn(DIRECTION.TURN_RIGHT, bounce / 3.0)
+		if 0.0 < angle and angle < PI / 4.0 or -3.0 * PI / 4.0 < angle and angle < 0.0:
+			turn(DIRECTION.TURN_LEFT, bounce / 15.0)
+		elif 0.0 > angle and angle > -PI / 4.0 or 3.0 * PI / 4.0 > angle and angle > 0.0:
+			turn(DIRECTION.TURN_RIGHT, bounce / 15.0)
 		else:
 			brake()
 	
@@ -179,14 +195,14 @@ func direction() -> int:
 	if ROAD_TYPE.ROAD == road_type:
 		var direction_colision = direction_colision()
 		var direction_position_car = direction_position_car()
-		if direction_colision != DIRECTION.DONT_TURN:
-			direction = direction_colision
-		else:
+		if direction_position_car != DIRECTION.DONT_TURN:
 			direction = direction_position_car
+		else:
+			direction = direction_colision
 	else:
 		var direction_out_limit = direction_out_limit()
 		direction = direction_out_limit
-		
+	
 	# Pour eviter l'effet zigzag
 	if current_direction == DIRECTION.TURN_LEFT and direction == DIRECTION.TURN_RIGHT or current_direction == DIRECTION.TURN_RIGHT and direction == DIRECTION.TURN_LEFT:
 		direction = DIRECTION.DONT_TURN
@@ -261,17 +277,20 @@ func is_col_with_another_car_and_dont_touch_limit() -> bool:
 
 
 func direction_position_car() -> int:
+	var crash_with_another_car = $detect_crash.is_colliding()
 	var is_col_on_left = $detect_turn_left.is_colliding()
 	var is_bad_left = is_col_on_left and $detect_turn_left.get_collider().is_in_group("interior")
 	var is_col_on_right = $detect_turn_rigth.is_colliding()
 	var is_bad_right = is_col_on_right and $detect_turn_rigth.get_collider().is_in_group("exterior")
 
-	if is_bad_right and not is_col_on_left:
-		return DIRECTION.TURN_LEFT
+	if crash_with_another_car:
+		return DIRECTION.BRAKE
+	elif is_bad_right and not is_col_on_left:
+		return DIRECTION.TURN_AND_BRAKE_LEFT if current_direction == DIRECTION.TURN_AND_BRAKE_LEFT else DIRECTION.TURN_AND_BRAKE_RIGHT
 	elif is_bad_left and not is_col_on_right:
-		return DIRECTION.TURN_RIGHT
+		return DIRECTION.TURN_AND_BRAKE_RIGHT if current_direction == DIRECTION.TURN_AND_BRAKE_RIGHT else DIRECTION.TURN_AND_BRAKE_LEFT
 	elif is_bad_left and is_bad_right:
-		return DIRECTION.TURN_AND_BRAKE_LEFT
+		return DIRECTION.TURN_AND_BRAKE_LEFT if current_direction == DIRECTION.TURN_AND_BRAKE_LEFT else DIRECTION.TURN_AND_BRAKE_RIGHT
 	else:
 		return DIRECTION.DONT_TURN
 
