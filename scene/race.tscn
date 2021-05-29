@@ -1,0 +1,80 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scene/circuit.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scene/car.tscn" type="PackedScene" id=2]
+[ext_resource path="res://script/race.gd" type="Script" id=3]
+
+[sub_resource type="Curve2D" id=1]
+bake_interval = 40.0
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 352.292, -677.627, -291.328, -2.82843, 291.328, 2.82843, 1688.29, -677.627, 0, 0, 0, 0, 1872.29, -357.627, 65.0538, -229.103, -65.0538, 229.103, 1696.29, 154.373, 379.009, -90.5097, -379.009, 90.5097, 560.292, 66.373, -149.907, -311.127, 149.907, 311.127, 616.292, 762.373, 93.3381, -534.573, -93.3381, 534.573, 1728.29, 930.373, 551.543, 19.799, -551.543, -19.799, 600.292, 1362.37, 444.063, 33.9411, -444.063, -33.9411, -207.708, 1138.37, 169.706, 209.304, -169.706, -209.304, -343.708, 98.373, 189.505, -195.161, -189.505, 195.161, -999.708, 114.373, 175.362, -296.985, -175.362, 296.985, -895.708, 930.373, 285.671, 147.078, -285.671, -147.078, -1607.71, 1122.37, 0, 0, 0, 0, -1831.71, 274.373, -84.8528, 138.593, 84.8528, -138.593, -1799.71, -581.627, 0, 0, 0, 0, -959.708, -685.627, 0, 0, 0, 0, 352.292, -677.627 )
+}
+
+[node name="race" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 2.5, 2.5 )
+drag_margin_v_enabled = true
+
+[node name="path_road" type="Path2D" parent="."]
+position = Vector2( -24.2918, -290.373 )
+curve = SubResource( 1 )
+
+[node name="circuit" parent="." instance=ExtResource( 1 )]
+width = 250.0
+border_width = 200
+node_path = NodePath("../path_road")
+
+[node name="car_1" parent="." instance=ExtResource( 2 )]
+modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
+position = Vector2( -1224, -936 )
+car_name = "voiture 2"
+max_speed = 90.0
+accelerate_G = 2.5
+brake_G = 4.5
+direction_angle_degree = 30.0
+
+[node name="car_2" parent="." instance=ExtResource( 2 )]
+modulate = Color( 0.298039, 0.2, 1, 1 )
+position = Vector2( -960, -1008 )
+car_name = "voiture 1"
+direction_angle_degree = 25.0
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[node name="can" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="can"]
+margin_right = 152.0
+margin_bottom = 80.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lb_car_1" type="Label" parent="can"]
+modulate = Color( 0.298039, 0.2, 1, 1 )
+margin_left = 8.0
+margin_top = 48.0
+margin_right = 118.0
+margin_bottom = 62.0
+text = "voiture 2 : 0km/h"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lb_car_2" type="Label" parent="can"]
+modulate = Color( 0.968627, 0.207843, 0.423529, 1 )
+margin_left = 8.0
+margin_top = 16.0
+margin_right = 118.0
+margin_bottom = 30.0
+text = "voiture 1 : 0km/h"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
