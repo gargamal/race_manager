@@ -44,7 +44,7 @@ func _ready():
 	$detect_crash.cast_to = size_car_ray_cast
 	$detect_crash.enabled = true
 	
-	var circuit_width = get_parent().get_node("circuit").width
+	var circuit_width = get_parent().get_parent().get_node("circuit/road_line").width
 	var circuit_with_ray_cast = circuit_width * 4.0
 	var size_limit_ray_cast = Vector2(circuit_with_ray_cast, 0.0)
 	$detect_limit_left.cast_to = size_limit_ray_cast

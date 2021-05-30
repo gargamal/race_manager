@@ -5,156 +5,155 @@
 [ext_resource path="res://script/race.gd" type="Script" id=3]
 
 [sub_resource type="Curve2D" id=1]
-bake_interval = 40.0
+bake_interval = 50.0
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 352.292, -677.627, -291.328, -2.82843, 291.328, 2.82843, 1688.29, -677.627, 0, 0, 0, 0, 1872.29, -357.627, 65.0538, -229.103, -65.0538, 229.103, 1696.29, 154.373, 379.009, -90.5097, -379.009, 90.5097, 560.292, 66.373, -149.907, -311.127, 149.907, 311.127, 616.292, 762.373, 93.3381, -534.573, -93.3381, 534.573, 1728.29, 930.373, 551.543, 19.799, -551.543, -19.799, 600.292, 1362.37, 444.063, 33.9411, -444.063, -33.9411, -207.708, 1138.37, 169.706, 209.304, -169.706, -209.304, -343.708, 98.373, 189.505, -195.161, -189.505, 195.161, -999.708, 114.373, 175.362, -296.985, -175.362, 296.985, -895.708, 930.373, 285.671, 147.078, -285.671, -147.078, -1607.71, 1122.37, 0, 0, 0, 0, -1831.71, 274.373, -84.8528, 138.593, 84.8528, -138.593, -1799.71, -581.627, 0, 0, 0, 0, -959.708, -685.627, 0, 0, 0, 0, 352.292, -677.627 )
+"points": PoolVector2Array( 0, 0, 0, 0, 736, -1056, -381.414, 32.1594, 381.414, -32.1594, 1952, -1088, -29.6524, -349.407, 29.6524, 349.407, 2528, -928, 68.0357, -544.286, -68.0357, 544.286, 1376, -96, 8.48528, -432.749, -8.48528, 432.749, 2496, 736, 455.377, 76.599, -455.377, -76.599, 1280, 1344, 681.651, 33.9411, -681.651, -33.9411, -448, 64, 438.177, 239.838, -438.177, -239.838, -2176, 1440, 566.211, 122.717, -566.211, -122.717, -2320, 16, -36.7696, 90.5097, 36.7696, -90.5097, -2248, -856, -219.843, 19.4773, 219.843, -19.4773, -1952, -1056, 0, 0, 0, 0, -32, -1056, 0, 0, 0, 0, 736, -1056 )
 }
 
 [node name="race" type="Node2D"]
 script = ExtResource( 3 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="camera" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 2.5, 2.5 )
 drag_margin_v_enabled = true
 
-[node name="path_road" type="Path2D" parent="."]
-position = Vector2( -24.2918, -290.373 )
-curve = SubResource( 1 )
-
 [node name="circuit" parent="." instance=ExtResource( 1 )]
-width = 300.0
-border_width = 200
 node_path = NodePath("../path_road")
 
-[node name="car_1" parent="." instance=ExtResource( 2 )]
+[node name="path_road" type="Path2D" parent="."]
+curve = SubResource( 1 )
+
+[node name="cars" type="Node2D" parent="."]
+
+[node name="car_1" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( -1224, -904 )
+position = Vector2( -1824, -984 )
 car_name = "voiture 2"
 max_speed = 75.0
 accelerate_G = 5.0
 direction_angle_degree = 30.0
 
-[node name="car_2" parent="." instance=ExtResource( 2 )]
+[node name="car_2" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( -1072, -1040 )
+position = Vector2( -1672, -1120 )
 car_name = "voiture 1"
 
-[node name="car_3" parent="." instance=ExtResource( 2 )]
+[node name="car_3" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( -920, -904 )
+position = Vector2( -1520, -984 )
 car_name = "voiture 2"
 max_speed = 75.0
 accelerate_G = 5.0
 direction_angle_degree = 30.0
 
-[node name="car_4" parent="." instance=ExtResource( 2 )]
+[node name="car_4" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( -768, -1040 )
+position = Vector2( -1368, -1120 )
 car_name = "voiture 1"
 
-[node name="car_5" parent="." instance=ExtResource( 2 )]
+[node name="car_5" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( -648, -904 )
+position = Vector2( -1248, -984 )
 car_name = "voiture 2"
 max_speed = 75.0
 accelerate_G = 5.0
 direction_angle_degree = 30.0
 
-[node name="car_6" parent="." instance=ExtResource( 2 )]
+[node name="car_6" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( -496, -1040 )
+position = Vector2( -1096, -1120 )
 car_name = "voiture 1"
 
-[node name="car_7" parent="." instance=ExtResource( 2 )]
+[node name="car_7" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( -368, -904 )
+position = Vector2( -968, -984 )
 car_name = "voiture 2"
 max_speed = 75.0
 accelerate_G = 5.0
 direction_angle_degree = 30.0
 
-[node name="car_8" parent="." instance=ExtResource( 2 )]
+[node name="car_8" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( -216, -1040 )
+position = Vector2( -816, -1120 )
 car_name = "voiture 1"
 
-[node name="car_9" parent="." instance=ExtResource( 2 )]
+[node name="car_9" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( -72, -904 )
+position = Vector2( -672, -984 )
 car_name = "voiture 2"
 max_speed = 75.0
 accelerate_G = 5.0
 direction_angle_degree = 30.0
 
-[node name="car_10" parent="." instance=ExtResource( 2 )]
+[node name="car_10" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( 80, -1040 )
+position = Vector2( -520, -1120 )
 car_name = "voiture 1"
 
-[node name="car_11" parent="." instance=ExtResource( 2 )]
+[node name="car_11" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( 216, -904 )
+position = Vector2( -384, -984 )
 car_name = "voiture 2"
 max_speed = 75.0
 accelerate_G = 5.0
 direction_angle_degree = 30.0
 
-[node name="car_12" parent="." instance=ExtResource( 2 )]
+[node name="car_12" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( 368, -1040 )
+position = Vector2( -232, -1120 )
 car_name = "voiture 1"
 
-[node name="car_13" parent="." instance=ExtResource( 2 )]
+[node name="car_13" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( 520, -904 )
+position = Vector2( -80, -984 )
 car_name = "voiture 2"
 max_speed = 75.0
 accelerate_G = 5.0
 direction_angle_degree = 30.0
 
-[node name="car_14" parent="." instance=ExtResource( 2 )]
+[node name="car_14" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( 672, -1040 )
+position = Vector2( 72, -1120 )
 car_name = "voiture 1"
 
-[node name="car_15" parent="." instance=ExtResource( 2 )]
+[node name="car_15" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( 792, -904 )
+position = Vector2( 192, -984 )
 car_name = "voiture 2"
 max_speed = 75.0
 accelerate_G = 5.0
 direction_angle_degree = 30.0
 
-[node name="car_16" parent="." instance=ExtResource( 2 )]
+[node name="car_16" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( 944, -1040 )
+position = Vector2( 344, -1120 )
 car_name = "voiture 1"
 
-[node name="car_17" parent="." instance=ExtResource( 2 )]
+[node name="car_17" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( 1072, -904 )
+position = Vector2( 472, -984 )
 car_name = "voiture 2"
 max_speed = 75.0
 accelerate_G = 5.0
 direction_angle_degree = 30.0
 
-[node name="car_18" parent="." instance=ExtResource( 2 )]
+[node name="car_18" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( 1224, -1040 )
+position = Vector2( 624, -1120 )
 car_name = "voiture 1"
 
-[node name="car_19" parent="." instance=ExtResource( 2 )]
+[node name="car_19" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( 1368, -904 )
+position = Vector2( 768, -984 )
 car_name = "voiture 2"
 max_speed = 75.0
 accelerate_G = 5.0
 direction_angle_degree = 30.0
 
-[node name="car_20" parent="." instance=ExtResource( 2 )]
+[node name="car_20" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( 1520, -1040 )
+position = Vector2( 920, -1120 )
 car_name = "voiture 1"
 
 [node name="Timer" type="Timer" parent="."]

@@ -1,35 +1,34 @@
-extends Line2D
+tool
+extends Node2D
 
 
-export(int)var border_width := 500
+export(int)var circuit_exterior_width := 500
+export(int)var road_width := 300
 export(NodePath) var node_path
+export(int)var modulo_to_draw_interior := 2
+export(bool)var with_redraw := false setget with_redraw_editor 
 
-var polygon_interior
 
 func _ready():
-	var node := get_node(node_path)
-	if node is Path2D:
-		var path_road = node
-		var polygon = get_polygon_adjust(path_road)
-		$limit_interior/col.polygon = build_interior(polygon)
-		$limit_exterior/col.polygon = build_exterior(polygon)
-		self.points = polygon
+	if node_path and get_node(node_path) is Path2D:
+		var node := get_node(node_path)
+		var polygon = get_polygon_adjust(node)
+		if polygon.size() > 0:
+			$road_line.width = road_width
+			$road_line/limit_interior/col.polygon = build_interior(polygon)
+			$road_line/limit_exterior/col.polygon = build_exterior(polygon)
+			$road_line.points = polygon
 
 
-func get_nearest_point(target :Vector2) -> Vector2:
-	var distance_squared = target.distance_squared_to(points[0])
-	var nearest_point = points[0]
-	var next_point = points[1]
-	var idx = 0
-	
-	for point in points:
-		if target.distance_squared_to(point) < distance_squared:
-			nearest_point = point
-			next_point = points[idx + 1 if idx + 1 < points.size() - 1 else 0]
-		idx += 1
-	
-	return (next_point - nearest_point).normalized()
-
+func is_the_same_polygon(polygon : Array):
+	if polygon.size() != $road_line.points.size():
+		return false
+		
+	for idx in range(polygon.size()):
+		if polygon[idx] != $road_line.points[idx]:
+			return false
+			
+	return true
 
 func get_polygon_adjust(path_road) -> Array:
 	var polygon = path_road.get_curve().get_baked_points()
@@ -39,8 +38,31 @@ func get_polygon_adjust(path_road) -> Array:
 	return new_polygon
 
 
+func with_redraw_editor(new_value):
+	with_redraw = new_value
+	if Engine.editor_hint and with_redraw:
+		$refresh.start()
+	else:
+		$refresh.stop()
+
+
+func get_nearest_point(target :Vector2) -> Vector2:
+	var distance_squared = target.distance_squared_to($road_line.points[0])
+	var nearest_point = $road_line.points[0]
+	var next_point = $road_line.points[1]
+	var idx = 0
+	
+	for point in $road_line.points:
+		if target.distance_squared_to(point) < distance_squared:
+			nearest_point = point
+			next_point = $road_line.points[idx + 1 if idx + 1 < $road_line.points.size() - 1 else 0]
+		idx += 1
+	
+	return (next_point - nearest_point).normalized()
+
+
 func build_exterior(polygon) -> Array:
-	var polygon_ext = build_polygon_exterior(polygon, self.width)
+	var polygon_ext = build_polygon_exterior(polygon, $road_line.width)
 	
 	var col_polygon_ext = polygon_ext
 	var limit := get_limit(polygon_ext)
@@ -82,7 +104,7 @@ func add_square_col_to_finalize_exterior(limit, start, end):
 	new_square_ext.append(Vector2(start.x, start.y))
 	new_square_ext.append(Vector2(end.x, end.y))
 	square_col.polygon = new_square_ext
-	$limit_exterior.add_child(square_col)
+	$road_line/limit_exterior.add_child(square_col)
 
 
 func get_limit(polygon_ext) -> Rect2:
@@ -97,8 +119,9 @@ func get_limit(polygon_ext) -> Rect2:
 		if point.y < y_min: y_min = point.y
 		if point.y > y_max: y_max = point.y
 
-	var rect_position := Vector2(ceil(x_min) - border_width, ceil(y_min) - border_width)
-	var rect_size := Vector2(abs(ceil(x_min) - border_width) + abs(ceil(x_max) + border_width), abs(ceil(y_min) - border_width) + abs(ceil(y_max) + border_width))
+	var rect_position := Vector2(ceil(x_min) - circuit_exterior_width, ceil(y_min) - circuit_exterior_width)
+	var rect_size := Vector2(abs(ceil(x_min) - circuit_exterior_width) + abs(ceil(x_max) + circuit_exterior_width),
+							abs(ceil(y_min) - circuit_exterior_width) + abs(ceil(y_max) + circuit_exterior_width))
 	return Rect2(rect_position, rect_size)
 
 
@@ -109,8 +132,8 @@ func build_interior(polygon) -> Array:
 	if size > 1:
 		var vect
 		for idx in range(size - 1):
-			if idx % 2:
-				vect = (polygon[idx + 1] - polygon[idx]).rotated(PI / 2).normalized() * (self.width / 2)
+			if idx % modulo_to_draw_interior == 0:
+				vect = (polygon[idx + 1] - polygon[idx]).rotated(PI / 2).normalized() * ($road_line.width / 2)
 				build_polygon.append(polygon[idx] + vect)
 	
 	return build_polygon
@@ -123,10 +146,10 @@ func build_polygon_exterior(polygon, width) -> Array:
 	if size > 1:
 		var vect
 		for idx in range(size - 1):
-			vect = (polygon[idx + 1] - polygon[idx]).rotated(PI / 2).normalized() * (width / 2) * -1
+			vect = (polygon[idx + 1] - polygon[idx]).rotated(PI / 2).normalized() * ($road_line.width / 2) * -1
 			build_polygon.append(polygon[idx] + vect)
 		
-		vect = (polygon[size - 1] - polygon[size - 2]).rotated(PI / 2).normalized() * (width / 2) * -1
+		vect = (polygon[size - 1] - polygon[size - 2]).rotated(PI / 2).normalized() * ($road_line.width / 2) * -1
 		build_polygon.append(polygon[size - 1] + vect)
 	
 	return build_polygon
@@ -151,3 +174,10 @@ func _on_limit_exterior_body_entered(body):
 func _on_limit_exterior_body_exited(body):
 	if body.is_in_group("car"):
 		body.limit_road()
+
+
+func _on_refresh_timeout():
+	if node_path and get_node(node_path) is Path2D:
+		var node := get_node(node_path)
+		var polygon = get_polygon_adjust(node)
+		_ready()

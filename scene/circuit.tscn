@@ -3,31 +3,36 @@
 [ext_resource path="res://script/circuit.gd" type="Script" id=1]
 [ext_resource path="res://sprite/road.png" type="Texture" id=2]
 
-[node name="circuit" type="Line2D" groups=[
+[node name="circuit" type="Node2D" groups=[
 "circuit",
 ]]
+script = ExtResource( 1 )
+
+[node name="road_line" type="Line2D" parent="."]
 default_color = Color( 1, 1, 1, 1 )
 texture = ExtResource( 2 )
 texture_mode = 1
-script = ExtResource( 1 )
 
-[node name="limit_interior" type="Area2D" parent="." groups=[
+[node name="limit_interior" type="Area2D" parent="road_line" groups=[
 "interior",
 ]]
 collision_layer = 4
 collision_mask = 2147483656
 
-[node name="col" type="CollisionPolygon2D" parent="limit_interior"]
+[node name="col" type="CollisionPolygon2D" parent="road_line/limit_interior"]
 
-[node name="limit_exterior" type="Area2D" parent="." groups=[
+[node name="limit_exterior" type="Area2D" parent="road_line" groups=[
 "exterior",
 ]]
 collision_layer = 2
 collision_mask = 8
 
-[node name="col" type="CollisionPolygon2D" parent="limit_exterior"]
+[node name="col" type="CollisionPolygon2D" parent="road_line/limit_exterior"]
 
-[connection signal="body_entered" from="limit_interior" to="." method="_on_limit_interior_body_entered"]
-[connection signal="body_exited" from="limit_interior" to="." method="_on_limit_interior_body_exited"]
-[connection signal="body_entered" from="limit_exterior" to="." method="_on_limit_exterior_body_entered"]
-[connection signal="body_exited" from="limit_exterior" to="." method="_on_limit_exterior_body_exited"]
+[node name="refresh" type="Timer" parent="."]
+
+[connection signal="body_entered" from="road_line/limit_interior" to="." method="_on_limit_interior_body_entered"]
+[connection signal="body_exited" from="road_line/limit_interior" to="." method="_on_limit_interior_body_exited"]
+[connection signal="body_entered" from="road_line/limit_exterior" to="." method="_on_limit_exterior_body_entered"]
+[connection signal="body_exited" from="road_line/limit_exterior" to="." method="_on_limit_exterior_body_exited"]
+[connection signal="timeout" from="refresh" to="." method="_on_refresh_timeout"]
