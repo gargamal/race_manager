@@ -5,18 +5,25 @@ extends Node2D
 export(int)var circuit_exterior_width := 500
 export(int)var road_width := 300
 export(NodePath) var node_path
+export(StreamTexture) var background
 export(int)var modulo_to_draw_interior := 2
 export(bool)var with_redraw := false setget with_redraw_editor 
 
 
 func _ready():
+	if background:
+		$road_line/limit_exterior/bg.texture = background
+		$road_line/limit_interior/bg.texture = background
+	
 	if node_path and get_node(node_path) is Path2D:
 		var node := get_node(node_path)
 		var polygon = get_polygon_adjust(node)
 		if polygon.size() > 0:
 			$road_line.width = road_width
 			$road_line/limit_interior/col.polygon = build_interior(polygon)
+			$road_line/limit_interior/bg.polygon = $road_line/limit_interior/col.polygon
 			$road_line/limit_exterior/col.polygon = build_exterior(polygon)
+			$road_line/limit_exterior/bg.polygon = $road_line/limit_exterior/col.polygon
 			$road_line.points = polygon
 
 
@@ -62,7 +69,7 @@ func get_nearest_point(target :Vector2) -> Vector2:
 
 
 func build_exterior(polygon) -> Array:
-	var polygon_ext = build_polygon_exterior(polygon, $road_line.width)
+	var polygon_ext = build_polygon_exterior(polygon)
 	
 	var col_polygon_ext = polygon_ext
 	var limit := get_limit(polygon_ext)
@@ -105,7 +112,12 @@ func add_square_col_to_finalize_exterior(limit, start, end):
 	new_square_ext.append(Vector2(end.x, end.y))
 	square_col.polygon = new_square_ext
 	$road_line/limit_exterior.add_child(square_col)
-
+	
+	var square_bg = Polygon2D.new()
+	square_bg.polygon = new_square_ext
+	if background:
+		square_bg.texture = background
+	$road_line/limit_exterior.add_child(square_bg)
 
 func get_limit(polygon_ext) -> Rect2:
 	var x_min = 100000
@@ -139,7 +151,7 @@ func build_interior(polygon) -> Array:
 	return build_polygon
 
 
-func build_polygon_exterior(polygon, width) -> Array:
+func build_polygon_exterior(polygon) -> Array:
 	var size = polygon.size()
 	var build_polygon = []
 	
@@ -178,6 +190,4 @@ func _on_limit_exterior_body_exited(body):
 
 func _on_refresh_timeout():
 	if node_path and get_node(node_path) is Path2D:
-		var node := get_node(node_path)
-		var polygon = get_polygon_adjust(node)
 		_ready()

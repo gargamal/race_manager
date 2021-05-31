@@ -21,6 +21,8 @@ collision_mask = 2147483656
 
 [node name="col" type="CollisionPolygon2D" parent="road_line/limit_interior"]
 
+[node name="bg" type="Polygon2D" parent="road_line/limit_interior"]
+
 [node name="limit_exterior" type="Area2D" parent="road_line" groups=[
 "exterior",
 ]]
@@ -28,6 +30,8 @@ collision_layer = 2
 collision_mask = 8
 
 [node name="col" type="CollisionPolygon2D" parent="road_line/limit_exterior"]
+
+[node name="bg" type="Polygon2D" parent="road_line/limit_exterior"]
 
 [node name="refresh" type="Timer" parent="."]
 
