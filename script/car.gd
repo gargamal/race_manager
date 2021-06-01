@@ -1,11 +1,17 @@
 extends KinematicBody2D
 
+enum CAR_COLOR {RED, GOLD, LIGTH_BLUE, SAND, GREEN, PURPLE, ORANGE, BROWN, BLUE, PINK, LIGHT_GREEN, CYAN, DARK_RED, BLUE_GREEN, BROWN_RED, DARK_GREY}
+
 
 export(String) var car_name := "voiture"
 export(float) var max_speed := 100.0 # to m/s
 export(float) var accelerate_G := 2.0
 export(float) var direction_angle_degree := 20.0
-
+export(CAR_COLOR) var car_color
+export(Color) var modulate_color = Color(1.0, 1.0, 1.0, 1.0)
+export(Color) var text_color = Color(1.0, 1.0, 1.0, 1.0)
+export(String) var number_car = "99"
+export(Color) var helmet_color = Color(1.0, 1.0, 1.0, 1.0)
 
 const SCALE = 20
 const COEF_BRAKE = 1.05
@@ -31,11 +37,13 @@ var gravar_nb_turn := 0
 var time_max_speed := 0.0
 var current_direction := 0
 
-
 func _ready():
+	modulate = modulate_color
+	$number.text = number_car
+	$number.modulate = text_color
+	$helmet.modulate = helmet_color
 	direction_angle = (direction_angle_degree / 360.0) * PI
 	gravar_sys_time = calculate_time(GRAVAR_SPEED * SCALE)
-	
 	var size_car_ray_cast = Vector2(CAR_HEIGHT, 0.0)
 	$detect_car_left.cast_to = size_car_ray_cast
 	$detect_car_left.enabled = true
