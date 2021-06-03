@@ -20,14 +20,51 @@ func _ready():
 		var polygon = get_polygon_adjust(node)
 		if polygon.size() > 0:
 			$road_line.width = road_width
-			$road_line/limit_interior/col.polygon = build_interior(polygon)
-			$road_line/limit_interior/bg.polygon = $road_line/limit_interior/col.polygon
-			$road_line/limit_exterior/col.polygon = build_exterior(polygon)
-			$road_line/limit_exterior/bg.polygon = $road_line/limit_exterior/col.polygon
+			var polygon_interior =  build_interior(polygon)
+			var polygon_exterior = build_exterior(polygon)
+			$road_line/limit_interior/col.polygon = polygon_interior
+			$road_line/limit_interior/bg.polygon = polygon_interior
+			$road_line/limit_exterior/col.polygon = polygon_exterior
+			$road_line/limit_exterior/bg.polygon = polygon_exterior
 			$road_line.points = polygon
+			for child in $buzers.get_children(): 
+				$buzers.remove_child(child)
+			build_buzer(polygon_interior)
+			build_buzer(polygon_exterior)
 
 
-func is_the_same_polygon(polygon : Array):
+func build_buzer(polygon :Array) -> void:
+	var size = polygon.size()
+	var polygon_buzer = Array()
+	
+	for idx in range(size):
+		var angle
+		if 0 < idx and idx < size - 2:
+			angle = abs((polygon[idx]  - polygon[idx - 1]).normalized().angle_to((polygon[idx + 1] - polygon[idx]).normalized()))
+		elif idx == 0:
+			angle = abs((polygon[0] - polygon[size - 1]).normalized().angle_to((polygon[1] - polygon[0]).normalized()))
+		else:
+			angle = abs((polygon[size - 1] - polygon[size - 2]).normalized().angle_to((polygon[0] - polygon[size - 1]).normalized()))
+			
+		if angle > 0.02 and angle < PI / 4.0:
+			polygon_buzer.append(polygon[idx])
+			
+		elif polygon_buzer.size() > 0:
+			if polygon_buzer.size() > 5:
+				var buzer_new_ref = Line2D.new()
+				buzer_new_ref.width = road_width / 10.0
+				buzer_new_ref.default_color = Color(1.0, 1.0, 1.0, 1.0)
+				buzer_new_ref.texture = load("res://sprite/buzzer.png")
+				buzer_new_ref.texture_mode = Line2D.LINE_TEXTURE_TILE
+				buzer_new_ref.points = polygon_buzer
+				$buzers.add_child(buzer_new_ref)
+				polygon_buzer = Array()
+				
+			else:
+				polygon_buzer = Array()
+
+
+func is_the_same_polygon(polygon : Array) -> bool:
 	if polygon.size() != $road_line.points.size():
 		return false
 		
@@ -45,7 +82,7 @@ func get_polygon_adjust(path_road) -> Array:
 	return new_polygon
 
 
-func with_redraw_editor(new_value):
+func with_redraw_editor(new_value) -> void:
 	with_redraw = new_value
 	if Engine.editor_hint and with_redraw:
 		$refresh.start()
@@ -93,17 +130,17 @@ func build_exterior(polygon) -> Array:
 	return col_polygon_ext
 
 
-func add_sub_point_x_axis(col_polygon_ext, start, end, nb_point, y_axis):
+func add_sub_point_x_axis(col_polygon_ext, start, end, nb_point, y_axis) -> void:
 	for sub_div in range(nb_point - 2):
 		col_polygon_ext.append(Vector2(start.x + (sub_div + 1) * (end.x - start.x) / nb_point, y_axis))
 
 
-func add_sub_point_y_axis(col_polygon_ext, start, end, nb_point, x_axis):
+func add_sub_point_y_axis(col_polygon_ext, start, end, nb_point, x_axis) -> void:
 	for sub_div in range(nb_point - 2):
 		col_polygon_ext.append(Vector2(x_axis, start.y + (sub_div + 1) * (end.y - start.y) / nb_point))
 
 
-func add_square_col_to_finalize_exterior(limit, start, end):
+func add_square_col_to_finalize_exterior(limit, start, end) -> void:
 	var square_col = CollisionPolygon2D.new()
 	var new_square_ext = []
 	new_square_ext.append(Vector2(end.x, limit.position.y))
@@ -168,26 +205,27 @@ func build_polygon_exterior(polygon) -> Array:
 
 
 
-func _on_limit_interior_body_entered(body):
+func _on_limit_interior_body_entered(body) -> void:
 	if body.is_in_group("car"):
 		body.limit_inner()
 
 
-func _on_limit_interior_body_exited(body):
+func _on_limit_interior_body_exited(body) -> void:
 	if body.is_in_group("car"):
 		body.limit_road()
 
 
-func _on_limit_exterior_body_entered(body):
+func _on_limit_exterior_body_entered(body) -> void:
 	if body.is_in_group("car"):
 		body.limit_outer()
 
 
-func _on_limit_exterior_body_exited(body):
+func _on_limit_exterior_body_exited(body) -> void:
 	if body.is_in_group("car"):
 		body.limit_road()
 
 
 func _on_refresh_timeout():
-	if node_path and get_node(node_path) is Path2D:
+	if with_redraw and node_path and get_node(node_path) is Path2D:
 		_ready()
+		with_redraw_editor(false)

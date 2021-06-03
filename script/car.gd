@@ -51,6 +51,7 @@ func _ready():
 	$detect_car_right.enabled = true
 	$detect_crash.cast_to = size_car_ray_cast
 	$detect_crash.enabled = true
+	$car_design.frame = car_color
 	
 	var circuit_width = get_parent().get_parent().get_node("circuit/road_line").width
 	var circuit_with_ray_cast = circuit_width * 4.0
@@ -137,6 +138,11 @@ func limit_inner():
 	$detect_limit_rigth.enabled = false
 	$detect_turn_left.enabled = false
 	$detect_turn_rigth.enabled = false
+	$vortex.emitting = false
+	$gravar_effect_bl.emitting = true
+	$gravar_effect_br.emitting = true
+	$gravar_effect_fl.emitting = true
+	$gravar_effect_fr.emitting = true
 	gravar_nb_turn = 0
 
 func limit_road():
@@ -145,6 +151,11 @@ func limit_road():
 	$detect_limit_rigth.enabled = true
 	$detect_turn_left.enabled = true
 	$detect_turn_rigth.enabled = true
+	$vortex.emitting = true
+	$gravar_effect_bl.emitting = false
+	$gravar_effect_br.emitting = false
+	$gravar_effect_fl.emitting = false
+	$gravar_effect_fr.emitting = false
 	gravar_nb_turn = 0
 
 func limit_outer(): 
@@ -153,6 +164,11 @@ func limit_outer():
 	$detect_limit_rigth.enabled = false
 	$detect_turn_left.enabled = false
 	$detect_turn_rigth.enabled = false
+	$vortex.emitting = false
+	$gravar_effect_bl.emitting = true
+	$gravar_effect_br.emitting = true
+	$gravar_effect_fl.emitting = true
+	$gravar_effect_fr.emitting = true
 	gravar_nb_turn = 0
 
 

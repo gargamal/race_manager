@@ -35,6 +35,8 @@ collision_mask = 8
 
 [node name="refresh" type="Timer" parent="."]
 
+[node name="buzers" type="Node2D" parent="."]
+
 [connection signal="body_entered" from="road_line/limit_interior" to="." method="_on_limit_interior_body_entered"]
 [connection signal="body_exited" from="road_line/limit_interior" to="." method="_on_limit_interior_body_exited"]
 [connection signal="body_entered" from="road_line/limit_exterior" to="." method="_on_limit_exterior_body_entered"]
