@@ -1,31 +1,38 @@
 extends KinematicBody2D
 
-enum CAR_COLOR {RED, GOLD, LIGTH_BLUE, SAND, GREEN, PURPLE, ORANGE, BROWN, BLUE, PINK, LIGHT_GREEN, CYAN, DARK_RED, BLUE_GREEN, BROWN_RED, DARK_GREY}
-
+enum CAR_COLOR {RED, GOLD, SKY, SAND, GREEN, PURPLE, ORANGE, BROWN, BLUE, PINK, GRASS, CYAN, DARK_RED, WATER, WINE, DARK}
+enum TEAM { TEAM_1, TEAM_2, TEAM_3, TEAM_4, TEAM_5, TEAM_6, TEAM_7, TEAM_8, TEAM_9, TEAM_10, TEAM_11 }
+enum STATE_IN_PITLANE {ENTER, ENTER_GARAGE, GARAGE, EXIT_GARAGE, EXIT, RETURN_ROAD }
 
 export(String) var car_name := "voiture"
+export(CAR_COLOR) var car_color
+export(TEAM) var team_position
 export(float) var max_speed := 100.0 # to m/s
 export(float) var accelerate_G := 2.0
 export(float) var direction_angle_degree := 20.0
-export(CAR_COLOR) var car_color
 export(Color) var modulate_color = Color(1.0, 1.0, 1.0, 1.0)
 export(Color) var text_color = Color(1.0, 1.0, 1.0, 1.0)
 export(String) var number_car = "99"
 export(Color) var helmet_color = Color(1.0, 1.0, 1.0, 1.0)
+export(bool) var has_pit_stop = false
+
 
 const SCALE = 20
 const COEF_BRAKE = 1.05
-const GRAVAR_COEF_BRAKE = 1.1
 const CAR_HEIGHT = 500
 const CAR_WIDTH = 150
 const LIMIT_CIRCUIT_WIDTH = 120
 const LIMIT_BEFORE_ZERO_VELOCITY = 0.01
 const MIN_SPEED = 0.01
 const SPEED_MAX_TURN = 40
+const GRAVAR_COEF_BRAKE = 1.1
 const GRAVAR_SPEED = 40.0
 const GRAVAR_ANGLE = PI * 8.0 / 360.0
+const pitlane_COEF_BRAKE = 1.1
+const PITLANE_SPEED = 35.0
+const pitlane_ANGLE = PI * 8.0 / 360.0
 enum DIRECTION { TURN_LEFT, TURN_RIGHT, TURN_AND_BRAKE_LEFT, TURN_AND_BRAKE_RIGHT, DONT_TURN, BRAKE }
-enum ROAD_TYPE { INNER, OUTER, ROAD }
+enum ROAD_TYPE { INNER, OUTER, ROAD, PITLANE }
 
 
 var sys_time := 0.0
@@ -36,6 +43,10 @@ var road_type = ROAD_TYPE.ROAD
 var gravar_nb_turn := 0
 var time_max_speed := 0.0
 var current_direction := 0
+var is_in_pitlane_area = false
+var state_in_pitlane = STATE_IN_PITLANE.ENTER
+var mechanic_working = false
+
 
 func _ready():
 	modulate = modulate_color
@@ -53,7 +64,7 @@ func _ready():
 	$detect_crash.enabled = true
 	$car_design.frame = car_color
 	
-	var circuit_width = get_parent().get_parent().get_node("circuit/road_line").width
+	var circuit_width = get_tree().current_scene.get_node("circuit/road_line").width
 	var circuit_with_ray_cast = circuit_width * 4.0
 	var size_limit_ray_cast = Vector2(circuit_with_ray_cast, 0.0)
 	$detect_limit_left.cast_to = size_limit_ray_cast
@@ -71,7 +82,12 @@ func _ready():
 
 
 func _physics_process(delta):
+	if mechanic_working:
+		return
+	
+	go_pitlane()
 	var direction = direction()
+	
 	if ROAD_TYPE.ROAD == road_type:
 		if direction == DIRECTION.BRAKE:
 			if velocity.length() / SCALE < MIN_SPEED:
@@ -99,7 +115,7 @@ func _physics_process(delta):
 					turn(DIRECTION.TURN_LEFT if sign(dist) >= 0 else DIRECTION.TURN_RIGHT, PI / 360.0)
 			accelerate(delta)
 	
-	else:
+	elif road_type in [ROAD_TYPE.INNER, ROAD_TYPE.OUTER]:
 		if (velocity.length() / SCALE) / GRAVAR_COEF_BRAKE > GRAVAR_SPEED: 
 			velocity /= GRAVAR_COEF_BRAKE
 		
@@ -108,7 +124,20 @@ func _physics_process(delta):
 		
 		if direction == DIRECTION.TURN_LEFT or direction == DIRECTION.TURN_RIGHT:
 			turn_in_gravar(direction)
-	
+			
+	elif road_type == ROAD_TYPE.PITLANE:
+		if is_in_pitlane_area:
+			var angle = state_in_pitlane()
+			velocity = Vector2(1, 0).rotated(angle) * PITLANE_SPEED * SCALE
+		
+		else :
+			if (velocity.length() / SCALE) / pitlane_COEF_BRAKE > PITLANE_SPEED: 
+				velocity /= pitlane_COEF_BRAKE
+
+			if direction == DIRECTION.TURN_LEFT or direction == DIRECTION.TURN_RIGHT:
+				turn_in_pitlane(direction)
+		
+		
 	if velocity.length() / SCALE > max_speed:
 		velocity = velocity.normalized() * max_speed
 	
@@ -132,44 +161,112 @@ func _physics_process(delta):
 ############################################
 
 
+func state_in_pitlane() -> float:
+	var enter_dir_car = (get_tree().current_scene.get_node("pitlane/enter").global_position - self.global_position)
+	var enter_garage_dir_car = (get_tree().current_scene.get_node("pitlane/teams/team_" + str(team_position + 1) + "_in").global_position - self.global_position)
+	var garage_dir_car = (get_tree().current_scene.get_node("pitlane/teams/team_" + str(team_position + 1)).global_position - self.global_position)
+	var exit_garage_dir_car = (get_tree().current_scene.get_node("pitlane/teams/team_" + str(team_position + 1) + "_out").global_position - self.global_position)
+	var exit_dir_car = (get_tree().current_scene.get_node("pitlane/exit").global_position - self.global_position)
+	var return_dir_car = (get_tree().current_scene.get_node("pitlane/return_in_road").global_position - self.global_position)
+	
+	match state_in_pitlane:
+		STATE_IN_PITLANE.ENTER:
+			if enter_dir_car.length() < CAR_HEIGHT / 8.0:
+				state_in_pitlane = STATE_IN_PITLANE.ENTER_GARAGE
+			return Vector2(1, 0).angle_to(enter_dir_car.normalized())
+			
+		STATE_IN_PITLANE.ENTER_GARAGE:
+			if enter_garage_dir_car.length() < CAR_HEIGHT / 8.0:
+				state_in_pitlane = STATE_IN_PITLANE.GARAGE
+			return Vector2(1, 0).angle_to(enter_garage_dir_car.normalized())
+			
+		STATE_IN_PITLANE.GARAGE:
+			if garage_dir_car.length() < CAR_HEIGHT / 8.0:
+				mechanic_working = true
+				$pitstop_time.wait_time = 5.0
+				$pitstop_time.start()
+				state_in_pitlane = STATE_IN_PITLANE.EXIT_GARAGE
+				var angle = Vector2(1, 0).angle_to((exit_dir_car - enter_dir_car).normalized())
+				self.rotation = angle
+				return angle
+				
+			else:
+				return Vector2(1, 0).angle_to(garage_dir_car.normalized())
+			
+		STATE_IN_PITLANE.EXIT_GARAGE:
+			if exit_garage_dir_car.length() < CAR_HEIGHT / 8.0:
+				state_in_pitlane = STATE_IN_PITLANE.EXIT
+			return Vector2(1, 0).angle_to(exit_garage_dir_car.normalized())
+			
+		STATE_IN_PITLANE.EXIT:
+			if exit_dir_car.length() < CAR_HEIGHT / 8.0:
+				state_in_pitlane = STATE_IN_PITLANE.RETURN_ROAD
+			return Vector2(1, 0).angle_to(exit_dir_car.normalized())
+			
+		STATE_IN_PITLANE.RETURN_ROAD:
+			return Vector2(1, 0).angle_to(return_dir_car.normalized())
+			
+		_:
+			return 0.0
+
+
 func limit_inner():
-	road_type = ROAD_TYPE.INNER
-	$detect_limit_left.enabled = false
-	$detect_limit_rigth.enabled = false
-	$detect_turn_left.enabled = false
-	$detect_turn_rigth.enabled = false
-	$vortex.emitting = false
-	$gravar_effect_bl.emitting = true
-	$gravar_effect_br.emitting = true
-	$gravar_effect_fl.emitting = true
-	$gravar_effect_fr.emitting = true
-	gravar_nb_turn = 0
+	if road_type != ROAD_TYPE.PITLANE:
+		road_type = ROAD_TYPE.INNER
+		enable_disable_raycast(false)
+		gravar_nb_turn = 0
+
 
 func limit_road():
-	road_type = ROAD_TYPE.ROAD
-	$detect_limit_left.enabled = true
-	$detect_limit_rigth.enabled = true
-	$detect_turn_left.enabled = true
-	$detect_turn_rigth.enabled = true
-	$vortex.emitting = true
-	$gravar_effect_bl.emitting = false
-	$gravar_effect_br.emitting = false
-	$gravar_effect_fl.emitting = false
-	$gravar_effect_fr.emitting = false
-	gravar_nb_turn = 0
+	if road_type != ROAD_TYPE.PITLANE:
+		road_type = ROAD_TYPE.ROAD
+		enable_disable_raycast(true)
+		gravar_nb_turn = 0
+
 
 func limit_outer(): 
-	road_type = ROAD_TYPE.OUTER
-	$detect_limit_left.enabled = false
-	$detect_limit_rigth.enabled = false
-	$detect_turn_left.enabled = false
-	$detect_turn_rigth.enabled = false
-	$vortex.emitting = false
-	$gravar_effect_bl.emitting = true
-	$gravar_effect_br.emitting = true
-	$gravar_effect_fl.emitting = true
-	$gravar_effect_fr.emitting = true
+	if road_type != ROAD_TYPE.PITLANE:
+		road_type = ROAD_TYPE.OUTER
+		enable_disable_raycast(false)
+		gravar_nb_turn = 0
+
+
+func limit_pitlane():
+	road_type = ROAD_TYPE.PITLANE
+	is_in_pitlane_area = true
+	state_in_pitlane = STATE_IN_PITLANE.ENTER
+	enable_disable_raycast(true)
+	enable_effect_pitlane(false)
 	gravar_nb_turn = 0
+
+
+func exit_pitlane():
+	road_type = ROAD_TYPE.ROAD
+	enable_disable_raycast(true)
+	has_pit_stop = false
+	is_in_pitlane_area = false
+	enable_effect_pitlane(true)
+	gravar_nb_turn = 0
+
+
+func enable_disable_raycast(enabled :bool) -> void:
+	$detect_limit_left.enabled = enabled
+	$detect_limit_rigth.enabled = enabled
+	$detect_turn_left.enabled = enabled
+	$detect_turn_rigth.enabled = enabled
+	$vortex.emitting = enabled
+	$gravar_effect_bl.emitting = not enabled
+	$gravar_effect_br.emitting = not enabled
+	$gravar_effect_fl.emitting = not enabled
+	$gravar_effect_fr.emitting = not enabled
+
+
+func enable_effect_pitlane(enabled :bool) -> void:
+	$vortex.emitting = enabled
+	$wheel_effect_bl.emitting = enabled
+	$wheel_effect_br.emitting = enabled
+	$wheel_effect_fl.emitting = enabled
+	$wheel_effect_fr.emitting = enabled
 
 
 func turn_and_brake(direction:int) -> void:
@@ -194,6 +291,11 @@ func turn_in_gravar(direction :int) -> void:
 	gravar_nb_turn += 1
 
 
+func turn_in_pitlane(direction :int) -> void:
+	if direction in [DIRECTION.TURN_LEFT, DIRECTION.TURN_RIGHT]:
+		var velocity_rotation = pitlane_ANGLE * (1 if direction == DIRECTION.TURN_RIGHT else -1)
+		velocity = velocity.rotated(velocity_rotation)
+
 func brake() -> void:
 	var next_velocity = velocity / COEF_BRAKE
 	if next_velocity.length_squared() < LIMIT_BEFORE_ZERO_VELOCITY:
@@ -213,6 +315,17 @@ func get_distance_collision(raycast :RayCast2D) -> float:
 	return origin.distance_to(collision_point)
 
 
+func go_pitlane():
+	if has_pit_stop and road_type != ROAD_TYPE.PITLANE:
+		var is_turn_pitlane_left = $detect_turn_left.is_colliding() and $detect_turn_left.get_collider().is_in_group("pitlane")
+		var is_turn_pitlane_right = $detect_turn_rigth.is_colliding() and $detect_turn_rigth.get_collider().is_in_group("pitlane")
+		var is_limit_pitlane_left = $detect_limit_left.is_colliding() and $detect_limit_left.get_collider().is_in_group("pitlane")
+		var is_limit_pitlane_right = $detect_limit_rigth.is_colliding() and $detect_limit_rigth.get_collider().is_in_group("pitlane")
+	
+		if is_turn_pitlane_left or is_turn_pitlane_right or is_limit_pitlane_left or is_limit_pitlane_right:
+			road_type = ROAD_TYPE.PITLANE
+
+
 func direction() -> int:
 	var direction = DIRECTION.DONT_TURN
 	
@@ -223,9 +336,11 @@ func direction() -> int:
 			direction = direction_position_car
 		else:
 			direction = direction_colision
-	else:
-		var direction_out_limit = direction_out_limit()
-		direction = direction_out_limit
+	elif road_type in [ROAD_TYPE.INNER, ROAD_TYPE.OUTER]:
+		direction = direction_out_limit()
+		
+	elif road_type == ROAD_TYPE.PITLANE:
+		direction = direction_pitlane()
 	
 	# Pour eviter l'effet zigzag
 	if current_direction == DIRECTION.TURN_LEFT and direction == DIRECTION.TURN_RIGHT or current_direction == DIRECTION.TURN_RIGHT and direction == DIRECTION.TURN_LEFT:
@@ -235,6 +350,22 @@ func direction() -> int:
 	
 	current_direction = direction
 	return direction
+
+
+func direction_pitlane() -> int:
+	var is_turn_pitlane_left = $detect_turn_left.is_colliding() and $detect_turn_left.get_collider().is_in_group("pitlane")
+	var is_turn_pitlane_right = $detect_turn_rigth.is_colliding() and $detect_turn_rigth.get_collider().is_in_group("pitlane")
+	var is_limit_pitlane_left = $detect_limit_left.is_colliding() and $detect_limit_left.get_collider().is_in_group("pitlane")
+	var is_limit_pitlane_right = $detect_limit_rigth.is_colliding() and $detect_limit_rigth.get_collider().is_in_group("pitlane")
+	
+	if is_limit_pitlane_left or is_limit_pitlane_right:
+		return DIRECTION.DONT_TURN
+	elif is_turn_pitlane_left:
+		return DIRECTION.TURN_LEFT
+	elif is_turn_pitlane_right:
+		return DIRECTION.TURN_RIGHT
+	
+	return DIRECTION.DONT_TURN
 
 
 func direction_out_limit() -> int:
@@ -338,3 +469,6 @@ func calulate_speed(param_time :float) -> float:
 func get_speed() -> float:
 	return calulate_speed(sys_time)
 
+
+func _on_pitstop_time_timeout():
+	mechanic_working = false

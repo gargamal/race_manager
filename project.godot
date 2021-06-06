@@ -54,6 +54,8 @@ camera_car_two={
 2d_physics/layer_3="limit_rigth"
 3d_physics/layer_3="car"
 2d_physics/layer_4="car"
+2d_physics/layer_5="pitlane"
+2d_physics/layer_6="pitlane_exit"
 
 [rendering]
 

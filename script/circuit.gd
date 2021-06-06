@@ -204,7 +204,6 @@ func build_polygon_exterior(polygon) -> Array:
 	return build_polygon
 
 
-
 func _on_limit_interior_body_entered(body) -> void:
 	if body.is_in_group("car"):
 		body.limit_inner()
