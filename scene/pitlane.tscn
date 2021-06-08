@@ -34,16 +34,15 @@ collision_mask = 8
 [node name="col" type="CollisionPolygon2D" parent="exit_pitlane"]
 polygon = PoolVector2Array( 1728, 288, 2176, 288, 2464, 576, 1344, 576, 1344, 480, 1264, 480, 1264, 128, 1376, 128 )
 
-[node name="wall_road" type="Area2D" parent="."]
-collision_layer = 3
+[node name="wall_road" type="StaticBody2D" parent="."]
+collision_layer = 2
 collision_mask = 8
 
 [node name="col" type="CollisionShape2D" parent="wall_road"]
 position = Vector2( 0, 544 )
 shape = SubResource( 1 )
 
-[node name="wall_pitlane" type="Area2D" parent="."]
-collision_layer = 5
+[node name="wall_pitlane" type="StaticBody2D" parent="."]
 collision_mask = 8
 
 [node name="col" type="CollisionShape2D" parent="wall_pitlane"]

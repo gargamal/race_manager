@@ -7,9 +7,9 @@ enum STATE_IN_PITLANE {ENTER, ENTER_GARAGE, GARAGE, EXIT_GARAGE, EXIT, RETURN_RO
 export(String) var car_name := "voiture"
 export(CAR_COLOR) var car_color
 export(TEAM) var team_position
-export(float) var max_speed := 100.0 # to m/s
-export(float) var accelerate_G := 2.0
-export(float) var direction_angle_degree := 20.0
+export(float) var limit_speed := 100.0 # to m/s
+export(float) var coef_accelerate := 0.5
+export(float) var direction_angle_degree := 10.0
 export(Color) var modulate_color = Color(1.0, 1.0, 1.0, 1.0)
 export(Color) var text_color = Color(1.0, 1.0, 1.0, 1.0)
 export(String) var number_car = "99"
@@ -23,12 +23,15 @@ const CAR_HEIGHT = 500
 const CAR_WIDTH = 150
 const LIMIT_CIRCUIT_WIDTH = 120
 const LIMIT_BEFORE_ZERO_VELOCITY = 0.01
-const MIN_SPEED = 0.01
+const MIN_SPEED = 5.0
+const MIN_SPEED_ANGULAR = 4.0
 const SPEED_MAX_TURN = 40
+const MEDIAN_SPEED_ANGULAR = 90.0
+const MEDIAN_ANGLE_ANGULAR = PI * 10.0 / 360.0
 const GRAVAR_COEF_BRAKE = 1.1
 const GRAVAR_SPEED = 40.0
 const GRAVAR_ANGLE = PI * 8.0 / 360.0
-const pitlane_COEF_BRAKE = 1.1
+const PITLANE_COEF_BRAKE = 1.1
 const PITLANE_SPEED = 35.0
 const pitlane_ANGLE = PI * 8.0 / 360.0
 enum DIRECTION { TURN_LEFT, TURN_RIGHT, TURN_AND_BRAKE_LEFT, TURN_AND_BRAKE_RIGHT, DONT_TURN, BRAKE }
@@ -41,36 +44,32 @@ var direction_angle := 0.0
 var gravar_sys_time := 0.0
 var road_type = ROAD_TYPE.ROAD
 var gravar_nb_turn := 0
+var max_speed := 0.0
 var time_max_speed := 0.0
 var current_direction := 0
 var is_in_pitlane_area = false
 var state_in_pitlane = STATE_IN_PITLANE.ENTER
 var mechanic_working = false
-
+var circuit_width = 0.0
 
 func _ready():
+	circuit_width = get_tree().current_scene.get_node("circuit/road_line").width
+	
 	modulate = modulate_color
 	$number.text = number_car
 	$number.modulate = text_color
 	$helmet.modulate = helmet_color
+	$car_design.frame = car_color
 	direction_angle = (direction_angle_degree / 360.0) * PI
 	gravar_sys_time = calculate_time(GRAVAR_SPEED * SCALE)
-	var size_car_ray_cast = Vector2(CAR_HEIGHT, 0.0)
-	$detect_car_left.cast_to = size_car_ray_cast
-	$detect_car_left.enabled = true
-	$detect_car_right.cast_to = size_car_ray_cast
-	$detect_car_right.enabled = true
-	$detect_crash.cast_to = size_car_ray_cast
-	$detect_crash.enabled = true
-	$car_design.frame = car_color
+	max_speed = limit_speed
 	
-	var circuit_width = get_tree().current_scene.get_node("circuit/road_line").width
-	var circuit_with_ray_cast = circuit_width * 4.0
-	var size_limit_ray_cast = Vector2(circuit_with_ray_cast, 0.0)
-	$detect_limit_left.cast_to = size_limit_ray_cast
+	$detect_car_left.enabled = true
+	$detect_car_right.enabled = true
+	$detect_crash.enabled = true
 	$detect_limit_left.enabled = true
-	$detect_limit_rigth.cast_to = size_limit_ray_cast
 	$detect_limit_rigth.enabled = true
+	update_ray_cast()
 	
 	var circuit_height_ray_cast = circuit_width * 4.0
 	$detect_turn_left.cast_to = Vector2(circuit_height_ray_cast * cos(PI / 4.0), -circuit_height_ray_cast * sin(PI / 4.0))
@@ -78,7 +77,7 @@ func _ready():
 	$detect_turn_rigth.cast_to = Vector2(circuit_height_ray_cast * cos(PI / 4.0), circuit_height_ray_cast * sin(PI / 4.0))
 	$detect_turn_rigth.enabled = true
 	
-	time_max_speed = calculate_time(max_speed / 2.0) * 5
+	time_max_speed = calculate_time(limit_speed / 2.0) * 5.0
 
 
 func _physics_process(delta):
@@ -107,12 +106,6 @@ func _physics_process(delta):
 				turn_and_brake(direction)
 			
 		else:
-			var is_col_on_left = $detect_turn_left.is_colliding() and not $detect_turn_left.get_collider().is_in_group("car")
-			var is_col_on_right = $detect_turn_rigth.is_colliding() and not $detect_turn_rigth.get_collider().is_in_group("car")
-			if is_col_on_left and is_col_on_right:
-				var dist = get_distance_collision($detect_turn_left) - get_distance_collision($detect_turn_rigth)
-				if dist > LIMIT_CIRCUIT_WIDTH :
-					turn(DIRECTION.TURN_LEFT if sign(dist) >= 0 else DIRECTION.TURN_RIGHT, PI / 360.0)
 			accelerate(delta)
 	
 	elif road_type in [ROAD_TYPE.INNER, ROAD_TYPE.OUTER]:
@@ -131,8 +124,8 @@ func _physics_process(delta):
 			velocity = Vector2(1, 0).rotated(angle) * PITLANE_SPEED * SCALE
 		
 		else :
-			if (velocity.length() / SCALE) / pitlane_COEF_BRAKE > PITLANE_SPEED: 
-				velocity /= pitlane_COEF_BRAKE
+			if (velocity.length() / SCALE) / PITLANE_COEF_BRAKE > PITLANE_SPEED: 
+				velocity /= PITLANE_COEF_BRAKE
 
 			if direction == DIRECTION.TURN_LEFT or direction == DIRECTION.TURN_RIGHT:
 				turn_in_pitlane(direction)
@@ -147,18 +140,43 @@ func _physics_process(delta):
 		var angle = collision.normal.angle()
 		var bounce = velocity.bounce(collision.normal).normalized().angle()
 		if 0.0 < angle and angle < PI / 4.0 or -3.0 * PI / 4.0 < angle and angle < 0.0:
-			turn(DIRECTION.TURN_LEFT, bounce / 15.0)
+			turn(DIRECTION.TURN_LEFT, bounce / 20.0)
 		elif 0.0 > angle and angle > -PI / 4.0 or 3.0 * PI / 4.0 > angle and angle > 0.0:
-			turn(DIRECTION.TURN_RIGHT, bounce / 15.0)
+			turn(DIRECTION.TURN_RIGHT, bounce / 20.0)
 		else:
 			brake()
 	
-	sys_time = calculate_time(velocity.length() / SCALE)
+	var speed_measured = velocity.length() / SCALE
+	play_effect(speed_measured)
+	update_ray_cast()
+	sys_time = calculate_time(speed_measured)
 	self.rotation = velocity.angle()
 
 
 ############################################
 ############################################
+
+
+func update_ray_cast():
+	var coef_size_ray_cast = (get_speed() / MEDIAN_SPEED_ANGULAR) * 2.0
+	
+	var size_car_ray_cast = Vector2(CAR_HEIGHT * coef_size_ray_cast, 0.0)
+	$detect_car_left.cast_to = size_car_ray_cast
+	$detect_car_right.cast_to = size_car_ray_cast
+	$detect_crash.cast_to = size_car_ray_cast
+	
+	var circuit_with_ray_cast = circuit_width * 4.0 * coef_size_ray_cast
+	var size_limit_ray_cast = Vector2(circuit_with_ray_cast, 0.0)
+	$detect_limit_left.cast_to = size_limit_ray_cast
+	$detect_limit_rigth.cast_to = size_limit_ray_cast
+
+
+func play_effect(speed_measured :float) -> void:
+	$vortex.emitting = true if speed_measured > 95.0 else false
+	$wheel_effect_bl.emitting = true if speed_measured > PITLANE_SPEED else false
+	$wheel_effect_br.emitting = true if speed_measured > PITLANE_SPEED else false
+	$wheel_effect_fl.emitting = true if speed_measured > PITLANE_SPEED else false
+	$wheel_effect_fr.emitting = true if speed_measured > PITLANE_SPEED else false
 
 
 func state_in_pitlane() -> float:
@@ -236,7 +254,6 @@ func limit_pitlane():
 	is_in_pitlane_area = true
 	state_in_pitlane = STATE_IN_PITLANE.ENTER
 	enable_disable_raycast(true)
-	enable_effect_pitlane(false)
 	gravar_nb_turn = 0
 
 
@@ -245,7 +262,6 @@ func exit_pitlane():
 	enable_disable_raycast(true)
 	has_pit_stop = false
 	is_in_pitlane_area = false
-	enable_effect_pitlane(true)
 	gravar_nb_turn = 0
 
 
@@ -254,19 +270,6 @@ func enable_disable_raycast(enabled :bool) -> void:
 	$detect_limit_rigth.enabled = enabled
 	$detect_turn_left.enabled = enabled
 	$detect_turn_rigth.enabled = enabled
-	$vortex.emitting = enabled
-	$gravar_effect_bl.emitting = not enabled
-	$gravar_effect_br.emitting = not enabled
-	$gravar_effect_fl.emitting = not enabled
-	$gravar_effect_fr.emitting = not enabled
-
-
-func enable_effect_pitlane(enabled :bool) -> void:
-	$vortex.emitting = enabled
-	$wheel_effect_bl.emitting = enabled
-	$wheel_effect_br.emitting = enabled
-	$wheel_effect_fl.emitting = enabled
-	$wheel_effect_fr.emitting = enabled
 
 
 func turn_and_brake(direction:int) -> void:
@@ -276,11 +279,10 @@ func turn_and_brake(direction:int) -> void:
 
 func turn(direction :int, angle :float) -> void:
 	var speed = get_speed()
-	if speed > MIN_SPEED:
+	if speed > MIN_SPEED_ANGULAR:
 		var factor = (1 if direction == DIRECTION.TURN_RIGHT or direction == DIRECTION.TURN_AND_BRAKE_RIGHT else -1)
-		var velocity_rotation = angle * factor
-		velocity_rotation -= (speed - SPEED_MAX_TURN) * factor * PI / 4.0 / 360.0
-		velocity = velocity.rotated(velocity_rotation) 
+		var velocity_rotation = (SPEED_MAX_TURN / speed) * angle * factor
+		velocity = velocity.rotated(velocity_rotation if velocity_rotation < direction_angle else direction_angle) 
 
 
 func turn_in_gravar(direction :int) -> void:
@@ -382,13 +384,15 @@ func direction_colision() -> int:
 	var is_col_on_right = $detect_turn_rigth.is_colliding()
 	var with_left_col = $detect_limit_left.is_colliding()
 	var with_right_col = $detect_limit_rigth.is_colliding()
+	var is_col_car = $detect_crash.is_colliding()
 	var dist_left = get_distance_collision($detect_turn_left) if is_col_on_left else 10000.0
 	var dist_right = get_distance_collision($detect_turn_rigth) if is_col_on_right else 10000.0
 	var car_on_left = is_col_on_left and $detect_turn_left.get_collider().is_in_group("car") and dist_left < CAR_WIDTH / 2.0
 	var car_on_right = is_col_on_right and $detect_turn_rigth.get_collider().is_in_group("car") and dist_right < CAR_WIDTH / 2.0
 	
-	if is_col_with_another_car_and_dont_touch_limit():
-		
+	if get_speed() <= MIN_SPEED and not is_col_car:
+		return DIRECTION.DONT_TURN
+	elif is_col_with_another_car_and_dont_touch_limit():
 		if car_on_left and car_on_right:
 			return DIRECTION.BRAKE
 		elif car_on_left:
@@ -418,6 +422,12 @@ func direction_colision() -> int:
 		
 	elif with_left_col and car_on_right or with_right_col and car_on_left:
 		return DIRECTION.BRAKE
+		
+	elif abs(dist_left - dist_right) > circuit_width and dist_left > dist_right:
+		return DIRECTION.TURN_LEFT
+
+	elif abs(dist_left - dist_right) > circuit_width and dist_left < dist_right:
+		return DIRECTION.TURN_RIGHT
 		
 	else:
 		return DIRECTION.DONT_TURN
@@ -451,19 +461,19 @@ func direction_position_car() -> int:
 
 
 func speed_accelerate_add_after_accelerate(delta :float) -> float:
-	var last = max_speed * (1 - exp(-sys_time * accelerate_G))
-	var next = max_speed * (1 - exp(-(sys_time + delta) * accelerate_G))
+	var last = max_speed * (1 - exp(-sys_time * coef_accelerate))
+	var next = max_speed * (1 - exp(-(sys_time + delta) * coef_accelerate))
 	
 	return (next - last)
 
 
 func calculate_time(speed :float) -> float:
 	if speed > max_speed: return time_max_speed
-	else: return -log(1 - (speed / max_speed)) / accelerate_G
+	else: return -log(1 - (speed / max_speed)) / coef_accelerate
 
 
 func calulate_speed(param_time :float) -> float:
-	return max_speed * (1 - exp(-param_time * accelerate_G))
+	return max_speed * (1 - exp(-param_time * coef_accelerate))
 
 
 func get_speed() -> float:
@@ -472,3 +482,7 @@ func get_speed() -> float:
 
 func _on_pitstop_time_timeout():
 	mechanic_working = false
+
+
+func _on_starting_timeout():
+	max_speed = limit_speed

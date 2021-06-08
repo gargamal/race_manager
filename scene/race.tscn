@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scene/circuit.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scene/car.tscn" type="PackedScene" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://scene/grid.tscn" type="PackedScene" id=4]
 [ext_resource path="res://sprite/gravar.png" type="Texture" id=5]
 [ext_resource path="res://scene/pitlane.tscn" type="PackedScene" id=6]
+[ext_resource path="res://sprite/bleacher.png" type="Texture" id=7]
+[ext_resource path="res://sprite/tyres_wall.png" type="Texture" id=8]
 
 [sub_resource type="Curve2D" id=1]
 bake_interval = 50.0
@@ -34,6 +36,136 @@ curve = SubResource( 1 )
 [node name="grid" parent="." instance=ExtResource( 4 )]
 position = Vector2( 1120, -1437.75 )
 
+[node name="environnement" type="Node2D" parent="."]
+
+[node name="tyre_wall" type="Line2D" parent="environnement"]
+points = PoolVector2Array( 0, -864, 64, -1024, 192, -1088, 352, -1152, 736, -1152, 1216, -1088, 1792, -960, 2496, -800, 2848, -800, 2912, -864, 2944, -960, 2880, -1056, 2816, -1088, 2720, -1120, 2528, -1152, 2208, -1184, -2560, -1248, -2912, -1184, -3136, -992, -3360, -800, -3456, -544, -3328, -416, -3104, -320, -2784, -352, -2624, -480, -2496, -640, -2368, -768, -2144, -864, 0, -864 )
+width = 30.0
+default_color = Color( 1, 1, 1, 1 )
+texture = ExtResource( 8 )
+texture_mode = 1
+
+[node name="tyre_wall2" type="Line2D" parent="environnement"]
+points = PoolVector2Array( -1280, -768, -1184, -640, -1145.09, -500.008, -1120, -224, -1152, 352, -1120, 640, -1024, 640, -960, 576, -896, 416, -768, 288, -480, 160, -320, 160, -32, 192, 288, 352, 606.142, 501.299, 860.939, 665.225, 976.756, 823.805, 1162.06, 1021.58, 1399.04, 1105.33, 1778.57, 1142.75, 2265, 1135.62, 2314.89, 1085.73, 2327.36, 973.475, 2252.52, 884.386, 2101.07, 838.059, 1821.33, 823.805, 1521.99, 820.241, 1311.73, 836.277, 1096.14, 741.842, 800, 512, 384, 320, 64, 160, -128, -32, -192, -256, -160, -512, -96, -704 )
+width = 30.0
+default_color = Color( 1, 1, 1, 1 )
+texture = ExtResource( 8 )
+texture_mode = 1
+
+[node name="tyre_wall3" type="Line2D" parent="environnement"]
+points = PoolVector2Array( -1504, -2144, -2048, -2048, -2400, -2048, -2880, -2016, -3424, -1920, -3808, -1792, -4096, -1472, -4320, -1120, -4448, -768, -4512, -512, -4512, -192, -4416, 64 )
+width = 30.0
+default_color = Color( 1, 1, 1, 1 )
+texture = ExtResource( 8 )
+texture_mode = 1
+
+[node name="tyre_wall4" type="Line2D" parent="environnement"]
+points = PoolVector2Array( -4640, -32, -4512, 288, -4256, 416, -4128, 608, -4128, 960, -4064, 1344, -3840, 1664, -3328, 1856, -2912, 1824 )
+width = 30.0
+default_color = Color( 1, 1, 1, 1 )
+texture = ExtResource( 8 )
+texture_mode = 1
+
+[node name="tyre_wall5" type="Line2D" parent="environnement"]
+points = PoolVector2Array( -3040, 2048, -2592, 2016, -2176, 1824, -1952, 1632, -1824, 1312, -1792, 1024, -1792, 704, -1792, 352, -1856, 160, -1920, 32, -1920, -64, -1888, -160, -1824, -160, -1728, -128, -1728, -64, -1760, 128, -1760, 352, -1760, 704, -1760, 1024, -1696, 1152, -1600, 1312, -1472, 1440, -1344, 1536, -1152, 1632, -960, 1664, -704, 1632 )
+width = 30.0
+default_color = Color( 1, 1, 1, 1 )
+texture = ExtResource( 8 )
+texture_mode = 1
+
+[node name="tyre_wall6" type="Line2D" parent="environnement"]
+points = PoolVector2Array( -896, 1504, -672, 1472, -480, 1280, -320, 1152, -192, 1088, -32, 1088, 192, 1216, 288, 1408, 544, 1696, 864, 1856, 1088, 1920, 1472, 2016, 1792, 2016, 2528, 1952 )
+width = 30.0
+default_color = Color( 1, 1, 1, 1 )
+texture = ExtResource( 8 )
+texture_mode = 1
+
+[node name="tyre_wall7" type="Line2D" parent="environnement"]
+points = PoolVector2Array( 2304, 2144, 2592, 2080, 3040, 1920, 3264, 1696, 3360, 1536, 3456, 1344, 3488, 1088, 3392, 896, 3264, 736, 3040, 576, 2880, 480, 2656, 384, 2432, 256, 2016, 128, 1536, 32, 1024, -96, 640, -256, 576, -352, 608, -448, 704, -448, 768, -448, 896, -384, 992, -288, 1248, -192, 1696, -64, 2176, 64, 2432, 160, 2624, 256, 2688, 320, 2912, 448, 3072, 512, 3232, 544, 3424, 544, 3648, 544, 3808, 448, 3904, 288, 3968, 64 )
+width = 30.0
+default_color = Color( 1, 1, 1, 1 )
+texture = ExtResource( 8 )
+texture_mode = 1
+
+[node name="tyre_wall8" type="Line2D" parent="environnement"]
+points = PoolVector2Array( 4064, 384, 4160, 0, 4160, -288, 4128, -512, 4064, -864, 3936, -1280, 3712, -1600, 3424, -1824, 3072, -1952, 2720, -2016, 2080, -2112, 1600, -2144, 1248, -2144 )
+width = 30.0
+default_color = Color( 1, 1, 1, 1 )
+texture = ExtResource( 8 )
+texture_mode = 1
+
+[node name="path_to_walk" type="Line2D" parent="environnement"]
+modulate = Color( 1, 1, 1, 0.313726 )
+points = PoolVector2Array( -4736.73, -627.508, -4288, -1440, -4032, -1920, -4256, -2016, -4981.8, -727.526, -4728.13, -565.892, -4721.39, -417.727, -4755.07, -224.663, -4815.68, -89.9678, -4864, 96, -4832, 288, -4768, 480, -4608, 608, -4480, 864, -4480, 1056, -4416, 1344, -4352, 1568, -4224, 1760, -4000, 1888, -3776, 2016, -3584, 2176, -3296, 2272, -3072, 2432, -3040, 2528, -2912, 2848, -2880, 3040 )
+width = 100.0
+default_color = Color( 0.960784, 0.956863, 0.713726, 1 )
+texture_mode = 1
+
+[node name="path_to_walk2" type="Line2D" parent="environnement"]
+modulate = Color( 1, 1, 1, 0.313726 )
+points = PoolVector2Array( -4008.63, -1962.58, -3913.49, -2161.17, -3840, -2240, -3584, -2304, -2923.55, -2242.41, -1734.19, -2217.71, -1500.77, -2223.05 )
+width = 100.0
+default_color = Color( 0.960784, 0.956863, 0.713726, 1 )
+texture_mode = 1
+
+[node name="path_to_walk3" type="Line2D" parent="environnement"]
+modulate = Color( 1, 1, 1, 0.313726 )
+points = PoolVector2Array( 66.7693, -1150.1, -2673.98, -1150.1, -2917.22, -1031.3, -3072.79, -904.024, -3188.26, -782.038, -3237, -667.616, -3217.04, -547.642, -3098.24, -476.931, -2948.33, -468.446, -2806.91, -536.328, -2696.6, -632.495, -2620.39, -756.611, -2567.42, -1095.64 )
+width = 100.0
+default_color = Color( 0.960784, 0.956863, 0.713726, 1 )
+texture_mode = 1
+
+[node name="path_to_walk4" type="Line2D" parent="environnement"]
+modulate = Color( 1, 1, 1, 0.313726 )
+points = PoolVector2Array( -2938.62, 2645.49, -2510.02, 2423.25, -1976.65, 2274.04, -1287.72, 2137.52, -716.255, 2058.15, -93.9938, 2045.45, 417.149, 2118.47, 1404.51, 2362.93, 2195.04, 2559.77, 2620.46, 2540.72, 3150.65, 2375.63, 3522.1, 2159.75, 3734.82, 1769.24, 3893.56, 1286.67, 3963.4, 854.902, 4014.2, 740.609, 4204.69, 718.385, 4404.7, 721.56, 4614.24, 531.072, 4753.93, 159.62, 4817.42, -211.832, 4696.78, -795.996, 4528.52, -1275.39, 4363.43, -1500.8, 2785.55, -2415.15, 2550.62, -2465.94, 2261.71, -2459.59, 1991.85, -2389.75, 1760.09, -2284.98, 1550.55, -2234.18, 1248.95, -2234.18 )
+width = 100.0
+default_color = Color( 0.960784, 0.956863, 0.713726, 1 )
+texture_mode = 1
+
+[node name="bleacher" type="Sprite" parent="environnement"]
+position = Vector2( 3648, -2048 )
+rotation = 0.523598
+texture = ExtResource( 7 )
+vframes = 3
+
+[node name="bleacher2" type="Sprite" parent="environnement"]
+position = Vector2( -4480, -1312 )
+rotation = -1.0472
+texture = ExtResource( 7 )
+vframes = 3
+
+[node name="bleacher3" type="Sprite" parent="environnement"]
+position = Vector2( -742.425, -1024 )
+rotation = -3.14159
+texture = ExtResource( 7 )
+vframes = 3
+frame = 1
+
+[node name="bleacher4" type="Sprite" parent="environnement"]
+position = Vector2( -2088, -1024 )
+rotation = -3.14159
+texture = ExtResource( 7 )
+vframes = 3
+frame = 1
+
+[node name="limit_circuit" type="StaticBody2D" parent="environnement"]
+collision_mask = 8
+
+[node name="col" type="CollisionPolygon2D" parent="environnement/limit_circuit"]
+polygon = PoolVector2Array( -1504, -2080, -1504, -2144, -2048, -2048, -2464, -2048, -2848, -2016, -3392, -1920, -3808, -1792, -4160, -1376, -4320, -1120, -4416, -832, -4500.03, -543.884, -4512.02, -220.25, -4416.13, 55.4385, -4562.96, 158.822, -4516.51, 284.68, -4264.8, 413.534, -4122.46, 609.812, -4128.45, 949.928, -4068.52, 1334.99, -3843.77, 1660.13, -3334.35, 1850.41, -2934.3, 1824.94, -2826.42, 2027.21, -2586.69, 2015.22, -2170.16, 1811.45, -1963.4, 1634.65, -1816.56, 1308.02, -1795.59, 1023.35, -1797.08, 367.087, -1921.44, 28.4692, -1894.47, -167.809, -1746.14, -145.334, -1732.66, -13.4834, -1750.64, 364.09, -1752.13, 1020.35, -1600.81, 1309.52, -1447.98, 1451.86, -1110.86, 1639.15, -941.551, 1657.13, -707.815, 1627.16, -689.835, 2870.76, -3075.14, 2921.7, -4449.09, 2464.72, -4901.58, 1366.46, -5144.3, 389.561, -5118.83, -674.237, -4681.32, -1552.25, -3932.17, -2404.78, -2228.59, -2684.96, -1456.97, -2767.37, 1202.53, -2758.38, 1242.98, -2296.9, 1242.98, -2066.16 )
+
+[node name="limit_circuit2" type="StaticBody2D" parent="environnement"]
+collision_mask = 8
+
+[node name="col" type="CollisionPolygon2D" parent="environnement/limit_circuit2"]
+polygon = PoolVector2Array( 1246.55, -2154.96, 1648.55, -2138.96, 2202.55, -2092.96, 3062.55, -1958.96, 3426.55, -1820.96, 3722.55, -1582.96, 3934.55, -1278.96, 4062.55, -870.958, 4160.55, -282.958, 4166.55, 1.04175, 4100.55, 235.042, 3960.55, 75.0417, 3886.55, 323.042, 3800.55, 443.042, 3650.55, 531.042, 3248.55, 537.042, 2936.55, 461.042, 2686.55, 315.042, 2528.55, 207.042, 2180.55, 57.0417, 1540.55, -108.958, 994.552, -288.958, 890.552, -386.958, 764.552, -458.958, 608.552, -454.958, 580.552, -356.958, 638.552, -260.958, 1028.55, -88.9583, 1988.55, 119.042, 2438.55, 265.042, 2652.55, 383.042, 2926.55, 509.042, 3242.55, 721.042, 3400.55, 913.042, 3496.55, 1099.04, 3448.55, 1353.04, 3270.55, 1681.04, 3042.55, 1903.04, 2546.55, 2091.04, 2504.55, 1949.04, 1754.55, 2017.04, 1462.55, 2003.04, 994.552, 1887.04, 558.552, 1701.04, 288.552, 1409.04, 190.552, 1209.04, -41.4478, 1071.04, -227.448, 1093.04, -493.448, 1279.04, -673.448, 1461.04, -869.448, 1489.04, -677.448, 2241.04, 298.552, 2307.04, 1944.55, 2781.04, 3112.55, 2541.04, 3740.55, 2233.04, 4114.55, 1305.04, 4646.55, 651.042, 4880.55, 63.0417, 4762.55, -1152.96, 4512.55, -1782.96, 3690.55, -2378.96, 2518.55, -2648.96, 1460.55, -2512.96, 1250.55, -2372.96 )
+
+[node name="limit_circuit3" type="StaticBody2D" parent="environnement"]
+collision_mask = 8
+
+[node name="col" type="CollisionPolygon2D" parent="environnement/limit_circuit3"]
+polygon = PoolVector2Array( 2946.49, -973.265, 2811.94, -1101.08, 2034.96, -1201.99, -2526.07, -1252.44, -2909.52, -1198.63, -3366.96, -784.904, -3454.42, -559.544, -3326.6, -425, -3118.06, -330.82, -2781.7, -361.092, -2606.79, -498.999, -2421.8, -734.45, -2169.53, -875.721, -1385.81, -865.63, -1210.9, -677.269, -1133.54, -445.182, -1126.81, -206.367, -1147, 254.444, -1126.81, 634.53, -1009.09, 631.166, -894.727, 405.806, -743.366, 271.262, -470.916, 146.81, -16.8318, 197.263, 861.064, 671.529, 1153.7, 994.433, 1392.51, 1091.98, 2250.22, 1149.16, 2314.13, 1071.8, 2324.22, 987.706, 2243.5, 873.344, 2085.41, 846.435, 1294.97, 839.708, 1086.42, 738.8, 790.428, 503.349, 90.803, 166.991, -134.557, -31.4609, -198.466, -260.185, -148.012, -603.271, -0.013916, -892.539, 73.9849, -1037.17, 383.435, -1164.99, 817.337, -1154.9, 2452.04, -801.722, 2822.03, -805.085, 2916.21, -862.266 )
+
 [node name="pitlane" parent="." instance=ExtResource( 6 )]
 position = Vector2( -137.649, -2179.57 )
 
@@ -41,167 +173,185 @@ position = Vector2( -137.649, -2179.57 )
 
 [node name="car_1" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( -2688, -2424 )
-car_name = "voiture 2"
-max_speed = 90.0
+position = Vector2( -4288, -4632 )
+car_name = "voiture 1"
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 text_color = Color( 0, 0.0392157, 1, 1 )
 number_car = "01"
 helmet_color = Color( 0.231373, 0.0313726, 0.866667, 1 )
 
 [node name="car_2" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( -2536, -2560 )
-car_name = "voiture 1"
-max_speed = 120.0
-accelerate_G = 1.5
-direction_angle_degree = 15.0
+position = Vector2( -4136, -4768 )
+car_name = "voiture 2"
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 text_color = Color( 0.12549, 1, 0, 1 )
 number_car = "02"
 helmet_color = Color( 0.419608, 0.960784, 0.145098, 1 )
 
 [node name="car_3" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( -2384, -2424 )
-car_name = "voiture 2"
+position = Vector2( -3984, -4632 )
+car_name = "voiture autre"
 car_color = 2
 team_position = 1
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_4" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( -2232, -2560 )
-car_name = "voiture 1"
+position = Vector2( -3832, -4768 )
+car_name = "voiture autre"
 car_color = 2
 team_position = 1
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_5" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( -2112, -2424 )
-car_name = "voiture 2"
+position = Vector2( -3712, -4632 )
+car_name = "voiture autre"
 car_color = 3
 team_position = 2
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_6" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( -1960, -2560 )
-car_name = "voiture 1"
+position = Vector2( -3560, -4768 )
+car_name = "voiture autre"
 car_color = 3
 team_position = 2
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_7" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( -1832, -2424 )
-car_name = "voiture 2"
+position = Vector2( -3432, -4632 )
+car_name = "voiture autre"
 car_color = 4
 team_position = 3
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_8" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( -1680, -2560 )
-car_name = "voiture 1"
+position = Vector2( -3280, -4768 )
+car_name = "voiture autre"
 car_color = 4
 team_position = 3
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_9" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( -1536, -2424 )
-car_name = "voiture 2"
+position = Vector2( -3136, -4632 )
+car_name = "voiture autre"
 car_color = 5
 team_position = 4
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_10" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( -1384, -2560 )
-car_name = "voiture 1"
+position = Vector2( -2984, -4768 )
+car_name = "voiture autre"
 car_color = 5
 team_position = 4
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_11" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( -1248, -2424 )
-car_name = "voiture 2"
+position = Vector2( -2848, -4632 )
+car_name = "voiture autre"
 car_color = 6
 team_position = 5
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_12" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( -1096, -2560 )
-car_name = "voiture 1"
+position = Vector2( -2696, -4768 )
+car_name = "voiture autre"
 car_color = 6
 team_position = 5
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_13" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( -944, -2424 )
-car_name = "voiture 2"
+position = Vector2( -2544, -4632 )
+car_name = "voiture autre"
 car_color = 7
 team_position = 6
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_14" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( -792, -2560 )
-car_name = "voiture 1"
+position = Vector2( -2392, -4768 )
+car_name = "voiture autre"
 car_color = 7
 team_position = 6
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_15" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( -672, -2424 )
-car_name = "voiture 2"
+position = Vector2( -2272, -4632 )
+car_name = "voiture autre"
 car_color = 8
 team_position = 7
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_16" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( -520, -2560 )
-car_name = "voiture 1"
+position = Vector2( -2120, -4768 )
+car_name = "voiture autre"
 car_color = 8
 team_position = 7
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_17" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( -392, -2424 )
-car_name = "voiture 2"
+position = Vector2( -1992, -4632 )
+car_name = "voiture autre"
 car_color = 9
 team_position = 8
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_18" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( -240, -2560 )
-car_name = "voiture 1"
+position = Vector2( -1840, -4768 )
+car_name = "voiture autre"
 car_color = 9
 team_position = 8
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_19" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
-position = Vector2( -96, -2424 )
-car_name = "voiture 2"
+position = Vector2( -1696, -4632 )
+car_name = "voiture autre"
 car_color = 15
 team_position = 9
-direction_angle_degree = 15.0
+coef_accelerate = 0.25
+direction_angle_degree = 5.0
 
 [node name="car_20" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
-position = Vector2( 56, -2560 )
-car_name = "voiture 1"
+position = Vector2( -1544, -4768 )
+car_name = "voiture autre"
 car_color = 15
 team_position = 9
-direction_angle_degree = 15.0
+direction_angle_degree = 20.0
+helmet_color = Color( 0.92549, 0.0705882, 0.0705882, 1 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
