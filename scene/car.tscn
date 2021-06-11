@@ -79,20 +79,6 @@ cast_to = Vector2( 500, 500 )
 collision_mask = 31
 collide_with_areas = true
 
-[node name="detect_car_left" type="RayCast2D" parent="."]
-position = Vector2( 64, -16 )
-scale = Vector2( 0.2, 0.2 )
-enabled = true
-cast_to = Vector2( 500, 0 )
-collision_mask = 11
-
-[node name="detect_car_right" type="RayCast2D" parent="."]
-position = Vector2( 64, 16 )
-scale = Vector2( 0.2, 0.2 )
-enabled = true
-cast_to = Vector2( 500, 0 )
-collision_mask = 13
-
 [node name="detect_crash" type="RayCast2D" parent="."]
 position = Vector2( 56, 0 )
 scale = Vector2( 0.2, 0.2 )
@@ -100,8 +86,6 @@ enabled = true
 cast_to = Vector2( 500, 0 )
 collision_mask = 8
 collide_with_areas = true
-
-[node name="camera" type="Camera2D" parent="."]
 
 [node name="number" type="Label" parent="."]
 margin_left = 24.0
@@ -123,6 +107,7 @@ __meta__ = {
 polygon = PoolVector2Array( -3, -4, -6, -3, -7, 0, -7, 1, -6, 4, -3, 5, 0, 4, 1, 1, 1, 0, 0, -3 )
 
 [node name="wheel_effect_bl" type="CPUParticles2D" parent="."]
+modulate = Color( 1, 1, 1, 0.156863 )
 position = Vector2( -41, -21 )
 amount = 128
 lifetime = 0.5
@@ -187,9 +172,10 @@ scale_amount_curve = SubResource( 4 )
 color_ramp = SubResource( 5 )
 
 [node name="gravar_effect_bl" type="CPUParticles2D" parent="."]
+modulate = Color( 1, 1, 1, 0.4 )
 position = Vector2( -60, -21 )
 emitting = false
-amount = 128
+amount = 512
 emission_shape = 2
 emission_rect_extents = Vector2( 1, 5 )
 direction = Vector2( -1, 0 )
@@ -200,9 +186,10 @@ scale_amount_random = 1.0
 color_ramp = SubResource( 6 )
 
 [node name="gravar_effect_br" type="CPUParticles2D" parent="."]
+modulate = Color( 1, 1, 1, 0.4 )
 position = Vector2( -59, 21 )
 emitting = false
-amount = 128
+amount = 512
 emission_shape = 2
 emission_rect_extents = Vector2( 1, 5 )
 direction = Vector2( -1, 0 )
@@ -213,9 +200,10 @@ scale_amount_random = 1.0
 color_ramp = SubResource( 6 )
 
 [node name="gravar_effect_fl" type="CPUParticles2D" parent="."]
+modulate = Color( 1, 1, 1, 0.4 )
 position = Vector2( 24, -20 )
 emitting = false
-amount = 128
+amount = 512
 emission_shape = 2
 emission_rect_extents = Vector2( 1, 5 )
 direction = Vector2( -1, 0 )
@@ -226,9 +214,10 @@ scale_amount_random = 1.0
 color_ramp = SubResource( 6 )
 
 [node name="gravar_effect_fr" type="CPUParticles2D" parent="."]
+modulate = Color( 1, 1, 1, 0.4 )
 position = Vector2( 25, 20 )
 emitting = false
-amount = 128
+amount = 512
 emission_shape = 2
 emission_rect_extents = Vector2( 1, 5 )
 direction = Vector2( -1, 0 )

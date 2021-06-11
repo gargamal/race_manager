@@ -11,6 +11,7 @@ export(float) var limit_speed := 100.0 # to m/s
 export(float) var coef_accelerate := 0.5
 export(float) var direction_angle_degree := 10.0
 export(Color) var modulate_color = Color(1.0, 1.0, 1.0, 1.0)
+export(Color) var mini_map_color = Color(1.0, 1.0, 1.0, 1.0)
 export(Color) var text_color = Color(1.0, 1.0, 1.0, 1.0)
 export(String) var number_car = "99"
 export(Color) var helmet_color = Color(1.0, 1.0, 1.0, 1.0)
@@ -29,8 +30,8 @@ const SPEED_MAX_TURN = 40
 const MEDIAN_SPEED_ANGULAR = 90.0
 const MEDIAN_ANGLE_ANGULAR = PI * 10.0 / 360.0
 const GRAVAR_COEF_BRAKE = 1.1
-const GRAVAR_SPEED = 40.0
-const GRAVAR_ANGLE = PI * 8.0 / 360.0
+const GRAVAR_SPEED = 20.0
+const GRAVAR_ANGLE = PI * 3.0 / 360.0
 const PITLANE_COEF_BRAKE = 1.1
 const PITLANE_SPEED = 35.0
 const pitlane_ANGLE = PI * 8.0 / 360.0
@@ -53,7 +54,7 @@ var mechanic_working = false
 var circuit_width = 0.0
 
 func _ready():
-	circuit_width = get_tree().current_scene.get_node("circuit/road_line").width
+	circuit_width = get_parent().get_parent().get_node("circuit/road_line").width
 	
 	modulate = modulate_color
 	$number.text = number_car
@@ -64,8 +65,6 @@ func _ready():
 	gravar_sys_time = calculate_time(GRAVAR_SPEED * SCALE)
 	max_speed = limit_speed
 	
-	$detect_car_left.enabled = true
-	$detect_car_right.enabled = true
 	$detect_crash.enabled = true
 	$detect_limit_left.enabled = true
 	$detect_limit_rigth.enabled = true
@@ -120,7 +119,7 @@ func _physics_process(delta):
 			
 	elif road_type == ROAD_TYPE.PITLANE:
 		if is_in_pitlane_area:
-			var angle = state_in_pitlane()
+			var angle = get_angle_in_pitlane()
 			velocity = Vector2(1, 0).rotated(angle) * PITLANE_SPEED * SCALE
 		
 		else :
@@ -160,26 +159,31 @@ func _physics_process(delta):
 func update_ray_cast():
 	var coef_size_ray_cast = (get_speed() / MEDIAN_SPEED_ANGULAR) * 2.0
 	
-	var size_car_ray_cast = Vector2(CAR_HEIGHT * coef_size_ray_cast, 0.0)
-	$detect_car_left.cast_to = size_car_ray_cast
-	$detect_car_right.cast_to = size_car_ray_cast
+	var size_car_ray_cast = Vector2(CAR_HEIGHT * coef_size_ray_cast / 2.0, 0.0)
 	$detect_crash.cast_to = size_car_ray_cast
 	
-	var circuit_with_ray_cast = circuit_width * 4.0 * coef_size_ray_cast
-	var size_limit_ray_cast = Vector2(circuit_with_ray_cast, 0.0)
+	var size_limit_ray_cast = Vector2(circuit_width * 4.0 * coef_size_ray_cast, 0.0)
 	$detect_limit_left.cast_to = size_limit_ray_cast
 	$detect_limit_rigth.cast_to = size_limit_ray_cast
 
 
 func play_effect(speed_measured :float) -> void:
-	$vortex.emitting = true if speed_measured > 95.0 else false
-	$wheel_effect_bl.emitting = true if speed_measured > PITLANE_SPEED else false
-	$wheel_effect_br.emitting = true if speed_measured > PITLANE_SPEED else false
-	$wheel_effect_fl.emitting = true if speed_measured > PITLANE_SPEED else false
-	$wheel_effect_fr.emitting = true if speed_measured > PITLANE_SPEED else false
+	$vortex.modulate = Color(1.0, 1.0, 1.0, min(1.0, pow(speed_measured / 200.0, 4.0)))
+	
+	var effect_wheel = min(0.2, pow(speed_measured / 200.0, 3.0))
+	$wheel_effect_bl.modulate = Color(1.0, 1.0, 1.0, effect_wheel)
+	$wheel_effect_br.modulate = Color(1.0, 1.0, 1.0, effect_wheel)
+	$wheel_effect_fl.modulate = Color(1.0, 1.0, 1.0, effect_wheel)
+	$wheel_effect_fr.modulate = Color(1.0, 1.0, 1.0, effect_wheel)
+	
+	var emitting_gravar_effect = road_type in [ROAD_TYPE.OUTER, ROAD_TYPE.INNER]
+	$gravar_effect_bl.emitting = emitting_gravar_effect
+	$gravar_effect_br.emitting = emitting_gravar_effect
+	$gravar_effect_fl.emitting = emitting_gravar_effect
+	$gravar_effect_fr.emitting = emitting_gravar_effect
 
 
-func state_in_pitlane() -> float:
+func get_angle_in_pitlane() -> float:
 	var enter_dir_car = (get_tree().current_scene.get_node("pitlane/enter").global_position - self.global_position)
 	var enter_garage_dir_car = (get_tree().current_scene.get_node("pitlane/teams/team_" + str(team_position + 1) + "_in").global_position - self.global_position)
 	var garage_dir_car = (get_tree().current_scene.get_node("pitlane/teams/team_" + str(team_position + 1)).global_position - self.global_position)
@@ -392,18 +396,6 @@ func direction_colision() -> int:
 	
 	if get_speed() <= MIN_SPEED and not is_col_car:
 		return DIRECTION.DONT_TURN
-	elif is_col_with_another_car_and_dont_touch_limit():
-		if car_on_left and car_on_right:
-			return DIRECTION.BRAKE
-		elif car_on_left:
-			return DIRECTION.TURN_AND_BRAKE_RIGHT if with_left_col or with_right_col else DIRECTION.TURN_RIGHT
-		elif car_on_right:
-			return DIRECTION.TURN_AND_BRAKE_LEFT if with_left_col or with_right_col else DIRECTION.TURN_LEFT
-		elif dist_left < dist_right:
-			return DIRECTION.TURN_AND_BRAKE_RIGHT if with_left_col or with_right_col else DIRECTION.TURN_RIGHT
-		else:
-			return DIRECTION.TURN_AND_BRAKE_LEFT if with_left_col or with_right_col else DIRECTION.TURN_LEFT
-	
 	elif with_left_col and with_right_col:
 		if car_on_left and dist_left > dist_right or car_on_right and dist_left < dist_right:
 			return DIRECTION.BRAKE
@@ -431,14 +423,6 @@ func direction_colision() -> int:
 		
 	else:
 		return DIRECTION.DONT_TURN
-
-
-func is_col_with_another_car_and_dont_touch_limit() -> bool:
-	var is_car_col_left = $detect_car_left.is_colliding() and $detect_car_left.get_collider().is_in_group("car")
-	var is_car_col_right = $detect_car_right.is_colliding() and $detect_car_right.get_collider().is_in_group("car")
-	var is_limit_col_left = $detect_car_left.is_colliding() and $detect_car_left.get_collider().is_in_group("exterior")
-	var is_limit_col_right = $detect_car_right.is_colliding() and $detect_car_right.get_collider().is_in_group("interior")
-	return (is_car_col_left or is_car_col_right) and not is_limit_col_left and not is_limit_col_right
 
 
 func direction_position_car() -> int:

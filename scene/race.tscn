@@ -18,11 +18,6 @@ _data = {
 [node name="race" type="Node2D"]
 script = ExtResource( 3 )
 
-[node name="camera" type="Camera2D" parent="."]
-current = true
-zoom = Vector2( 5, 5 )
-drag_margin_v_enabled = true
-
 [node name="circuit" parent="." instance=ExtResource( 1 )]
 position = Vector2( 0, -48.5406 )
 circuit_exterior_width = 1500
@@ -34,7 +29,7 @@ position = Vector2( -1054, -112.541 )
 curve = SubResource( 1 )
 
 [node name="grid" parent="." instance=ExtResource( 4 )]
-position = Vector2( 1120, -1437.75 )
+position = Vector2( 2362.74, -1450.46 )
 
 [node name="environnement" type="Node2D" parent="."]
 
@@ -175,8 +170,8 @@ position = Vector2( -137.649, -2179.57 )
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
 position = Vector2( -4288, -4632 )
 car_name = "voiture 1"
-coef_accelerate = 0.25
-direction_angle_degree = 5.0
+limit_speed = 150.0
+direction_angle_degree = 20.0
 text_color = Color( 0, 0.0392157, 1, 1 )
 number_car = "01"
 helmet_color = Color( 0.231373, 0.0313726, 0.866667, 1 )
@@ -185,7 +180,6 @@ helmet_color = Color( 0.231373, 0.0313726, 0.866667, 1 )
 modulate = Color( 0.298039, 0.2, 1, 1 )
 position = Vector2( -4136, -4768 )
 car_name = "voiture 2"
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 text_color = Color( 0.12549, 1, 0, 1 )
 number_car = "02"
@@ -197,7 +191,6 @@ position = Vector2( -3984, -4632 )
 car_name = "voiture autre"
 car_color = 2
 team_position = 1
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 
 [node name="car_4" parent="cars" instance=ExtResource( 2 )]
@@ -206,7 +199,6 @@ position = Vector2( -3832, -4768 )
 car_name = "voiture autre"
 car_color = 2
 team_position = 1
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 
 [node name="car_5" parent="cars" instance=ExtResource( 2 )]
@@ -215,7 +207,6 @@ position = Vector2( -3712, -4632 )
 car_name = "voiture autre"
 car_color = 3
 team_position = 2
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 
 [node name="car_6" parent="cars" instance=ExtResource( 2 )]
@@ -224,7 +215,6 @@ position = Vector2( -3560, -4768 )
 car_name = "voiture autre"
 car_color = 3
 team_position = 2
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 
 [node name="car_7" parent="cars" instance=ExtResource( 2 )]
@@ -233,7 +223,6 @@ position = Vector2( -3432, -4632 )
 car_name = "voiture autre"
 car_color = 4
 team_position = 3
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 
 [node name="car_8" parent="cars" instance=ExtResource( 2 )]
@@ -242,7 +231,6 @@ position = Vector2( -3280, -4768 )
 car_name = "voiture autre"
 car_color = 4
 team_position = 3
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 
 [node name="car_9" parent="cars" instance=ExtResource( 2 )]
@@ -251,7 +239,6 @@ position = Vector2( -3136, -4632 )
 car_name = "voiture autre"
 car_color = 5
 team_position = 4
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 
 [node name="car_10" parent="cars" instance=ExtResource( 2 )]
@@ -260,7 +247,6 @@ position = Vector2( -2984, -4768 )
 car_name = "voiture autre"
 car_color = 5
 team_position = 4
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 
 [node name="car_11" parent="cars" instance=ExtResource( 2 )]
@@ -269,7 +255,6 @@ position = Vector2( -2848, -4632 )
 car_name = "voiture autre"
 car_color = 6
 team_position = 5
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 
 [node name="car_12" parent="cars" instance=ExtResource( 2 )]
@@ -278,7 +263,6 @@ position = Vector2( -2696, -4768 )
 car_name = "voiture autre"
 car_color = 6
 team_position = 5
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 
 [node name="car_13" parent="cars" instance=ExtResource( 2 )]
@@ -287,7 +271,6 @@ position = Vector2( -2544, -4632 )
 car_name = "voiture autre"
 car_color = 7
 team_position = 6
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 
 [node name="car_14" parent="cars" instance=ExtResource( 2 )]
@@ -296,7 +279,6 @@ position = Vector2( -2392, -4768 )
 car_name = "voiture autre"
 car_color = 7
 team_position = 6
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 
 [node name="car_15" parent="cars" instance=ExtResource( 2 )]
@@ -305,7 +287,6 @@ position = Vector2( -2272, -4632 )
 car_name = "voiture autre"
 car_color = 8
 team_position = 7
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 
 [node name="car_16" parent="cars" instance=ExtResource( 2 )]
@@ -314,7 +295,6 @@ position = Vector2( -2120, -4768 )
 car_name = "voiture autre"
 car_color = 8
 team_position = 7
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 
 [node name="car_17" parent="cars" instance=ExtResource( 2 )]
@@ -323,7 +303,6 @@ position = Vector2( -1992, -4632 )
 car_name = "voiture autre"
 car_color = 9
 team_position = 8
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 
 [node name="car_18" parent="cars" instance=ExtResource( 2 )]
@@ -332,7 +311,6 @@ position = Vector2( -1840, -4768 )
 car_name = "voiture autre"
 car_color = 9
 team_position = 8
-coef_accelerate = 0.25
 direction_angle_degree = 5.0
 
 [node name="car_19" parent="cars" instance=ExtResource( 2 )]
@@ -341,8 +319,8 @@ position = Vector2( -1696, -4632 )
 car_name = "voiture autre"
 car_color = 15
 team_position = 9
-coef_accelerate = 0.25
-direction_angle_degree = 5.0
+coef_accelerate = 1.0
+number_car = "07"
 
 [node name="car_20" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
@@ -350,42 +328,5 @@ position = Vector2( -1544, -4768 )
 car_name = "voiture autre"
 car_color = 15
 team_position = 9
-direction_angle_degree = 20.0
+direction_angle_degree = 5.0
 helmet_color = Color( 0.92549, 0.0705882, 0.0705882, 1 )
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 0.5
-autostart = true
-
-[node name="can" type="CanvasLayer" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="can"]
-margin_right = 152.0
-margin_bottom = 80.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="lb_car_1" type="Label" parent="can"]
-modulate = Color( 0.298039, 0.2, 1, 1 )
-margin_left = 8.0
-margin_top = 48.0
-margin_right = 118.0
-margin_bottom = 62.0
-text = "voiture 2 : 0km/h"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="lb_car_2" type="Label" parent="can"]
-modulate = Color( 0.968627, 0.207843, 0.423529, 1 )
-margin_left = 8.0
-margin_top = 16.0
-margin_right = 118.0
-margin_bottom = 30.0
-text = "voiture 1 : 0km/h"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

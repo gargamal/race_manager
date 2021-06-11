@@ -15,7 +15,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Racer-Manager"
-run/main_scene="res://scene/race.tscn"
+run/main_scene="res://scene/main.tscn"
 config/icon="res://icon.png"
 
 [display]
