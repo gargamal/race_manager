@@ -33,12 +33,15 @@ collision_mask = 8
 
 [node name="bg" type="Polygon2D" parent="road_line/limit_exterior"]
 
-[node name="refresh" type="Timer" parent="."]
-
 [node name="buzers" type="Node2D" parent="."]
 
+[node name="slow_turns" type="Node2D" parent="."]
+
+[node name="straigth_lines" type="Node2D" parent="."]
+
+[node name="refresh" type="Timer" parent="."]
+
 [connection signal="body_entered" from="road_line/limit_interior" to="." method="_on_limit_interior_body_entered"]
-[connection signal="body_exited" from="road_line/limit_interior" to="." method="_on_limit_interior_body_exited"]
 [connection signal="body_entered" from="road_line/limit_exterior" to="." method="_on_limit_exterior_body_entered"]
 [connection signal="body_exited" from="road_line/limit_exterior" to="." method="_on_limit_exterior_body_exited"]
 [connection signal="timeout" from="refresh" to="." method="_on_refresh_timeout"]

@@ -1,0 +1,17 @@
+Sur le circuit faire une reconnaissance sur le type de virage
+- ligne droite
+- virage rapide
+- virage lent
+
+Mettre un classement sur les positions des voitures.
+
+- faire un écran de règlages
+- faire un arrêt au stand
+- gestion des pneus
+*- rouge
+*- jaune
+*- blanc
+- consommation de carburant
+
+Note de pilote
+- test de dépassement

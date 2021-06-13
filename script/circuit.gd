@@ -10,6 +10,9 @@ export(int)var modulo_to_draw_interior := 2
 export(bool)var with_redraw := false setget with_redraw_editor 
 
 
+enum TYPE_TURN { STRAIGHT_LINE = 64, SLOW_TURN = 128 }
+
+
 func _ready():
 	if background:
 		$road_line/limit_exterior/bg.texture = background
@@ -21,16 +24,83 @@ func _ready():
 		if polygon.size() > 0:
 			$road_line.width = road_width
 			var polygon_interior =  build_interior(polygon)
-			var polygon_exterior = build_exterior(polygon)
+			var polygon_exterior_raw = build_polygon_exterior(polygon)
+			var polygon_exterior_circuit = build_exterior(polygon)
 			$road_line/limit_interior/col.polygon = polygon_interior
 			$road_line/limit_interior/bg.polygon = polygon_interior
-			$road_line/limit_exterior/col.polygon = polygon_exterior
-			$road_line/limit_exterior/bg.polygon = polygon_exterior
+			$road_line/limit_exterior/col.polygon = polygon_exterior_circuit
+			$road_line/limit_exterior/bg.polygon = polygon_exterior_circuit
 			$road_line.points = polygon
 			for child in $buzers.get_children(): 
 				$buzers.remove_child(child)
+			for child in $slow_turns.get_children(): 
+				$slow_turns.remove_child(child)
+			for child in $straigth_lines.get_children(): 
+				$straigth_lines.remove_child(child)
 			build_buzer(polygon_interior)
-			build_buzer(polygon_exterior)
+			build_buzer(polygon_exterior_raw)
+			build_road_type($slow_turns, polygon_interior, polygon_exterior_raw, 0.10, 2.0, TYPE_TURN.SLOW_TURN)
+			build_road_type($straigth_lines, polygon_interior, polygon_exterior_raw, 0.0, 0.10, TYPE_TURN.STRAIGHT_LINE)
+
+
+func build_road_type(root :Node2D, polygon_interior :Array, polygon_exterior :Array, angle_min :float, angle_max :float, collision_layer :int) -> void:
+	var points_exterior = Array()
+	var points_interior = Array()
+	
+	var size_exterior = polygon_exterior.size()
+	var size_interior = polygon_interior.size()
+	
+	add_point(size_interior, 0, points_exterior, points_interior, polygon_exterior, polygon_interior)
+	
+	for idx in range(size_exterior):
+		var angle_exterior = get_angle(polygon_exterior, idx, size_exterior)
+		var angle_interior = get_angle(polygon_interior, int(idx / modulo_to_draw_interior), size_interior)
+		var angle = angle_interior if angle_interior > angle_exterior else angle_exterior
+		
+		if angle_min <= angle and angle < angle_max:
+			add_point(size_interior, idx, points_exterior, points_interior, polygon_exterior, polygon_interior)
+			
+		elif points_exterior.size() > 0:
+			if points_interior.size() > 1: # filter too small limit 
+				var points_merged = Array()
+				points_merged.append_array(points_exterior)
+				for idx_inter in range(points_interior.size() - 1, -1, -1):
+					points_merged.append(points_interior[idx_inter])
+				
+				var area_road_type = Area2D.new()
+				area_road_type.add_to_group("turn")
+				area_road_type.collision_layer = collision_layer
+				area_road_type.collision_mask = 8 # it's a car
+				area_road_type.connect("body_entered", self, "_on_Timer_timeout")
+				
+				var col_road_type = CollisionPolygon2D.new()
+				col_road_type.polygon = points_merged
+				
+				area_road_type.add_child(col_road_type)
+				root.add_child(area_road_type)
+			
+			points_exterior = Array()
+			points_interior = Array()
+			add_point(size_interior, idx, points_exterior, points_interior, polygon_exterior, polygon_interior)
+
+
+func add_point(size_interior :int, idx :int, points_exterior :Array, points_interior :Array, polygon_exterior :Array, polygon_interior :Array) -> void:
+	points_exterior.append(polygon_exterior[idx])
+	if int(points_exterior.size() / modulo_to_draw_interior) > points_interior.size():
+		var idx_inter = int(idx / modulo_to_draw_interior)
+		points_interior.append(polygon_interior[idx_inter if idx_inter < size_interior else 0])
+
+
+func get_angle(polygon :Array, idx :int, size :int) -> float:
+	var angle
+	if 0 < idx and idx < size - 2:
+		angle = abs((polygon[idx]  - polygon[idx - 1]).normalized().angle_to((polygon[idx + 1] - polygon[idx]).normalized()))
+	elif idx == 0:
+		angle = abs((polygon[0] - polygon[size - 1]).normalized().angle_to((polygon[1] - polygon[0]).normalized()))
+	else:
+		angle = abs((polygon[size - 1] - polygon[size - 2]).normalized().angle_to((polygon[0] - polygon[size - 1]).normalized()))
+		
+	return angle
 
 
 func build_buzer(polygon :Array) -> void:
@@ -38,19 +108,12 @@ func build_buzer(polygon :Array) -> void:
 	var polygon_buzer = Array()
 	
 	for idx in range(size):
-		var angle
-		if 0 < idx and idx < size - 2:
-			angle = abs((polygon[idx]  - polygon[idx - 1]).normalized().angle_to((polygon[idx + 1] - polygon[idx]).normalized()))
-		elif idx == 0:
-			angle = abs((polygon[0] - polygon[size - 1]).normalized().angle_to((polygon[1] - polygon[0]).normalized()))
-		else:
-			angle = abs((polygon[size - 1] - polygon[size - 2]).normalized().angle_to((polygon[0] - polygon[size - 1]).normalized()))
-			
+		var angle = get_angle(polygon, idx, size)
 		if angle > 0.02 and angle < PI / 4.0:
 			polygon_buzer.append(polygon[idx])
 			
 		elif polygon_buzer.size() > 0:
-			if polygon_buzer.size() > 5:
+			if polygon_buzer.size() > 1: # filter too small limit 
 				var buzer_new_ref = Line2D.new()
 				buzer_new_ref.width = road_width / 10.0
 				buzer_new_ref.default_color = Color(1.0, 1.0, 1.0, 1.0)
@@ -58,10 +121,8 @@ func build_buzer(polygon :Array) -> void:
 				buzer_new_ref.texture_mode = Line2D.LINE_TEXTURE_TILE
 				buzer_new_ref.points = polygon_buzer
 				$buzers.add_child(buzer_new_ref)
-				polygon_buzer = Array()
-				
-			else:
-				polygon_buzer = Array()
+			
+			polygon_buzer = Array()
 
 
 func is_the_same_polygon(polygon : Array) -> bool:
@@ -209,7 +270,7 @@ func _on_limit_interior_body_entered(body) -> void:
 		body.limit_inner()
 
 
-func _on_limit_interior_body_exited(body) -> void:
+func _on_return_in_road_body_exited(body) -> void:
 	if body.is_in_group("car"):
 		body.limit_road()
 

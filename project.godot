@@ -56,6 +56,13 @@ camera_car_two={
 2d_physics/layer_4="car"
 2d_physics/layer_5="pitlane"
 2d_physics/layer_6="pitlane_exit"
+2d_physics/layer_7="straigth_line"
+2d_physics/layer_8="slow_trun"
+2d_physics/layer_9="final_line"
+
+[locale]
+
+fallback="fr"
 
 [rendering]
 

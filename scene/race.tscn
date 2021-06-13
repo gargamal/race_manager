@@ -10,7 +10,7 @@
 [ext_resource path="res://sprite/tyres_wall.png" type="Texture" id=8]
 
 [sub_resource type="Curve2D" id=1]
-bake_interval = 50.0
+bake_interval = 100.0
 _data = {
 "points": PoolVector2Array( -478.877, 8.4757, 478.877, -8.4757, 830, -1295.46, -1.00818, -2.90719, 1.00818, 2.90719, 3614, -1295.46, -45.0394, -425.847, 45.0394, 425.847, 4510, -911.459, 60.3078, -556.364, -60.3078, 556.364, 4480, 0, 0, 0, 0, 0, 4030, 400.541, 37.9638, 143.91, -37.9638, -143.91, 3838, 144.541, 664.949, 116.081, -664.949, -116.081, 3232, -352, 274.291, 122.326, -274.291, -122.326, 1918, -623.459, 59.3605, -132.613, -59.3605, 132.613, 1342, -463.459, -99.7747, -177.201, 99.7747, 177.201, 1344, -64, -382, -100, 382, 100, 1984, 416, -264, 0, 264, 0, 3358, 720.541, -5.51472, -200.749, 5.51472, 200.749, 3902, 1104.54, 120, -20, -120, 20, 3678, 1552.54, 619.599, 8.9797, -619.599, -8.9797, 2432, 1632, 645.377, 362.599, -645.377, -362.599, 1280, 768, 0, 0, 0, 0, 254, 1104.54, 284.822, 326.879, -284.822, -326.879, -256, 1152, 104.206, 228.222, -104.206, -228.222, -450, -256, 194.887, -282.986, -194.887, 282.986, -1058, -256, -151.632, -500.325, 151.632, 500.325, -1088, 800, 319.318, 74.3811, -319.318, -74.3811, -2176, 1440, 0, 0, 0, 0, -2370, 1056, 0, 0, 0, 0, -2114, 560.541, 157.696, 140.147, -157.696, -140.147, -2178, 160, 101.448, 357.737, -101.448, -357.737, -2754, -96, -36.7696, 90.5097, 36.7696, -90.5097, -2562, -815.459, -219.843, 19.4773, 219.843, -19.4773, -2064, -1280, 0, 0, 0, 0, -1378, -1295.46, 0, 0, 368.212, -5.68252, 830, -1295.46 )
 }
@@ -23,13 +23,15 @@ position = Vector2( 0, -48.5406 )
 circuit_exterior_width = 1500
 node_path = NodePath("../path_road")
 background = ExtResource( 5 )
+modulo_to_draw_interior = 1
 
 [node name="path_road" type="Path2D" parent="."]
 position = Vector2( -1054, -112.541 )
 curve = SubResource( 1 )
 
 [node name="grid" parent="." instance=ExtResource( 4 )]
-position = Vector2( 2362.74, -1450.46 )
+position = Vector2( 2555.17, -1449.79 )
+final_line_coord = Vector2( 16, 134 )
 
 [node name="environnement" type="Node2D" parent="."]
 
@@ -170,28 +172,34 @@ position = Vector2( -137.649, -2179.57 )
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
 position = Vector2( -4288, -4632 )
 car_name = "voiture 1"
-limit_speed = 150.0
-direction_angle_degree = 20.0
 text_color = Color( 0, 0.0392157, 1, 1 )
 number_car = "01"
 helmet_color = Color( 0.231373, 0.0313726, 0.866667, 1 )
+tilt_front_spoiler_pourcentage = 50.0
+gearbox_pourcentage = 45.0
 
 [node name="car_2" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
 position = Vector2( -4136, -4768 )
 car_name = "voiture 2"
-direction_angle_degree = 5.0
 text_color = Color( 0.12549, 1, 0, 1 )
 number_car = "02"
 helmet_color = Color( 0.419608, 0.960784, 0.145098, 1 )
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
+suspension_hardness_pourcentage = 75.0
+gearbox_pourcentage = 45.0
 
 [node name="car_3" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
 position = Vector2( -3984, -4632 )
-car_name = "voiture autre"
+car_name = "voiture 3"
 car_color = 2
 team_position = 1
-direction_angle_degree = 5.0
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
+suspension_hardness_pourcentage = 50.0
+gearbox_pourcentage = 50.0
 
 [node name="car_4" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
@@ -199,7 +207,8 @@ position = Vector2( -3832, -4768 )
 car_name = "voiture autre"
 car_color = 2
 team_position = 1
-direction_angle_degree = 5.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0
 
 [node name="car_5" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
@@ -207,7 +216,10 @@ position = Vector2( -3712, -4632 )
 car_name = "voiture autre"
 car_color = 3
 team_position = 2
-direction_angle_degree = 5.0
+tilt_front_spoiler_pourcentage = 50.0
+tilt_back_spoiler_pourcentage = 50.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0
 
 [node name="car_6" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
@@ -215,7 +227,10 @@ position = Vector2( -3560, -4768 )
 car_name = "voiture autre"
 car_color = 3
 team_position = 2
-direction_angle_degree = 5.0
+tilt_front_spoiler_pourcentage = 50.0
+tilt_back_spoiler_pourcentage = 50.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0
 
 [node name="car_7" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
@@ -223,7 +238,10 @@ position = Vector2( -3432, -4632 )
 car_name = "voiture autre"
 car_color = 4
 team_position = 3
-direction_angle_degree = 5.0
+tilt_front_spoiler_pourcentage = 50.0
+tilt_back_spoiler_pourcentage = 50.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0
 
 [node name="car_8" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
@@ -231,7 +249,10 @@ position = Vector2( -3280, -4768 )
 car_name = "voiture autre"
 car_color = 4
 team_position = 3
-direction_angle_degree = 5.0
+tilt_front_spoiler_pourcentage = 50.0
+tilt_back_spoiler_pourcentage = 50.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0
 
 [node name="car_9" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
@@ -239,7 +260,10 @@ position = Vector2( -3136, -4632 )
 car_name = "voiture autre"
 car_color = 5
 team_position = 4
-direction_angle_degree = 5.0
+tilt_front_spoiler_pourcentage = 50.0
+tilt_back_spoiler_pourcentage = 50.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0
 
 [node name="car_10" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
@@ -247,7 +271,10 @@ position = Vector2( -2984, -4768 )
 car_name = "voiture autre"
 car_color = 5
 team_position = 4
-direction_angle_degree = 5.0
+tilt_front_spoiler_pourcentage = 50.0
+tilt_back_spoiler_pourcentage = 50.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0
 
 [node name="car_11" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
@@ -255,7 +282,10 @@ position = Vector2( -2848, -4632 )
 car_name = "voiture autre"
 car_color = 6
 team_position = 5
-direction_angle_degree = 5.0
+tilt_front_spoiler_pourcentage = 50.0
+tilt_back_spoiler_pourcentage = 50.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0
 
 [node name="car_12" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
@@ -263,7 +293,10 @@ position = Vector2( -2696, -4768 )
 car_name = "voiture autre"
 car_color = 6
 team_position = 5
-direction_angle_degree = 5.0
+tilt_front_spoiler_pourcentage = 50.0
+tilt_back_spoiler_pourcentage = 50.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0
 
 [node name="car_13" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
@@ -271,7 +304,10 @@ position = Vector2( -2544, -4632 )
 car_name = "voiture autre"
 car_color = 7
 team_position = 6
-direction_angle_degree = 5.0
+tilt_front_spoiler_pourcentage = 50.0
+tilt_back_spoiler_pourcentage = 50.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0
 
 [node name="car_14" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
@@ -279,7 +315,10 @@ position = Vector2( -2392, -4768 )
 car_name = "voiture autre"
 car_color = 7
 team_position = 6
-direction_angle_degree = 5.0
+tilt_front_spoiler_pourcentage = 50.0
+tilt_back_spoiler_pourcentage = 50.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0
 
 [node name="car_15" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
@@ -287,7 +326,10 @@ position = Vector2( -2272, -4632 )
 car_name = "voiture autre"
 car_color = 8
 team_position = 7
-direction_angle_degree = 5.0
+tilt_front_spoiler_pourcentage = 50.0
+tilt_back_spoiler_pourcentage = 50.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0
 
 [node name="car_16" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
@@ -295,7 +337,10 @@ position = Vector2( -2120, -4768 )
 car_name = "voiture autre"
 car_color = 8
 team_position = 7
-direction_angle_degree = 5.0
+tilt_front_spoiler_pourcentage = 50.0
+tilt_back_spoiler_pourcentage = 50.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0
 
 [node name="car_17" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
@@ -303,7 +348,10 @@ position = Vector2( -1992, -4632 )
 car_name = "voiture autre"
 car_color = 9
 team_position = 8
-direction_angle_degree = 5.0
+tilt_front_spoiler_pourcentage = 50.0
+tilt_back_spoiler_pourcentage = 50.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0
 
 [node name="car_18" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
@@ -311,7 +359,10 @@ position = Vector2( -1840, -4768 )
 car_name = "voiture autre"
 car_color = 9
 team_position = 8
-direction_angle_degree = 5.0
+tilt_front_spoiler_pourcentage = 50.0
+tilt_back_spoiler_pourcentage = 50.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0
 
 [node name="car_19" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
@@ -319,8 +370,11 @@ position = Vector2( -1696, -4632 )
 car_name = "voiture autre"
 car_color = 15
 team_position = 9
-coef_accelerate = 1.0
 number_car = "07"
+tilt_front_spoiler_pourcentage = 50.0
+tilt_back_spoiler_pourcentage = 50.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0
 
 [node name="car_20" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
@@ -328,5 +382,8 @@ position = Vector2( -1544, -4768 )
 car_name = "voiture autre"
 car_color = 15
 team_position = 9
-direction_angle_degree = 5.0
 helmet_color = Color( 0.92549, 0.0705882, 0.0705882, 1 )
+tilt_front_spoiler_pourcentage = 50.0
+tilt_back_spoiler_pourcentage = 50.0
+suspension_hardness_pourcentage = 70.0
+gearbox_pourcentage = 50.0

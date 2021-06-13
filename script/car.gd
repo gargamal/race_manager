@@ -8,30 +8,28 @@ export(String) var car_name := "voiture"
 export(CAR_COLOR) var car_color
 export(TEAM) var team_position
 export(float) var limit_speed := 100.0 # to m/s
-export(float) var coef_accelerate := 0.5
-export(float) var direction_angle_degree := 10.0
 export(Color) var modulate_color = Color(1.0, 1.0, 1.0, 1.0)
 export(Color) var mini_map_color = Color(1.0, 1.0, 1.0, 1.0)
 export(Color) var text_color = Color(1.0, 1.0, 1.0, 1.0)
 export(String) var number_car = "99"
 export(Color) var helmet_color = Color(1.0, 1.0, 1.0, 1.0)
 export(bool) var has_pit_stop = false
-
+export(float) var tilt_front_spoiler_pourcentage = 30 # 0 à 100
+export(float) var tilt_back_spoiler_pourcentage = 30 # 0 à 100
+export(float) var suspension_hardness_pourcentage = 100 # 0 à 100
+export(float) var gearbox_pourcentage = 100 # 0 à 100
 
 const SCALE = 20
 const COEF_BRAKE = 1.05
-const CAR_HEIGHT = 500
-const CAR_WIDTH = 150
+const CAR_WIDTH = 500
+const CAR_HEIGHT = 150
 const LIMIT_CIRCUIT_WIDTH = 120
 const LIMIT_BEFORE_ZERO_VELOCITY = 0.01
-const MIN_SPEED = 5.0
-const MIN_SPEED_ANGULAR = 4.0
+const MIN_SPEED = 1.0
 const SPEED_MAX_TURN = 40
-const MEDIAN_SPEED_ANGULAR = 90.0
-const MEDIAN_ANGLE_ANGULAR = PI * 10.0 / 360.0
 const GRAVAR_COEF_BRAKE = 1.1
 const GRAVAR_SPEED = 20.0
-const GRAVAR_ANGLE = PI * 3.0 / 360.0
+const GRAVAR_ANGLE = PI * 5.0 / 360.0
 const PITLANE_COEF_BRAKE = 1.1
 const PITLANE_SPEED = 35.0
 const pitlane_ANGLE = PI * 8.0 / 360.0
@@ -52,6 +50,37 @@ var is_in_pitlane_area = false
 var state_in_pitlane = STATE_IN_PITLANE.ENTER
 var mechanic_working = false
 var circuit_width = 0.0
+var coef_accelerate := 0.5 # 0.5 à 2.0
+var slow_direction_angle_degree := 5.0 # 5.0 à 30.0
+var fast_direction_angle_degree := 5.0 # 5.0 à 30.0
+var chronometre_start := 0
+var chronometre_in_lap := 0
+var last_lap := 0
+var best_lap := 0
+var total_time = []
+var inside_final_line = false
+
+
+func set_coef_accelerate(new_coef_accelerate :float) -> void:
+	if new_coef_accelerate > 2.0: coef_accelerate = 2.0
+	elif new_coef_accelerate < 0.5: coef_accelerate = 0.5
+	else: coef_accelerate = new_coef_accelerate
+
+func set_tilt_front_spoiler_degree(new_tilt_front_spoiler_pourcentage :float) -> void:
+	if new_tilt_front_spoiler_pourcentage > 100.0: tilt_front_spoiler_pourcentage = 100.0
+	elif new_tilt_front_spoiler_pourcentage < 0.0: tilt_front_spoiler_pourcentage = 0.0
+	else: tilt_front_spoiler_pourcentage = new_tilt_front_spoiler_pourcentage
+	
+func set_tilt_back_spoiler_degree(new_tilt_back_spoiler_pourcentage :float) -> void:
+	if new_tilt_back_spoiler_pourcentage > 100.0: tilt_back_spoiler_pourcentage= 100.0
+	elif new_tilt_back_spoiler_pourcentage < 10.0: tilt_back_spoiler_pourcentage = 10.0
+	else: tilt_back_spoiler_pourcentage = new_tilt_back_spoiler_pourcentage
+	
+func set_suspension_hardness_pourcentage(new_suspension_hardness_pourcentage :float) -> void:
+	if new_suspension_hardness_pourcentage > 100.0: suspension_hardness_pourcentage = 100.0
+	elif new_suspension_hardness_pourcentage < 0.0: suspension_hardness_pourcentage = 0.0
+	else: suspension_hardness_pourcentage = new_suspension_hardness_pourcentage
+
 
 func _ready():
 	circuit_width = get_parent().get_parent().get_node("circuit/road_line").width
@@ -61,7 +90,7 @@ func _ready():
 	$number.modulate = text_color
 	$helmet.modulate = helmet_color
 	$car_design.frame = car_color
-	direction_angle = (direction_angle_degree / 360.0) * PI
+	direction_angle = (fast_direction_angle_degree / 360.0) * PI
 	gravar_sys_time = calculate_time(GRAVAR_SPEED * SCALE)
 	max_speed = limit_speed
 	
@@ -70,6 +99,8 @@ func _ready():
 	$detect_limit_rigth.enabled = true
 	update_ray_cast()
 	
+	$detect_crash.cast_to = Vector2(CAR_WIDTH, 0)
+	
 	var circuit_height_ray_cast = circuit_width * 4.0
 	$detect_turn_left.cast_to = Vector2(circuit_height_ray_cast * cos(PI / 4.0), -circuit_height_ray_cast * sin(PI / 4.0))
 	$detect_turn_left.enabled = true
@@ -77,12 +108,17 @@ func _ready():
 	$detect_turn_rigth.enabled = true
 	
 	time_max_speed = calculate_time(limit_speed / 2.0) * 5.0
+	update_param(true)
 
 
 func _physics_process(delta):
+	chronometre()
+	
 	if mechanic_working:
+		update_param(true)
 		return
 	
+	update_param(false)
 	go_pitlane()
 	var direction = direction()
 	
@@ -139,9 +175,9 @@ func _physics_process(delta):
 		var angle = collision.normal.angle()
 		var bounce = velocity.bounce(collision.normal).normalized().angle()
 		if 0.0 < angle and angle < PI / 4.0 or -3.0 * PI / 4.0 < angle and angle < 0.0:
-			turn(DIRECTION.TURN_LEFT, bounce / 20.0)
+			turn(DIRECTION.TURN_LEFT, bounce / 25.0)
 		elif 0.0 > angle and angle > -PI / 4.0 or 3.0 * PI / 4.0 > angle and angle > 0.0:
-			turn(DIRECTION.TURN_RIGHT, bounce / 20.0)
+			turn(DIRECTION.TURN_RIGHT, bounce / 25.0)
 		else:
 			brake()
 	
@@ -157,12 +193,9 @@ func _physics_process(delta):
 
 
 func update_ray_cast():
-	var coef_size_ray_cast = (get_speed() / MEDIAN_SPEED_ANGULAR) * 2.0
+	var coef_size_ray_cast = circuit_width * 1.75 + get_speed() * sys_time * SCALE
 	
-	var size_car_ray_cast = Vector2(CAR_HEIGHT * coef_size_ray_cast / 2.0, 0.0)
-	$detect_crash.cast_to = size_car_ray_cast
-	
-	var size_limit_ray_cast = Vector2(circuit_width * 4.0 * coef_size_ray_cast, 0.0)
+	var size_limit_ray_cast = Vector2(coef_size_ray_cast, 0.0)
 	$detect_limit_left.cast_to = size_limit_ray_cast
 	$detect_limit_rigth.cast_to = size_limit_ray_cast
 
@@ -181,6 +214,66 @@ func play_effect(speed_measured :float) -> void:
 	$gravar_effect_br.emitting = emitting_gravar_effect
 	$gravar_effect_fl.emitting = emitting_gravar_effect
 	$gravar_effect_fr.emitting = emitting_gravar_effect
+
+
+func update_param(with_update :bool) -> void:
+	var with_slow_turn = $detect_slow_turn.is_colliding()
+	
+	if with_update:
+		var speed_lost_by_front = 15.0 * (tilt_front_spoiler_pourcentage / 100.0)
+		var speed_lost_by_back = 15.0 * (tilt_back_spoiler_pourcentage / 100.0)
+		var speed_diff_by_gearbox = 40.0 * gearbox_pourcentage / 100.0
+		
+		var coef_angle = 7.5
+		var angle_diff_by_front = coef_angle * (tilt_front_spoiler_pourcentage / 100.0)
+		var angle_diff_by_suspension_front = coef_angle * suspension_hardness_pourcentage / 100.0
+		
+		var angle_diff_by_back = (coef_angle / 2.0) * (tilt_back_spoiler_pourcentage / 100.0)
+		var angle_diff_by_suspension_back = (coef_angle / 3.0)  * (suspension_hardness_pourcentage / 100.0)
+		
+		coef_accelerate = 0.1
+		coef_accelerate += 0.2 * (tilt_back_spoiler_pourcentage / 100.0) 
+		coef_accelerate += 0.8 * (100.0 - gearbox_pourcentage) / 100.0
+		coef_accelerate += 0.4 * (100.0 - suspension_hardness_pourcentage) / 100.0
+		max_speed = limit_speed - speed_lost_by_front - speed_lost_by_back + speed_diff_by_gearbox
+		time_max_speed = calculate_time(max_speed / 2.0) * 5.0
+	
+		slow_direction_angle_degree = angle_diff_by_front + angle_diff_by_back + angle_diff_by_suspension_front
+		fast_direction_angle_degree = angle_diff_by_back + angle_diff_by_suspension_back
+	
+	direction_angle = slow_direction_angle_degree * PI / 360.0 if with_slow_turn else fast_direction_angle_degree * PI / 360.0
+
+
+func chronometre():
+	
+	if chronometre_start == 0:
+		chronometre_start = OS.get_system_time_msecs()
+	
+	if $detect_final_line.is_colliding() and not inside_final_line:
+		inside_final_line = true
+		var tick = OS.get_system_time_msecs()
+		chronometre_in_lap = (tick - chronometre_start) if chronometre_start > 0 else 0
+		chronometre_start = tick
+		if chronometre_in_lap > 0:
+			last_lap = chronometre_in_lap
+			total_time.append(chronometre_in_lap)
+			best_lap = get_min_time()
+			
+	elif not $detect_final_line.is_colliding():
+		inside_final_line = false
+
+
+func get_min_time() -> int:
+	if total_time.size() < 2:
+		return 0
+	
+	var min_time = total_time[1]
+	
+	for idx in range(1, total_time.size()):
+		if total_time[idx] < min_time : 
+			min_time = total_time[idx]
+	
+	return min_time
 
 
 func get_angle_in_pitlane() -> float:
@@ -283,17 +376,17 @@ func turn_and_brake(direction:int) -> void:
 
 func turn(direction :int, angle :float) -> void:
 	var speed = get_speed()
-	if speed > MIN_SPEED_ANGULAR:
+	if speed > MIN_SPEED:
 		var factor = (1 if direction == DIRECTION.TURN_RIGHT or direction == DIRECTION.TURN_AND_BRAKE_RIGHT else -1)
-		var velocity_rotation = (SPEED_MAX_TURN / speed) * angle * factor
+		var velocity_rotation = angle * factor * (pow(SPEED_MAX_TURN / speed, 2) if SPEED_MAX_TURN > speed else 1.0)
 		velocity = velocity.rotated(velocity_rotation if velocity_rotation < direction_angle else direction_angle) 
 
 
 func turn_in_gravar(direction :int) -> void:
-	if get_speed() > MIN_SPEED and (gravar_nb_turn % 2) == 0 and (ROAD_TYPE.INNER == road_type or ROAD_TYPE.OUTER == road_type):
+	if get_speed() > MIN_SPEED and (gravar_nb_turn % 1) == 0 and (ROAD_TYPE.INNER == road_type or ROAD_TYPE.OUTER == road_type):
 		var velocity_rotation = GRAVAR_ANGLE * (1 if direction == DIRECTION.TURN_LEFT else -1)
 		velocity = velocity.rotated(velocity_rotation)
-	
+
 	gravar_nb_turn += 1
 
 
@@ -311,8 +404,9 @@ func brake() -> void:
 
 
 func accelerate(delta :float):
-	var add_speed = SCALE * speed_accelerate_add_after_accelerate(delta)
-	velocity = Vector2(velocity.x + add_speed * cos(velocity.angle()), velocity.y + add_speed * sin(velocity.angle()))
+	sys_time += delta
+	var new_speed = SCALE * get_speed()
+	velocity = Vector2(cos(velocity.angle()), sin(velocity.angle())) * new_speed
 
 
 func get_distance_collision(raycast :RayCast2D) -> float:
@@ -375,9 +469,11 @@ func direction_pitlane() -> int:
 
 
 func direction_out_limit() -> int:
-	if ROAD_TYPE.INNER == road_type:
+	var is_seeing_road = $detect_return_road.is_colliding()
+	
+	if ROAD_TYPE.INNER == road_type and not is_seeing_road:
 		return DIRECTION.TURN_RIGHT
-	elif ROAD_TYPE.OUTER == road_type:
+	elif ROAD_TYPE.OUTER == road_type and not is_seeing_road:
 		return DIRECTION.TURN_LEFT
 	else:
 		return DIRECTION.DONT_TURN
@@ -391,10 +487,10 @@ func direction_colision() -> int:
 	var is_col_car = $detect_crash.is_colliding()
 	var dist_left = get_distance_collision($detect_turn_left) if is_col_on_left else 10000.0
 	var dist_right = get_distance_collision($detect_turn_rigth) if is_col_on_right else 10000.0
-	var car_on_left = is_col_on_left and $detect_turn_left.get_collider().is_in_group("car") and dist_left < CAR_WIDTH / 2.0
-	var car_on_right = is_col_on_right and $detect_turn_rigth.get_collider().is_in_group("car") and dist_right < CAR_WIDTH / 2.0
+	var car_on_left = is_col_on_left and $detect_turn_left.get_collider().is_in_group("car") and dist_left < CAR_HEIGHT / 2.0
+	var car_on_right = is_col_on_right and $detect_turn_rigth.get_collider().is_in_group("car") and dist_right < CAR_HEIGHT / 2.0
 	
-	if get_speed() <= MIN_SPEED and not is_col_car:
+	if get_speed() <= GRAVAR_SPEED and not is_col_car:
 		return DIRECTION.DONT_TURN
 	elif with_left_col and with_right_col:
 		if car_on_left and dist_left > dist_right or car_on_right and dist_left < dist_right:
@@ -444,13 +540,6 @@ func direction_position_car() -> int:
 		return DIRECTION.DONT_TURN
 
 
-func speed_accelerate_add_after_accelerate(delta :float) -> float:
-	var last = max_speed * (1 - exp(-sys_time * coef_accelerate))
-	var next = max_speed * (1 - exp(-(sys_time + delta) * coef_accelerate))
-	
-	return (next - last)
-
-
 func calculate_time(speed :float) -> float:
 	if speed > max_speed: return time_max_speed
 	else: return -log(1 - (speed / max_speed)) / coef_accelerate
@@ -466,7 +555,3 @@ func get_speed() -> float:
 
 func _on_pitstop_time_timeout():
 	mechanic_working = false
-
-
-func _on_starting_timeout():
-	max_speed = limit_speed

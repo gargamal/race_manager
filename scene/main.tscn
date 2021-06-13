@@ -75,7 +75,7 @@ size_flags_stretch_ratio = 1.15
 margin_left = 32.0
 margin_top = 25.0
 margin_right = 256.0
-margin_bottom = 89.0
+margin_bottom = 57.0
 text = "car name"
 valign = 1
 __meta__ = {
@@ -84,7 +84,29 @@ __meta__ = {
 
 [node name="car_speed" type="Label" parent="Params/car_1"]
 margin_left = 32.0
+margin_top = 57.0
+margin_right = 256.0
+margin_bottom = 89.0
+text = "100 km / h"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="last_lap" type="Label" parent="Params/car_1"]
+margin_left = 32.0
 margin_top = 89.0
+margin_right = 256.0
+margin_bottom = 121.0
+text = "100 km / h"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Params/car_1"]
+margin_left = 32.0
+margin_top = 121.0
 margin_right = 256.0
 margin_bottom = 153.0
 text = "100 km / h"
@@ -127,9 +149,8 @@ size_flags_stretch_ratio = 1.15
 margin_left = 32.0
 margin_top = 25.0
 margin_right = 256.0
-margin_bottom = 89.0
-text = "car name
-"
+margin_bottom = 57.0
+text = "car name"
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -137,7 +158,29 @@ __meta__ = {
 
 [node name="car_speed" type="Label" parent="Params/car_2"]
 margin_left = 32.0
+margin_top = 57.0
+margin_right = 256.0
+margin_bottom = 89.0
+text = "100 km / h"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="last_lap" type="Label" parent="Params/car_2"]
+margin_left = 32.0
 margin_top = 89.0
+margin_right = 256.0
+margin_bottom = 121.0
+text = "100 km / h"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Params/car_2"]
+margin_left = 32.0
+margin_top = 121.0
 margin_right = 256.0
 margin_bottom = 153.0
 text = "100 km / h"
