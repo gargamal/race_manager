@@ -2,6 +2,7 @@ tool
 extends Node2D
 
 
+export(int)var nb_lap := 100
 export(int)var circuit_exterior_width := 500
 export(int)var road_width := 300
 export(NodePath) var node_path
@@ -71,7 +72,7 @@ func build_road_type(root :Node2D, polygon_interior :Array, polygon_exterior :Ar
 				area_road_type.add_to_group("turn")
 				area_road_type.collision_layer = collision_layer
 				area_road_type.collision_mask = 8 # it's a car
-				area_road_type.connect("body_entered", self, "_on_Timer_timeout")
+				area_road_type.connect("body_entered", self, "_on_limit_road_body_entered")
 				
 				var col_road_type = CollisionPolygon2D.new()
 				col_road_type.polygon = points_merged
@@ -270,20 +271,14 @@ func _on_limit_interior_body_entered(body) -> void:
 		body.limit_inner()
 
 
-func _on_return_in_road_body_exited(body) -> void:
-	if body.is_in_group("car"):
-		body.limit_road()
-
-
 func _on_limit_exterior_body_entered(body) -> void:
 	if body.is_in_group("car"):
 		body.limit_outer()
 
 
-func _on_limit_exterior_body_exited(body) -> void:
+func _on_limit_road_body_entered(body) -> void:
 	if body.is_in_group("car"):
 		body.limit_road()
-
 
 func _on_refresh_timeout():
 	if with_redraw and node_path and get_node(node_path) is Path2D:

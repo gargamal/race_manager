@@ -99,7 +99,7 @@ func _ready():
 	$detect_limit_rigth.enabled = true
 	update_ray_cast()
 	
-	$detect_crash.cast_to = Vector2(CAR_WIDTH, 0)
+	$detect_crash.cast_to = Vector2(CAR_WIDTH / 2.5, 0)
 	
 	var circuit_height_ray_cast = circuit_width * 4.0
 	$detect_turn_left.cast_to = Vector2(circuit_height_ray_cast * cos(PI / 4.0), -circuit_height_ray_cast * sin(PI / 4.0))
@@ -169,7 +169,6 @@ func _physics_process(delta):
 	if velocity.length() / SCALE > max_speed:
 		velocity = velocity.normalized() * max_speed
 	
-	
 	var collision = move_and_collide(velocity * delta)
 	if collision  and collision.collider is KinematicBody2D and collision.collider.is_in_group("car"):
 		var angle = collision.normal.angle()
@@ -224,7 +223,7 @@ func update_param(with_update :bool) -> void:
 		var speed_lost_by_back = 15.0 * (tilt_back_spoiler_pourcentage / 100.0)
 		var speed_diff_by_gearbox = 40.0 * gearbox_pourcentage / 100.0
 		
-		var coef_angle = 7.5
+		var coef_angle = 5.0
 		var angle_diff_by_front = coef_angle * (tilt_front_spoiler_pourcentage / 100.0)
 		var angle_diff_by_suspension_front = coef_angle * suspension_hardness_pourcentage / 100.0
 		
@@ -258,6 +257,7 @@ func chronometre():
 			last_lap = chronometre_in_lap
 			total_time.append(chronometre_in_lap)
 			best_lap = get_min_time()
+			get_tree().current_scene.update_ranking()
 			
 	elif not $detect_final_line.is_colliding():
 		inside_final_line = false

@@ -7,7 +7,6 @@ export(bool)var with_redraw := false setget with_redraw_editor
 var grid_position := []
 
 func _ready():
-	var circuit_width = get_parent().get_node("circuit/road_line").width
 	$final_line/col.shape.extents = Vector2(final_line_coord.x, final_line_coord.y + final_line_coord.y / 4)
 	
 	$final_line/bg.width = final_line_coord.x

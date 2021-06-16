@@ -8,8 +8,10 @@
 script = ExtResource( 2 )
 
 [node name="Viewports" type="HBoxContainer" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_left = 0.01
+anchor_top = 0.01
+anchor_right = 0.99
+anchor_bottom = 0.99
 margin_bottom = -312.0
 alignment = 1
 __meta__ = {
@@ -17,14 +19,14 @@ __meta__ = {
 }
 
 [node name="ViewportContainer1" type="ViewportContainer" parent="Viewports"]
-margin_right = 958.0
-margin_bottom = 768.0
+margin_right = 720.0
+margin_bottom = 746.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 stretch = true
 
 [node name="Viewport" type="Viewport" parent="Viewports/ViewportContainer1"]
-size = Vector2( 958, 768 )
+size = Vector2( 720, 746 )
 handle_input_locally = false
 disable_3d = true
 usage = 0
@@ -32,18 +34,19 @@ render_target_update_mode = 3
 
 [node name="Camera" type="Camera2D" parent="Viewports/ViewportContainer1/Viewport"]
 current = true
+zoom = Vector2( 1.25, 1.25 )
 script = ExtResource( 3 )
 
 [node name="ViewportContainer2" type="ViewportContainer" parent="Viewports"]
-margin_left = 962.0
-margin_right = 1920.0
-margin_bottom = 768.0
+margin_left = 724.0
+margin_right = 1444.0
+margin_bottom = 746.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 stretch = true
 
 [node name="Viewport" type="Viewport" parent="Viewports/ViewportContainer2"]
-size = Vector2( 958, 768 )
+size = Vector2( 720, 746 )
 handle_input_locally = false
 disable_3d = true
 usage = 0
@@ -53,19 +56,1531 @@ render_target_update_mode = 3
 
 [node name="Camera" type="Camera2D" parent="Viewports/ViewportContainer2/Viewport"]
 current = true
+zoom = Vector2( 1.25, 1.25 )
 script = ExtResource( 3 )
 
+[node name="panel" type="Panel" parent="Viewports"]
+margin_left = 1448.0
+margin_right = 1881.0
+margin_bottom = 746.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ranking" type="VBoxContainer" parent="Viewports/panel"]
+margin_left = 4.0
+margin_right = 426.0
+margin_bottom = 746.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="Label" parent="Viewports/panel/ranking"]
+margin_right = 422.0
+margin_bottom = 33.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.25
+text = "Ranking"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="vb_title" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 37.0
+margin_right = 422.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/vb_title"]
+margin_right = 94.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 7
+text = "Name"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/vb_title"]
+margin_left = 98.0
+margin_right = 192.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 7
+text = "Time"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/vb_title"]
+margin_left = 196.0
+margin_right = 291.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 7
+text = "Gap"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/vb_title"]
+margin_left = 295.0
+margin_right = 389.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 7
+text = "Best lap"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/vb_title"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_1" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 68.0
+margin_right = 422.0
+margin_bottom = 95.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_1"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_1"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_1"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_1"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_1"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_2" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 99.0
+margin_right = 422.0
+margin_bottom = 126.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_2"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_2"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_2"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_2"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_2"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_3" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 130.0
+margin_right = 422.0
+margin_bottom = 157.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_3"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_3"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_3"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_3"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_3"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_4" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 161.0
+margin_right = 422.0
+margin_bottom = 188.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_4"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_4"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_4"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_4"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_4"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_5" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 192.0
+margin_right = 422.0
+margin_bottom = 219.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_5"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_5"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_5"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_5"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_5"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_6" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 223.0
+margin_right = 422.0
+margin_bottom = 250.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_6"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_6"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_6"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_6"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_6"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_7" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 254.0
+margin_right = 422.0
+margin_bottom = 281.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_7"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_7"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_7"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_7"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_7"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_8" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 285.0
+margin_right = 422.0
+margin_bottom = 312.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_8"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_8"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_8"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_8"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_8"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_9" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 316.0
+margin_right = 422.0
+margin_bottom = 343.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_9"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_9"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_9"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_9"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_9"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_10" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 347.0
+margin_right = 422.0
+margin_bottom = 374.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_10"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_10"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_10"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_10"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_10"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_11" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 378.0
+margin_right = 422.0
+margin_bottom = 405.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_11"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_11"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_11"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_11"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_11"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_12" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 409.0
+margin_right = 422.0
+margin_bottom = 436.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_12"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_12"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_12"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_12"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_12"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_13" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 440.0
+margin_right = 422.0
+margin_bottom = 467.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_13"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_13"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_13"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_13"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_13"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_14" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 471.0
+margin_right = 422.0
+margin_bottom = 498.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_14"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_14"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_14"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_14"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_14"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_15" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 502.0
+margin_right = 422.0
+margin_bottom = 529.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_15"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_15"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_15"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_15"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_15"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_16" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 533.0
+margin_right = 422.0
+margin_bottom = 560.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_16"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_16"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_16"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_16"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_16"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_17" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 564.0
+margin_right = 422.0
+margin_bottom = 591.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_17"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_17"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_17"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_17"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_17"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_18" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 595.0
+margin_right = 422.0
+margin_bottom = 622.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_18"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_18"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_18"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_18"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_18"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_19" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 626.0
+margin_right = 422.0
+margin_bottom = 653.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_19"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_19"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_19"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_19"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_19"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_20" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 657.0
+margin_right = 422.0
+margin_bottom = 684.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_20"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_20"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_20"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_20"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_20"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_21" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 688.0
+margin_right = 422.0
+margin_bottom = 715.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_21"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_21"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_21"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_21"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_21"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
+[node name="line_22" type="HBoxContainer" parent="Viewports/panel/ranking"]
+margin_top = 719.0
+margin_right = 422.0
+margin_bottom = 746.0
+rect_pivot_offset = Vector2( -1387.2, -121.8 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_22"]
+margin_top = 6.0
+margin_right = 94.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Voiture 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="time" type="Label" parent="Viewports/panel/ranking/line_22"]
+margin_left = 98.0
+margin_top = 6.0
+margin_right = 192.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:20:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gap" type="Label" parent="Viewports/panel/ranking/line_22"]
+margin_left = 196.0
+margin_top = 6.0
+margin_right = 291.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_22"]
+margin_left = 295.0
+margin_top = 6.0
+margin_right = 389.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "01:02:850"
+valign = 1
+
+[node name="lap" type="Label" parent="Viewports/panel/ranking/line_22"]
+margin_left = 393.0
+margin_right = 422.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+text = "Lap"
+valign = 1
+
 [node name="Params" type="HBoxContainer" parent="."]
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_left = 0.01
+anchor_top = 0.99
+anchor_right = 0.99
+anchor_bottom = 0.99
 margin_top = -305.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="car_1" type="Panel" parent="Params"]
-margin_right = 666.0
+margin_right = 652.0
 margin_bottom = 305.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -116,8 +1631,8 @@ __meta__ = {
 }
 
 [node name="Minimap" type="ViewportContainer" parent="Params"]
-margin_left = 670.0
-margin_right = 1249.0
+margin_left = 656.0
+margin_right = 1224.0
 margin_bottom = 305.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -127,7 +1642,7 @@ __meta__ = {
 }
 
 [node name="Viewport" type="Viewport" parent="Params/Minimap"]
-size = Vector2( 579, 305 )
+size = Vector2( 568, 305 )
 handle_input_locally = false
 disable_3d = true
 usage = 0
@@ -138,8 +1653,8 @@ current = true
 zoom = Vector2( 15, 15 )
 
 [node name="car_2" type="Panel" parent="Params"]
-margin_left = 1253.0
-margin_right = 1920.0
+margin_left = 1228.0
+margin_right = 1881.0
 margin_bottom = 305.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -189,8 +1704,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Timer" type="Timer" parent="."]
+[node name="refresh_stat" type="Timer" parent="."]
 wait_time = 0.5
 autostart = true
 
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[node name="refresh_ranking" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="refresh_stat" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="refresh_ranking" to="." method="_on_refresh_ranking_timeout"]
