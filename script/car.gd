@@ -3,6 +3,7 @@ extends KinematicBody2D
 enum CAR_COLOR {RED, GOLD, SKY, SAND, GREEN, PURPLE, ORANGE, BROWN, BLUE, PINK, GRASS, CYAN, DARK_RED, WATER, WINE, DARK}
 enum TEAM { TEAM_1, TEAM_2, TEAM_3, TEAM_4, TEAM_5, TEAM_6, TEAM_7, TEAM_8, TEAM_9, TEAM_10, TEAM_11 }
 enum STATE_IN_PITLANE {ENTER, ENTER_GARAGE, GARAGE, EXIT_GARAGE, EXIT, RETURN_ROAD }
+enum STATE_IN_OVERTAKE { BEGIN, CONTINUE_1, CONTINUE_2, END }
 
 export(String) var car_name := "voiture"
 export(CAR_COLOR) var car_color
@@ -30,11 +31,12 @@ const SPEED_MAX_TURN = 40
 const GRAVAR_COEF_BRAKE = 1.1
 const GRAVAR_SPEED = 20.0
 const GRAVAR_ANGLE = PI * 5.0 / 360.0
+const OVERTAKE_ANGLE = PI * 15.0 / 360.0
 const PITLANE_COEF_BRAKE = 1.1
 const PITLANE_SPEED = 35.0
 const pitlane_ANGLE = PI * 8.0 / 360.0
-enum DIRECTION { TURN_LEFT, TURN_RIGHT, TURN_AND_BRAKE_LEFT, TURN_AND_BRAKE_RIGHT, DONT_TURN, BRAKE }
-enum ROAD_TYPE { INNER, OUTER, ROAD, PITLANE }
+enum DIRECTION { TURN_LEFT, TURN_RIGHT, TURN_AND_BRAKE_LEFT, TURN_AND_BRAKE_RIGHT, DONT_TURN, BRAKE, CONTINUE }
+enum ROAD_TYPE { INNER, OUTER, ROAD, PITLANE, STRAIGHT_AND_OVERTAKE }
 
 
 var sys_time := 0.0
@@ -48,17 +50,20 @@ var time_max_speed := 0.0
 var current_direction := 0
 var is_in_pitlane_area = false
 var state_in_pitlane = STATE_IN_PITLANE.ENTER
+var state_in_overtake = STATE_IN_OVERTAKE.END
 var mechanic_working = false
 var circuit_width = 0.0
-var coef_accelerate := 0.5 # 0.5 à 2.0
-var slow_direction_angle_degree := 5.0 # 5.0 à 30.0
-var fast_direction_angle_degree := 5.0 # 5.0 à 30.0
+var coef_accelerate := 0.5
+var slow_direction_angle_degree := 5.0
+var fast_direction_angle_degree := 5.0
 var chronometre_start := 0
 var chronometre_in_lap := 0
 var last_lap := 0
 var best_lap := 0
 var total_time = []
 var inside_final_line = false
+var nb_tick := 0.0
+var angle_in_overtake = 0.0
 
 
 func set_coef_accelerate(new_coef_accelerate :float) -> void:
@@ -99,6 +104,7 @@ func _ready():
 	$detect_limit_rigth.enabled = true
 	update_ray_cast()
 	
+	$detect_overtake.cast_to = Vector2(CAR_WIDTH * 1.5, 0)
 	$detect_crash.cast_to = Vector2(CAR_WIDTH / 2.5, 0)
 	
 	var circuit_height_ray_cast = circuit_width * 4.0
@@ -120,9 +126,10 @@ func _physics_process(delta):
 	
 	update_param(false)
 	go_pitlane()
+	go_overtake()
 	var direction = direction()
 	
-	if ROAD_TYPE.ROAD == road_type:
+	if road_type == ROAD_TYPE.ROAD:
 		if direction == DIRECTION.BRAKE:
 			if velocity.length() / SCALE < MIN_SPEED:
 				accelerate(delta)
@@ -142,6 +149,10 @@ func _physics_process(delta):
 			
 		else:
 			accelerate(delta)
+			
+	elif road_type == ROAD_TYPE.STRAIGHT_AND_OVERTAKE:
+		accelerate(delta)
+		velocity = velocity.rotated(get_angle_in_overtake(delta)) 
 	
 	elif road_type in [ROAD_TYPE.INNER, ROAD_TYPE.OUTER]:
 		if (velocity.length() / SCALE) / GRAVAR_COEF_BRAKE > GRAVAR_SPEED: 
@@ -170,7 +181,7 @@ func _physics_process(delta):
 		velocity = velocity.normalized() * max_speed
 	
 	var collision = move_and_collide(velocity * delta)
-	if collision  and collision.collider is KinematicBody2D and collision.collider.is_in_group("car"):
+	if road_type == ROAD_TYPE.ROAD and not $detect_crash.is_colliding() and collision and collision.collider is KinematicBody2D and collision.collider.is_in_group("car"):
 		var angle = collision.normal.angle()
 		var bounce = velocity.bounce(collision.normal).normalized().angle()
 		if 0.0 < angle and angle < PI / 4.0 or -3.0 * PI / 4.0 < angle and angle < 0.0:
@@ -276,6 +287,35 @@ func get_min_time() -> int:
 	return min_time
 
 
+func get_angle_in_overtake(delta) -> float:
+	nb_tick += delta
+	
+	var dist_left
+	var dist_right
+	
+	match state_in_overtake:
+		STATE_IN_OVERTAKE.BEGIN:
+			dist_left = get_distance_collision($detect_turn_left)
+			dist_right = get_distance_collision($detect_turn_rigth)
+			nb_tick = 0.0
+			state_in_overtake = STATE_IN_OVERTAKE.CONTINUE_1
+			angle_in_overtake = OVERTAKE_ANGLE * (1 if dist_left < dist_right else -1)
+			return angle_in_overtake
+			
+		STATE_IN_OVERTAKE.CONTINUE_1:
+			if nb_tick > 1.0:
+				state_in_overtake = STATE_IN_OVERTAKE.CONTINUE_2
+			return 0.0
+			
+		STATE_IN_OVERTAKE.CONTINUE_2:
+			state_in_overtake = STATE_IN_OVERTAKE.END
+			road_type = ROAD_TYPE.ROAD
+			return -angle_in_overtake
+			
+		_:
+			return 0.0
+
+
 func get_angle_in_pitlane() -> float:
 	var enter_dir_car = (get_tree().current_scene.get_node("pitlane/enter").global_position - self.global_position)
 	var enter_garage_dir_car = (get_tree().current_scene.get_node("pitlane/teams/team_" + str(team_position + 1) + "_in").global_position - self.global_position)
@@ -367,8 +407,9 @@ func enable_disable_raycast(enabled :bool) -> void:
 	$detect_limit_rigth.enabled = enabled
 	$detect_turn_left.enabled = enabled
 	$detect_turn_rigth.enabled = enabled
-
-
+	$detect_overtake.enabled = enabled
+	$detect_final_line.enabled = enabled
+	
 func turn_and_brake(direction:int) -> void:
 	turn(direction, direction_angle)
 	brake()
@@ -395,6 +436,7 @@ func turn_in_pitlane(direction :int) -> void:
 		var velocity_rotation = pitlane_ANGLE * (1 if direction == DIRECTION.TURN_RIGHT else -1)
 		velocity = velocity.rotated(velocity_rotation)
 
+
 func brake() -> void:
 	var next_velocity = velocity / COEF_BRAKE
 	if next_velocity.length_squared() < LIMIT_BEFORE_ZERO_VELOCITY:
@@ -411,7 +453,7 @@ func accelerate(delta :float):
 
 func get_distance_collision(raycast :RayCast2D) -> float:
 	var origin = raycast.global_transform.origin
-	var collision_point = raycast.get_collision_point()
+	var collision_point = raycast.get_collision_point() if raycast.is_colliding() else Vector2(100000.0, 100000.0)
 	return origin.distance_to(collision_point)
 
 
@@ -426,16 +468,38 @@ func go_pitlane():
 			road_type = ROAD_TYPE.PITLANE
 
 
+func go_overtake() -> void:
+	var with_left_col_limit = $detect_limit_left.is_colliding() and ($detect_limit_left.get_collider().is_in_group("interior") or $detect_limit_left.get_collider().is_in_group("exterior"))
+	var with_right_col_limit = $detect_limit_rigth.is_colliding() and ($detect_limit_rigth.get_collider().is_in_group("interior") or $detect_limit_rigth.get_collider().is_in_group("exterior"))
+	var is_in_turn =  $detect_slow_turn.is_colliding() 
+	var is_car_crash = $detect_crash.is_colliding()
+	
+	if road_type != ROAD_TYPE.ROAD or is_in_turn or with_left_col_limit or with_right_col_limit or is_car_crash:
+		road_type = ROAD_TYPE.ROAD if road_type == ROAD_TYPE.STRAIGHT_AND_OVERTAKE else road_type
+		return
+	
+	var with_overtake_car = $detect_overtake.is_colliding()
+	var is_car_in_left = $detect_turn_left.is_colliding() and $detect_turn_left.get_collider().is_in_group("car")
+	var is_car_in_right = $detect_turn_rigth.is_colliding() and $detect_turn_rigth.get_collider().is_in_group("car")
+	if not with_overtake_car or is_car_in_left or is_car_in_right:
+		road_type = ROAD_TYPE.ROAD if road_type == ROAD_TYPE.STRAIGHT_AND_OVERTAKE else road_type
+		return
+	
+	if state_in_overtake == STATE_IN_OVERTAKE.END:
+		state_in_overtake = STATE_IN_OVERTAKE.BEGIN
+		road_type = ROAD_TYPE.STRAIGHT_AND_OVERTAKE
+
+
 func direction() -> int:
 	var direction = DIRECTION.DONT_TURN
 	
 	if ROAD_TYPE.ROAD == road_type:
-		var direction_colision = direction_colision()
 		var direction_position_car = direction_position_car()
 		if direction_position_car != DIRECTION.DONT_TURN:
 			direction = direction_position_car
 		else:
-			direction = direction_colision
+			direction = direction_colision()
+			
 	elif road_type in [ROAD_TYPE.INNER, ROAD_TYPE.OUTER]:
 		direction = direction_out_limit()
 		
@@ -480,20 +544,25 @@ func direction_out_limit() -> int:
 
 
 func direction_colision() -> int:
-	var is_col_on_left = $detect_turn_left.is_colliding()
-	var is_col_on_right = $detect_turn_rigth.is_colliding()
-	var with_left_col = $detect_limit_left.is_colliding()
-	var with_right_col = $detect_limit_rigth.is_colliding()
+	var with_left_col = $detect_limit_left.is_colliding() and ($detect_limit_left.get_collider().is_in_group("exterior") or $detect_limit_left.get_collider().is_in_group("interior"))
+	var with_right_col = $detect_limit_rigth.is_colliding() and ($detect_limit_rigth.get_collider().is_in_group("exterior") or $detect_limit_rigth.get_collider().is_in_group("interior"))
 	var is_col_car = $detect_crash.is_colliding()
-	var dist_left = get_distance_collision($detect_turn_left) if is_col_on_left else 10000.0
-	var dist_right = get_distance_collision($detect_turn_rigth) if is_col_on_right else 10000.0
-	var car_on_left = is_col_on_left and $detect_turn_left.get_collider().is_in_group("car") and dist_left < CAR_HEIGHT / 2.0
-	var car_on_right = is_col_on_right and $detect_turn_rigth.get_collider().is_in_group("car") and dist_right < CAR_HEIGHT / 2.0
+	var dist_left = get_distance_collision($detect_turn_left)
+	var dist_right = get_distance_collision($detect_turn_rigth)
+	var car_on_left = $detect_turn_left.is_colliding() and $detect_turn_left.get_collider().is_in_group("car") and dist_left < CAR_HEIGHT / 2.0
+	var car_on_right = $detect_turn_rigth.is_colliding() and $detect_turn_rigth.get_collider().is_in_group("car") and dist_right < CAR_HEIGHT / 2.0
+	var with_turn_left_bad_col = $detect_turn_left.is_colliding() and $detect_turn_left.get_collider().is_in_group("interior")
+	var with_turn_right_bad_col = $detect_turn_rigth.is_colliding() and $detect_turn_rigth.get_collider().is_in_group("exterior")
 	
-	if get_speed() <= GRAVAR_SPEED and not is_col_car:
+	if get_speed() <= GRAVAR_SPEED / 2.0 and not is_col_car:
 		return DIRECTION.DONT_TURN
+		
 	elif with_left_col and with_right_col:
-		if car_on_left and dist_left > dist_right or car_on_right and dist_left < dist_right:
+		if with_turn_left_bad_col:
+			return DIRECTION.TURN_AND_BRAKE_RIGHT
+		elif with_turn_right_bad_col:
+			return DIRECTION.TURN_AND_BRAKE_LEFT
+		elif car_on_left and dist_left > dist_right or car_on_right and dist_left < dist_right:
 			return DIRECTION.BRAKE
 		if dist_left > dist_right:
 			return DIRECTION.TURN_AND_BRAKE_LEFT

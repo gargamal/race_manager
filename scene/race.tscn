@@ -12,7 +12,7 @@
 [sub_resource type="Curve2D" id=1]
 bake_interval = 100.0
 _data = {
-"points": PoolVector2Array( -478.877, 8.4757, 478.877, -8.4757, 830, -1295.46, -1.00818, -2.90719, 1.00818, 2.90719, 3614, -1295.46, -45.0394, -425.847, 45.0394, 425.847, 4510, -911.459, 60.3078, -556.364, -60.3078, 556.364, 4480, 0, 0, 0, 0, 0, 4030, 400.541, 37.9638, 143.91, -37.9638, -143.91, 3838, 144.541, 664.949, 116.081, -664.949, -116.081, 3232, -352, 274.291, 122.326, -274.291, -122.326, 1918, -623.459, 59.3605, -132.613, -59.3605, 132.613, 1342, -463.459, -99.7747, -177.201, 99.7747, 177.201, 1344, -64, -382, -100, 382, 100, 1984, 416, -264, 0, 264, 0, 3358, 720.541, -5.51472, -200.749, 5.51472, 200.749, 3902, 1104.54, 120, -20, -120, 20, 3678, 1552.54, 619.599, 8.9797, -619.599, -8.9797, 2432, 1632, 645.377, 362.599, -645.377, -362.599, 1280, 768, 0, 0, 0, 0, 254, 1104.54, 284.822, 326.879, -284.822, -326.879, -256, 1152, 104.206, 228.222, -104.206, -228.222, -450, -256, 194.887, -282.986, -194.887, 282.986, -1058, -256, -151.632, -500.325, 151.632, 500.325, -1088, 800, 319.318, 74.3811, -319.318, -74.3811, -2176, 1440, 0, 0, 0, 0, -2370, 1056, 0, 0, 0, 0, -2114, 560.541, 157.696, 140.147, -157.696, -140.147, -2178, 160, 101.448, 357.737, -101.448, -357.737, -2754, -96, -36.7696, 90.5097, 36.7696, -90.5097, -2562, -815.459, -219.843, 19.4773, 219.843, -19.4773, -2064, -1280, 0, 0, 0, 0, -1378, -1295.46, 0, 0, 368.212, -5.68252, 830, -1295.46 )
+"points": PoolVector2Array( -478.877, 8.4757, 478.877, -8.4757, 830, -1295.46, -1.00818, -2.90719, 1.00818, 2.90719, 3614, -1295.46, 0, 0, 0, 0, 4483.07, -1297.7, -45.0394, -360.331, 45.0394, 360.331, 5133.19, -980.201, 60.3078, -556.364, -60.3078, 556.364, 4760.25, -5.02248, 0, 0, 0, 0, 4030, 400.541, 37.9638, 143.91, -37.9638, -143.91, 3838, 144.541, 664.949, 116.081, -664.949, -116.081, 3232, -352, 274.291, 122.326, -274.291, -122.326, 1918, -623.459, 59.3605, -132.613, -59.3605, 132.613, 1342, -463.459, -99.7747, -177.201, 99.7747, 177.201, 1344, -64, -382, -100, 382, 100, 1984, 416, -264, 0, 264, 0, 3358, 720.541, -5.51472, -200.749, 5.51472, 200.749, 3902, 1104.54, 120, -20, -120, 20, 3678, 1552.54, 619.599, 8.9797, -619.599, -8.9797, 2432, 1632, 645.377, 362.599, -645.377, -362.599, 1280, 768, 0, 0, 0, 0, 254, 1104.54, 284.822, 326.879, -284.822, -326.879, -256, 1152, 104.206, 228.222, -104.206, -228.222, -450, -256, 194.887, -282.986, -194.887, 282.986, -1058, -256, -151.632, -500.325, 151.632, 500.325, -1088, 800, 319.318, 74.3811, -319.318, -74.3811, -2176, 1440, 0, 0, 0, 0, -2370, 1056, 0, 0, 0, 0, -2114, 560.541, 157.696, 140.147, -157.696, -140.147, -2178, 160, 101.448, 357.737, -101.448, -357.737, -2754, -96, -36.7696, 90.5097, 36.7696, -90.5097, -2562, -815.459, -219.843, 19.4773, 219.843, -19.4773, -2064, -1280, 0, 0, 0, 0, -1378, -1295.46, 0, 0, 368.212, -5.68252, 830, -1295.46 )
 }
 
 [node name="race" type="Node2D"]
@@ -78,14 +78,15 @@ texture = ExtResource( 8 )
 texture_mode = 1
 
 [node name="tyre_wall7" type="Line2D" parent="environnement"]
-points = PoolVector2Array( 2304, 2144, 2592, 2080, 3040, 1920, 3264, 1696, 3360, 1536, 3456, 1344, 3488, 1088, 3392, 896, 3264, 736, 3040, 576, 2880, 480, 2656, 384, 2432, 256, 2016, 128, 1536, 32, 1024, -96, 640, -256, 576, -352, 608, -448, 704, -448, 768, -448, 896, -384, 992, -288, 1248, -192, 1696, -64, 2176, 64, 2432, 160, 2624, 256, 2688, 320, 2912, 448, 3072, 512, 3232, 544, 3424, 544, 3648, 544, 3808, 448, 3904, 288, 3968, 64 )
+position = Vector2( -1.78174, -1.7818 )
+points = PoolVector2Array( 2304, 2144, 2592, 2080, 3040, 1920, 3264, 1696, 3279.66, 1473.67, 3235.11, 1288.37, 3187.01, 1181.46, 3053.37, 964.081, 2983.88, 725.32, 2843.12, 552.486, 2602.58, 433.105, 2215.93, 322.634, 2016, 128, 1536, 32, 1024, -96, 640, -256, 576, -352, 608, -448, 704, -448, 768, -448, 896, -384, 992, -288, 1248, -192, 1696, -64, 2019.93, 91, 2392.32, 304.816, 2634.65, 397.469, 2921.52, 534.668, 3210.17, 668.302, 3399.04, 698.593, 3671.65, 709.284, 3808, 448, 3904, 288, 3968, 64 )
 width = 30.0
 default_color = Color( 1, 1, 1, 1 )
 texture = ExtResource( 8 )
 texture_mode = 1
 
 [node name="tyre_wall8" type="Line2D" parent="environnement"]
-points = PoolVector2Array( 4064, 384, 4160, 0, 4160, -288, 4128, -512, 4064, -864, 3936, -1280, 3712, -1600, 3424, -1824, 3072, -1952, 2720, -2016, 2080, -2112, 1600, -2144, 1248, -2144 )
+points = PoolVector2Array( 4064, 384, 4160, 0, 4230.38, -238.516, 4270.69, -465.302, 4311.01, -805.48, 4323.61, -1400.16, 3988.47, -1642.07, 3527.34, -1904.13, 3068.73, -2173.75, 2695.79, -2146.04, 2080, -2112, 1600, -2144, 1248, -2144 )
 width = 30.0
 default_color = Color( 1, 1, 1, 1 )
 texture = ExtResource( 8 )
@@ -155,7 +156,7 @@ polygon = PoolVector2Array( -1504, -2080, -1504, -2144, -2048, -2048, -2464, -20
 collision_mask = 8
 
 [node name="col" type="CollisionPolygon2D" parent="environnement/limit_circuit2"]
-polygon = PoolVector2Array( 1246.55, -2154.96, 1648.55, -2138.96, 2202.55, -2092.96, 3062.55, -1958.96, 3426.55, -1820.96, 3722.55, -1582.96, 3934.55, -1278.96, 4062.55, -870.958, 4160.55, -282.958, 4166.55, 1.04175, 4100.55, 235.042, 3960.55, 75.0417, 3886.55, 323.042, 3800.55, 443.042, 3650.55, 531.042, 3248.55, 537.042, 2936.55, 461.042, 2686.55, 315.042, 2528.55, 207.042, 2180.55, 57.0417, 1540.55, -108.958, 994.552, -288.958, 890.552, -386.958, 764.552, -458.958, 608.552, -454.958, 580.552, -356.958, 638.552, -260.958, 1028.55, -88.9583, 1988.55, 119.042, 2438.55, 265.042, 2652.55, 383.042, 2926.55, 509.042, 3242.55, 721.042, 3400.55, 913.042, 3496.55, 1099.04, 3448.55, 1353.04, 3270.55, 1681.04, 3042.55, 1903.04, 2546.55, 2091.04, 2504.55, 1949.04, 1754.55, 2017.04, 1462.55, 2003.04, 994.552, 1887.04, 558.552, 1701.04, 288.552, 1409.04, 190.552, 1209.04, -41.4478, 1071.04, -227.448, 1093.04, -493.448, 1279.04, -673.448, 1461.04, -869.448, 1489.04, -677.448, 2241.04, 298.552, 2307.04, 1944.55, 2781.04, 3112.55, 2541.04, 3740.55, 2233.04, 4114.55, 1305.04, 4646.55, 651.042, 4880.55, 63.0417, 4762.55, -1152.96, 4512.55, -1782.96, 3690.55, -2378.96, 2518.55, -2648.96, 1460.55, -2512.96, 1250.55, -2372.96 )
+polygon = PoolVector2Array( 1246.55, -2154.96, 1648.55, -2138.96, 2202.55, -2092.96, 3076.29, -2183.83, 3436.63, -1957.05, 3827.2, -1742.86, 4333.69, -1395.12, 4321.09, -805.48, 4250.53, -304.032, 4166.55, 1.04175, 4100.55, 235.042, 3960.55, 75.0417, 3886.55, 323.042, 3800.55, 443.042, 3668.09, 711.066, 3203.04, 670.084, 2891.23, 522.195, 2641.78, 393.906, 2374.51, 294.125, 2016.36, 91, 1540.55, -108.958, 994.552, -288.958, 890.552, -386.958, 764.552, -458.958, 608.552, -454.958, 580.552, -356.958, 638.552, -260.958, 1028.55, -88.9583, 1988.55, 119.042, 2210.58, 327.979, 2618.61, 436.669, 2852.03, 552.486, 2987.44, 728.884, 3062.28, 980.117, 3251.15, 1299.06, 3286.79, 1462.98, 3270.55, 1681.04, 3042.55, 1903.04, 2546.55, 2091.04, 2504.55, 1949.04, 1754.55, 2017.04, 1462.55, 2003.04, 994.552, 1887.04, 558.552, 1701.04, 288.552, 1409.04, 190.552, 1209.04, -41.4478, 1071.04, -227.448, 1093.04, -493.448, 1279.04, -673.448, 1461.04, -869.448, 1489.04, -677.448, 2241.04, 298.552, 2307.04, 1944.55, 2781.04, 3112.55, 2541.04, 3740.55, 2233.04, 4114.55, 1305.04, 4646.55, 651.042, 4880.55, 63.0417, 4762.55, -1152.96, 4512.55, -1782.96, 3690.55, -2378.96, 2518.55, -2648.96, 1460.55, -2512.96, 1250.55, -2372.96 )
 
 [node name="limit_circuit3" type="StaticBody2D" parent="environnement"]
 collision_mask = 8
@@ -204,7 +205,7 @@ gearbox_pourcentage = 50.0
 [node name="car_4" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
 position = Vector2( -3832, -4768 )
-car_name = "voiture autre"
+car_name = "voiture 4"
 car_color = 2
 team_position = 1
 suspension_hardness_pourcentage = 70.0
@@ -216,8 +217,8 @@ position = Vector2( -3712, -4632 )
 car_name = "voiture autre"
 car_color = 3
 team_position = 2
-tilt_front_spoiler_pourcentage = 50.0
-tilt_back_spoiler_pourcentage = 50.0
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
 suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
@@ -227,8 +228,8 @@ position = Vector2( -3560, -4768 )
 car_name = "voiture autre"
 car_color = 3
 team_position = 2
-tilt_front_spoiler_pourcentage = 50.0
-tilt_back_spoiler_pourcentage = 50.0
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
 suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
@@ -238,8 +239,8 @@ position = Vector2( -3432, -4632 )
 car_name = "voiture autre"
 car_color = 4
 team_position = 3
-tilt_front_spoiler_pourcentage = 50.0
-tilt_back_spoiler_pourcentage = 50.0
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
 suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
@@ -249,8 +250,8 @@ position = Vector2( -3280, -4768 )
 car_name = "voiture autre"
 car_color = 4
 team_position = 3
-tilt_front_spoiler_pourcentage = 50.0
-tilt_back_spoiler_pourcentage = 50.0
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
 suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
@@ -260,8 +261,8 @@ position = Vector2( -3136, -4632 )
 car_name = "voiture autre"
 car_color = 5
 team_position = 4
-tilt_front_spoiler_pourcentage = 50.0
-tilt_back_spoiler_pourcentage = 50.0
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
 suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
@@ -271,8 +272,8 @@ position = Vector2( -2984, -4768 )
 car_name = "voiture autre"
 car_color = 5
 team_position = 4
-tilt_front_spoiler_pourcentage = 50.0
-tilt_back_spoiler_pourcentage = 50.0
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
 suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
@@ -282,8 +283,8 @@ position = Vector2( -2848, -4632 )
 car_name = "voiture autre"
 car_color = 6
 team_position = 5
-tilt_front_spoiler_pourcentage = 50.0
-tilt_back_spoiler_pourcentage = 50.0
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
 suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
@@ -293,8 +294,8 @@ position = Vector2( -2696, -4768 )
 car_name = "voiture autre"
 car_color = 6
 team_position = 5
-tilt_front_spoiler_pourcentage = 50.0
-tilt_back_spoiler_pourcentage = 50.0
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
 suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
@@ -304,8 +305,8 @@ position = Vector2( -2544, -4632 )
 car_name = "voiture autre"
 car_color = 7
 team_position = 6
-tilt_front_spoiler_pourcentage = 50.0
-tilt_back_spoiler_pourcentage = 50.0
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
 suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
@@ -315,8 +316,8 @@ position = Vector2( -2392, -4768 )
 car_name = "voiture autre"
 car_color = 7
 team_position = 6
-tilt_front_spoiler_pourcentage = 50.0
-tilt_back_spoiler_pourcentage = 50.0
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
 suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
@@ -326,8 +327,8 @@ position = Vector2( -2272, -4632 )
 car_name = "voiture autre"
 car_color = 8
 team_position = 7
-tilt_front_spoiler_pourcentage = 50.0
-tilt_back_spoiler_pourcentage = 50.0
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
 suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
@@ -337,8 +338,8 @@ position = Vector2( -2120, -4768 )
 car_name = "voiture autre"
 car_color = 8
 team_position = 7
-tilt_front_spoiler_pourcentage = 50.0
-tilt_back_spoiler_pourcentage = 50.0
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
 suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
@@ -348,8 +349,8 @@ position = Vector2( -1992, -4632 )
 car_name = "voiture autre"
 car_color = 9
 team_position = 8
-tilt_front_spoiler_pourcentage = 50.0
-tilt_back_spoiler_pourcentage = 50.0
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
 suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
@@ -359,31 +360,35 @@ position = Vector2( -1840, -4768 )
 car_name = "voiture autre"
 car_color = 9
 team_position = 8
-tilt_front_spoiler_pourcentage = 50.0
-tilt_back_spoiler_pourcentage = 50.0
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
 suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
 [node name="car_19" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
 position = Vector2( -1696, -4632 )
-car_name = "voiture autre"
+car_name = "voiture 19"
 car_color = 15
 team_position = 9
+limit_speed = 120.0
+text_color = Color( 0.960784, 0.968627, 0.105882, 1 )
 number_car = "07"
-tilt_front_spoiler_pourcentage = 50.0
-tilt_back_spoiler_pourcentage = 50.0
-suspension_hardness_pourcentage = 70.0
+helmet_color = Color( 0.839216, 0.996078, 0.0941176, 1 )
+tilt_front_spoiler_pourcentage = 80.0
+tilt_back_spoiler_pourcentage = 80.0
+suspension_hardness_pourcentage = 50.0
 gearbox_pourcentage = 50.0
 
 [node name="car_20" parent="cars" instance=ExtResource( 2 )]
 modulate = Color( 0.298039, 0.2, 1, 1 )
 position = Vector2( -1544, -4768 )
-car_name = "voiture autre"
+car_name = "voiture 20"
 car_color = 15
 team_position = 9
+text_color = Color( 0.960784, 0.596078, 0.596078, 1 )
 helmet_color = Color( 0.92549, 0.0705882, 0.0705882, 1 )
-tilt_front_spoiler_pourcentage = 50.0
-tilt_back_spoiler_pourcentage = 50.0
+tilt_front_spoiler_pourcentage = 75.0
+tilt_back_spoiler_pourcentage = 75.0
 suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0

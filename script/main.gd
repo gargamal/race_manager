@@ -21,7 +21,7 @@ func _ready():
 	camera1.target = world.get_node("cars/car_1")
 	car_1 = camera1.target
 	init_screen($Params/car_1, car_1)
-	camera2.target = world.get_node("cars/car_3")
+	camera2.target = world.get_node("cars/car_19")
 	car_2 = camera2.target
 	init_screen($Params/car_2, car_2)
 	init_ranking()
@@ -151,7 +151,3 @@ func _on_Timer_timeout():
 	update_screen($Params/car_1, car_1)
 	update_screen($Params/car_2, car_2)
 
-
-func _on_refresh_ranking_timeout():
-	pass
-#	update_ranking()

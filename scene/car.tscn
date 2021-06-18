@@ -32,7 +32,7 @@ colors = PoolColorArray( 1, 0.901961, 0.670588, 0.501961, 0.239216, 0.176471, 0.
 "car",
 ]]
 collision_layer = 8
-collision_mask = 2147483663
+collision_mask = 2147483657
 collision/safe_margin = 6.0
 script = ExtResource( 1 )
 
@@ -105,6 +105,12 @@ collide_with_areas = true
 enabled = true
 cast_to = Vector2( 300, 0 )
 collision_mask = 192
+collide_with_areas = true
+
+[node name="detect_overtake" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 150, 0 )
+collision_mask = 8
 collide_with_areas = true
 
 [node name="number" type="Label" parent="."]
@@ -249,5 +255,12 @@ color_ramp = SubResource( 6 )
 
 [node name="pitstop_time" type="Timer" parent="."]
 one_shot = true
+
+[node name="out_circuit" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 6
+
+[node name="col" type="CollisionPolygon2D" parent="out_circuit"]
+polygon = PoolVector2Array( -40, -13, 28, -10, 28, 10, -40, 14 )
 
 [connection signal="timeout" from="pitstop_time" to="." method="_on_pitstop_time_timeout"]

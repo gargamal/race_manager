@@ -40,8 +40,8 @@ func _ready():
 				$straigth_lines.remove_child(child)
 			build_buzer(polygon_interior)
 			build_buzer(polygon_exterior_raw)
-			build_road_type($slow_turns, polygon_interior, polygon_exterior_raw, 0.10, 2.0, TYPE_TURN.SLOW_TURN)
-			build_road_type($straigth_lines, polygon_interior, polygon_exterior_raw, 0.0, 0.10, TYPE_TURN.STRAIGHT_LINE)
+			build_road_type($slow_turns, polygon_interior, polygon_exterior_raw, 0.02, 2.0, TYPE_TURN.SLOW_TURN)
+			build_road_type($straigth_lines, polygon_interior, polygon_exterior_raw, 0.0, 0.02, TYPE_TURN.STRAIGHT_LINE)
 
 
 func build_road_type(root :Node2D, polygon_interior :Array, polygon_exterior :Array, angle_min :float, angle_max :float, collision_layer :int) -> void:
