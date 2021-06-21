@@ -1,17 +1,8 @@
-Sur le circuit faire une reconnaissance sur le type de virage
-- ligne droite
-- virage rapide
-- virage lent
-
-Mettre un classement sur les positions des voitures.
-
+- sous la pluie réduire l'accélération en fonction des pneus et du temps
+- gestion des pneus / usure
+ 
 - faire un écran de règlages
 - faire un arrêt au stand
-- gestion des pneus
-*- rouge
-*- jaune
-*- blanc
-- consommation de carburant
 
 Note de pilote
 - test de dépassement

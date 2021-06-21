@@ -1,25 +1,5 @@
 extends KinematicBody2D
 
-enum CAR_COLOR {RED, GOLD, SKY, SAND, GREEN, PURPLE, ORANGE, BROWN, BLUE, PINK, GRASS, CYAN, DARK_RED, WATER, WINE, DARK}
-enum TEAM { TEAM_1, TEAM_2, TEAM_3, TEAM_4, TEAM_5, TEAM_6, TEAM_7, TEAM_8, TEAM_9, TEAM_10, TEAM_11 }
-enum STATE_IN_PITLANE {ENTER, ENTER_GARAGE, GARAGE, EXIT_GARAGE, EXIT, RETURN_ROAD }
-enum STATE_IN_OVERTAKE { BEGIN, CONTINUE_1, CONTINUE_2, END }
-
-export(String) var car_name := "voiture"
-export(CAR_COLOR) var car_color
-export(TEAM) var team_position
-export(float) var limit_speed := 100.0 # to m/s
-export(Color) var modulate_color = Color(1.0, 1.0, 1.0, 1.0)
-export(Color) var mini_map_color = Color(1.0, 1.0, 1.0, 1.0)
-export(Color) var text_color = Color(1.0, 1.0, 1.0, 1.0)
-export(String) var number_car = "99"
-export(Color) var helmet_color = Color(1.0, 1.0, 1.0, 1.0)
-export(bool) var has_pit_stop = false
-export(float) var tilt_front_spoiler_pourcentage = 30 # 0 à 100
-export(float) var tilt_back_spoiler_pourcentage = 30 # 0 à 100
-export(float) var suspension_hardness_pourcentage = 100 # 0 à 100
-export(float) var gearbox_pourcentage = 100 # 0 à 100
-
 const SCALE = 20
 const COEF_BRAKE = 1.05
 const CAR_WIDTH = 500
@@ -31,14 +11,38 @@ const SPEED_MAX_TURN = 40
 const GRAVAR_COEF_BRAKE = 1.1
 const GRAVAR_SPEED = 20.0
 const GRAVAR_ANGLE = PI * 5.0 / 360.0
-const OVERTAKE_ANGLE = PI * 15.0 / 360.0
+const OVERTAKE_ANGLE = PI * 7.5 / 360.0
 const PITLANE_COEF_BRAKE = 1.1
 const PITLANE_SPEED = 35.0
 const pitlane_ANGLE = PI * 8.0 / 360.0
+enum CAR_COLOR {RED, GOLD, SKY, SAND, GREEN, PURPLE, ORANGE, BROWN, BLUE, PINK, GRASS, CYAN, DARK_RED, WATER, WINE, DARK}
+enum TEAM { TEAM_1, TEAM_2, TEAM_3, TEAM_4, TEAM_5, TEAM_6, TEAM_7, TEAM_8, TEAM_9, TEAM_10, TEAM_11 }
+enum STATE_IN_PITLANE {ENTER, ENTER_GARAGE, GARAGE, EXIT_GARAGE, EXIT, RETURN_ROAD }
+enum STATE_IN_OVERTAKE { BEGIN, CONTINUE_1, CONTINUE_2, END }
 enum DIRECTION { TURN_LEFT, TURN_RIGHT, TURN_AND_BRAKE_LEFT, TURN_AND_BRAKE_RIGHT, DONT_TURN, BRAKE, CONTINUE }
 enum ROAD_TYPE { INNER, OUTER, ROAD, PITLANE, STRAIGHT_AND_OVERTAKE }
+enum TYRE { SOFT, MEDIUM, HARD, INTERMEDIATE, WET }
+enum ROAD_CONDITION { DRY, SLIGHTLY_WET, WET, VERY_WET, TOTALY_WET }
 
 
+export(String) var car_name := "voiture"
+export(CAR_COLOR) var car_color
+export(TEAM) var team_position
+export(float) var limit_speed := 100.0 # to m/s
+export(Color) var text_color = Color(1.0, 1.0, 1.0, 1.0)
+export(String) var number_car = "99"
+export(Color) var helmet_color = Color(1.0, 1.0, 1.0, 1.0)
+export(bool) var has_pit_stop = false
+export(float) var tilt_front_spoiler_pourcentage = 30 # 0 à 100
+export(float) var tilt_back_spoiler_pourcentage = 30 # 0 à 100
+export(float) var suspension_hardness_pourcentage = 100 # 0 à 100
+export(float) var gearbox_pourcentage = 100 # 0 à 100
+export(TYRE) var tyre = TYRE.MEDIUM
+export(bool) var human_player = false
+
+
+var race_node
+var team_color = Color(1.0, 1.0, 1.0, 1.0)
 var sys_time := 0.0
 var velocity := Vector2.ZERO
 var direction_angle := 0.0
@@ -64,6 +68,7 @@ var total_time = []
 var inside_final_line = false
 var nb_tick := 0.0
 var angle_in_overtake = 0.0
+var energy_level = 100.0
 
 
 func set_coef_accelerate(new_coef_accelerate :float) -> void:
@@ -87,10 +92,30 @@ func set_suspension_hardness_pourcentage(new_suspension_hardness_pourcentage :fl
 	else: suspension_hardness_pourcentage = new_suspension_hardness_pourcentage
 
 
+func team_color_init():
+	match car_color:
+		CAR_COLOR.RED: team_color = Color(1.0, 0.2, 0.2, 1.0)
+		CAR_COLOR.GOLD: team_color = Color(0.9, 1.0, 0.4, 1.0)
+		CAR_COLOR.SKY: team_color = Color(0.4, 0.9, 1.0, 1.0)
+		CAR_COLOR.SAND: team_color = Color(1.0, 0.8, 0.3, 1.0)
+		CAR_COLOR.GREEN: team_color = Color(0.2, 1.0, 0.2, 1.0)
+		CAR_COLOR.PURPLE: team_color = Color(1.0, 0.2, 1.0, 1.0)
+		CAR_COLOR.ORANGE: team_color = Color(1.0, 0.3, 0.0, 1.0)
+		CAR_COLOR.BROWN: team_color = Color(0.5, 0.3, 0.2, 1.0)
+		CAR_COLOR.BLUE: team_color = Color(0.2, 0.2, 1.0, 1.0)
+		CAR_COLOR.PINK: team_color = Color(0.0, 0.6, 1.0, 1.0)
+		CAR_COLOR.GRASS: team_color = Color(0.7, 1.0, 0.3, 1.0)
+		CAR_COLOR.CYAN: team_color = Color(0.0, 0.0, 1.0, 1.0)
+		CAR_COLOR.DARK_RED: team_color = Color(0.7, 0.0, 0.0, 1.0)
+		CAR_COLOR.WATER: team_color = Color(0.0, 1.0, 1.0, 1.0)
+		CAR_COLOR.WINE: team_color = Color(0.6, 0.1, 0.2, 1.0)
+		CAR_COLOR.DARK: team_color = Color(0.5, 0.5, 0.5, 1.0)
+
+
 func _ready():
-	circuit_width = get_parent().get_parent().get_node("circuit/road_line").width
+	race_node = get_parent().get_parent()
+	circuit_width = race_node.get_node("circuit/road_line").width
 	
-	modulate = modulate_color
 	$number.text = number_car
 	$number.modulate = text_color
 	$helmet.modulate = helmet_color
@@ -104,7 +129,7 @@ func _ready():
 	$detect_limit_rigth.enabled = true
 	update_ray_cast()
 	
-	$detect_overtake.cast_to = Vector2(CAR_WIDTH * 1.5, 0)
+	$detect_overtake.cast_to = Vector2(CAR_WIDTH, 0)
 	$detect_crash.cast_to = Vector2(CAR_WIDTH / 2.5, 0)
 	
 	var circuit_height_ray_cast = circuit_width * 4.0
@@ -112,6 +137,8 @@ func _ready():
 	$detect_turn_left.enabled = true
 	$detect_turn_rigth.cast_to = Vector2(circuit_height_ray_cast * cos(PI / 4.0), circuit_height_ray_cast * sin(PI / 4.0))
 	$detect_turn_rigth.enabled = true
+	
+	team_color_init()
 	
 	time_max_speed = calculate_time(limit_speed / 2.0) * 5.0
 	update_param(true)
@@ -125,6 +152,7 @@ func _physics_process(delta):
 		return
 	
 	update_param(false)
+	go_circuit()
 	go_pitlane()
 	go_overtake()
 	var direction = direction()
@@ -181,9 +209,14 @@ func _physics_process(delta):
 		velocity = velocity.normalized() * max_speed
 	
 	var collision = move_and_collide(velocity * delta)
-	if road_type == ROAD_TYPE.ROAD and not $detect_crash.is_colliding() and collision and collision.collider is KinematicBody2D and collision.collider.is_in_group("car"):
+	if collision and collision.collider is StaticBody2D:
+		var bounce = velocity.angle_to(velocity.bounce(collision.normal))
+		velocity = velocity.rotated(bounce / 2.0)
+		brake()
+		
+	elif get_speed() > GRAVAR_SPEED and road_type == ROAD_TYPE.ROAD and not $detect_crash.is_colliding() and collision and collision.collider is KinematicBody2D and collision.collider.is_in_group("car"):
 		var angle = collision.normal.angle()
-		var bounce = velocity.bounce(collision.normal).normalized().angle()
+		var bounce = velocity.bounce(collision.normal).angle()
 		if 0.0 < angle and angle < PI / 4.0 or -3.0 * PI / 4.0 < angle and angle < 0.0:
 			turn(DIRECTION.TURN_LEFT, bounce / 25.0)
 		elif 0.0 > angle and angle > -PI / 4.0 or 3.0 * PI / 4.0 > angle and angle > 0.0:
@@ -203,7 +236,7 @@ func _physics_process(delta):
 
 
 func update_ray_cast():
-	var coef_size_ray_cast = circuit_width * 1.75 + get_speed() * sys_time * SCALE
+	var coef_size_ray_cast = circuit_width + pow(get_speed(), 2.0) * 0.5
 	
 	var size_limit_ray_cast = Vector2(coef_size_ray_cast, 0.0)
 	$detect_limit_left.cast_to = size_limit_ray_cast
@@ -224,6 +257,27 @@ func play_effect(speed_measured :float) -> void:
 	$gravar_effect_br.emitting = emitting_gravar_effect
 	$gravar_effect_fl.emitting = emitting_gravar_effect
 	$gravar_effect_fr.emitting = emitting_gravar_effect
+	
+	if race_node.road_condition == ROAD_CONDITION.SLIGHTLY_WET:
+		rain_effect_apply(true, Color(1.0, 1.0, 1.0, 0.04))
+	elif race_node.road_condition == ROAD_CONDITION.WET:
+		rain_effect_apply(true, Color(1.0, 1.0, 1.0, 0.08))
+	elif race_node.road_condition == ROAD_CONDITION.VERY_WET:
+		rain_effect_apply(true, Color(1.0, 1.0, 1.0, 0.12))
+	elif race_node.road_condition == ROAD_CONDITION.TOTALY_WET:
+		rain_effect_apply(true, Color(1.0, 1.0, 1.0, 0.16))
+	else:
+		rain_effect_apply(false, Color(1.0, 1.0, 1.0, 0.16))
+
+func rain_effect_apply(emitting, modulate_effect):
+	$rain_effect_bl.emitting = emitting
+	$rain_effect_bl.modulate = modulate_effect
+	$rain_effect_br.emitting = emitting
+	$rain_effect_br.modulate = modulate_effect
+	$rain_effect_fl.emitting = emitting
+	$rain_effect_fl.modulate = modulate_effect
+	$rain_effect_fr.emitting = emitting
+	$rain_effect_fr.modulate = modulate_effect
 
 
 func update_param(with_update :bool) -> void:
@@ -251,9 +305,65 @@ func update_param(with_update :bool) -> void:
 		slow_direction_angle_degree = angle_diff_by_front + angle_diff_by_back + angle_diff_by_suspension_front
 		fast_direction_angle_degree = angle_diff_by_back + angle_diff_by_suspension_back
 	
+	update_param_with_tyre_condition()
 	direction_angle = slow_direction_angle_degree * PI / 360.0 if with_slow_turn else fast_direction_angle_degree * PI / 360.0
 
 
+func update_param_with_tyre_condition():
+	
+	if race_node.road_condition == ROAD_CONDITION.DRY and tyre == TYRE.HARD:
+		direction_angle *= 0.8
+	elif race_node.road_condition == ROAD_CONDITION.DRY and tyre == TYRE.MEDIUM:
+		direction_angle *= 0.9
+	elif race_node.road_condition == ROAD_CONDITION.DRY and tyre == TYRE.SOFT:
+		direction_angle *= 1.0
+	elif race_node.road_condition == ROAD_CONDITION.SLIGHTLY_WET and tyre == TYRE.HARD:
+		direction_angle *= 0.7
+	elif race_node.road_condition == ROAD_CONDITION.SLIGHTLY_WET and tyre == TYRE.MEDIUM:
+		direction_angle *= 0.8
+	elif race_node.road_condition == ROAD_CONDITION.SLIGHTLY_WET and tyre == TYRE.SOFT:
+		direction_angle *= 0.9
+	elif race_node.road_condition == ROAD_CONDITION.WET and tyre == TYRE.HARD:
+		direction_angle *= 0.5
+	elif race_node.road_condition == ROAD_CONDITION.WET and tyre == TYRE.MEDIUM:
+		direction_angle *= 0.6
+	elif race_node.road_condition == ROAD_CONDITION.WET and tyre == TYRE.SOFT:
+		direction_angle *= 0.7
+	elif race_node.road_condition == ROAD_CONDITION.VERY_WET and tyre == TYRE.HARD:
+		direction_angle *= 0.3
+	elif race_node.road_condition == ROAD_CONDITION.VERY_WET and tyre == TYRE.MEDIUM:
+		direction_angle *= 0.4
+	elif race_node.road_condition == ROAD_CONDITION.VERY_WET and tyre == TYRE.SOFT:
+		direction_angle *= 0.5
+	elif race_node.road_condition == ROAD_CONDITION.TOTALY_WET and tyre == TYRE.HARD:
+		direction_angle *= 0.1
+	elif race_node.road_condition == ROAD_CONDITION.TOTALY_WET and tyre == TYRE.MEDIUM:
+		direction_angle *= 0.2
+	elif race_node.road_condition == ROAD_CONDITION.TOTALY_WET and tyre == TYRE.SOFT:
+		direction_angle *= 0.3
+		
+	elif race_node.road_condition == ROAD_CONDITION.DRY and tyre == TYRE.MEDIUM:
+		direction_angle *= 0.7
+	elif race_node.road_condition == ROAD_CONDITION.SLIGHTLY_WET and tyre == TYRE.MEDIUM:
+		direction_angle *= 0.9
+	elif race_node.road_condition == ROAD_CONDITION.WET and tyre == TYRE.MEDIUM:
+		direction_angle *= 0.9
+	elif race_node.road_condition == ROAD_CONDITION.VERY_WET and tyre == TYRE.MEDIUM:
+		direction_angle *= 0.7
+	elif race_node.road_condition == ROAD_CONDITION.TOTALY_WET and tyre == TYRE.MEDIUM:
+		direction_angle *= 0.5
+		
+	elif race_node.road_condition == ROAD_CONDITION.DRY and tyre == TYRE.WET:
+		direction_angle *= 0.3
+	elif race_node.road_condition == ROAD_CONDITION.SLIGHTLY_WET and tyre == TYRE.WET:
+		direction_angle *= 0.5
+	elif race_node.road_condition == ROAD_CONDITION.WET and tyre == TYRE.WET:
+		direction_angle *= 0.7
+	elif race_node.road_condition == ROAD_CONDITION.VERY_WET and tyre == TYRE.WET:
+		direction_angle *= 0.8
+	elif race_node.road_condition == ROAD_CONDITION.TOTALY_WET and tyre == TYRE.WET:
+		direction_angle *= 0.7
+	
 func chronometre():
 	
 	if chronometre_start == 0:
@@ -303,14 +413,14 @@ func get_angle_in_overtake(delta) -> float:
 			return angle_in_overtake
 			
 		STATE_IN_OVERTAKE.CONTINUE_1:
-			if nb_tick > 1.0:
+			if nb_tick > 1.5:
 				state_in_overtake = STATE_IN_OVERTAKE.CONTINUE_2
 			return 0.0
 			
 		STATE_IN_OVERTAKE.CONTINUE_2:
 			state_in_overtake = STATE_IN_OVERTAKE.END
 			road_type = ROAD_TYPE.ROAD
-			return -angle_in_overtake
+			return 0.0#-angle_in_overtake
 			
 		_:
 			return 0.0
@@ -446,6 +556,7 @@ func brake() -> void:
 
 
 func accelerate(delta :float):
+	energy_level -= delta / 60.0
 	sys_time += delta
 	var new_speed = SCALE * get_speed()
 	velocity = Vector2(cos(velocity.angle()), sin(velocity.angle())) * new_speed
@@ -468,27 +579,47 @@ func go_pitlane():
 			road_type = ROAD_TYPE.PITLANE
 
 
+func go_circuit() -> void:
+	var is_colliding = $detect_circuit.is_colliding()
+	var detect_out_circuit_interior = is_colliding and $detect_circuit.get_collider().is_in_group("interior") 
+	var detect_out_circuit_exterior = is_colliding and $detect_circuit.get_collider().is_in_group("exterior")
+	var detect_out_circuit = detect_out_circuit_interior or detect_out_circuit_exterior
+	var detect_in_circuit = is_colliding and ($detect_circuit.get_collider().is_in_group("turn") or $detect_circuit.get_collider().is_in_group("line"))
+	
+	if road_type in [ROAD_TYPE.INNER, ROAD_TYPE.OUTER] and detect_in_circuit:
+		limit_road()
+		road_type = ROAD_TYPE.ROAD
+		
+	elif road_type in [ROAD_TYPE.ROAD, ROAD_TYPE.STRAIGHT_AND_OVERTAKE] and detect_out_circuit:
+		if detect_out_circuit_interior:
+			limit_inner()
+			road_type = ROAD_TYPE.INNER
+		elif detect_out_circuit_exterior:
+			limit_outer()
+			road_type = ROAD_TYPE.OUTER
+
+
 func go_overtake() -> void:
 	var with_left_col_limit = $detect_limit_left.is_colliding() and ($detect_limit_left.get_collider().is_in_group("interior") or $detect_limit_left.get_collider().is_in_group("exterior"))
 	var with_right_col_limit = $detect_limit_rigth.is_colliding() and ($detect_limit_rigth.get_collider().is_in_group("interior") or $detect_limit_rigth.get_collider().is_in_group("exterior"))
 	var is_in_turn =  $detect_slow_turn.is_colliding() 
-	var is_car_crash = $detect_crash.is_colliding()
 	
-	if road_type != ROAD_TYPE.ROAD or is_in_turn or with_left_col_limit or with_right_col_limit or is_car_crash:
+	if road_type != ROAD_TYPE.ROAD or is_in_turn or with_left_col_limit or with_right_col_limit:
 		road_type = ROAD_TYPE.ROAD if road_type == ROAD_TYPE.STRAIGHT_AND_OVERTAKE else road_type
+		state_in_overtake = STATE_IN_OVERTAKE.END
 		return
 	
 	var with_overtake_car = $detect_overtake.is_colliding()
 	var is_car_in_left = $detect_turn_left.is_colliding() and $detect_turn_left.get_collider().is_in_group("car")
 	var is_car_in_right = $detect_turn_rigth.is_colliding() and $detect_turn_rigth.get_collider().is_in_group("car")
 	if not with_overtake_car or is_car_in_left or is_car_in_right:
+		state_in_overtake = STATE_IN_OVERTAKE.END
 		road_type = ROAD_TYPE.ROAD if road_type == ROAD_TYPE.STRAIGHT_AND_OVERTAKE else road_type
 		return
 	
 	if state_in_overtake == STATE_IN_OVERTAKE.END:
 		state_in_overtake = STATE_IN_OVERTAKE.BEGIN
 		road_type = ROAD_TYPE.STRAIGHT_AND_OVERTAKE
-
 
 func direction() -> int:
 	var direction = DIRECTION.DONT_TURN

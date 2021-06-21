@@ -1630,6 +1630,29 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="energy_lvl" type="Label" parent="Params/car_1"]
+margin_left = 32.0
+margin_top = 153.0
+margin_right = 256.0
+margin_bottom = 185.0
+text = "100 %"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="btn_pitlane" type="Button" parent="Params/car_1"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -200.0
+margin_top = 25.0
+margin_right = -32.0
+margin_bottom = 64.0
+text = "Go Pitlane"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Minimap" type="ViewportContainer" parent="Params"]
 margin_left = 656.0
 margin_right = 1224.0
@@ -1656,6 +1679,7 @@ zoom = Vector2( 15, 15 )
 margin_left = 1228.0
 margin_right = 1881.0
 margin_bottom = 305.0
+rect_pivot_offset = Vector2( -1279.2, 323.8 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.15
@@ -1704,8 +1728,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="energy_lvl" type="Label" parent="Params/car_2"]
+margin_left = 32.0
+margin_top = 153.0
+margin_right = 256.0
+margin_bottom = 185.0
+text = "100 %"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="btn_pitlane" type="Button" parent="Params/car_2"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -200.0
+margin_top = 25.0
+margin_right = -32.0
+margin_bottom = 64.0
+text = "Go Pitlane"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="refresh_stat" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.1
 autostart = true
 
 [connection signal="timeout" from="refresh_stat" to="." method="_on_Timer_timeout"]

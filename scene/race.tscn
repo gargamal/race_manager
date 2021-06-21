@@ -23,7 +23,11 @@ position = Vector2( 0, -48.5406 )
 circuit_exterior_width = 1500
 node_path = NodePath("../path_road")
 background = ExtResource( 5 )
-modulo_to_draw_interior = 1
+weather_proba_sun = 2
+weather_proba_sun_cloud = 4
+weather_proba_cloud = 8
+weather_proba_light_rain = 16
+weather_proba_heavy_rain = 32
 
 [node name="path_road" type="Path2D" parent="."]
 position = Vector2( -1054, -112.541 )
@@ -170,29 +174,27 @@ position = Vector2( -137.649, -2179.57 )
 [node name="cars" type="Node2D" parent="."]
 
 [node name="car_1" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
 position = Vector2( -4288, -4632 )
 car_name = "voiture 1"
 text_color = Color( 0, 0.0392157, 1, 1 )
 number_car = "01"
 helmet_color = Color( 0.231373, 0.0313726, 0.866667, 1 )
-tilt_front_spoiler_pourcentage = 50.0
+tilt_front_spoiler_pourcentage = 60.0
+tilt_back_spoiler_pourcentage = 60.0
 gearbox_pourcentage = 45.0
 
 [node name="car_2" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.298039, 0.2, 1, 1 )
 position = Vector2( -4136, -4768 )
 car_name = "voiture 2"
 text_color = Color( 0.12549, 1, 0, 1 )
 number_car = "02"
 helmet_color = Color( 0.419608, 0.960784, 0.145098, 1 )
-tilt_front_spoiler_pourcentage = 75.0
-tilt_back_spoiler_pourcentage = 75.0
+tilt_front_spoiler_pourcentage = 80.0
+tilt_back_spoiler_pourcentage = 80.0
 suspension_hardness_pourcentage = 75.0
 gearbox_pourcentage = 45.0
 
 [node name="car_3" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
 position = Vector2( -3984, -4632 )
 car_name = "voiture 3"
 car_color = 2
@@ -203,7 +205,6 @@ suspension_hardness_pourcentage = 50.0
 gearbox_pourcentage = 50.0
 
 [node name="car_4" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.298039, 0.2, 1, 1 )
 position = Vector2( -3832, -4768 )
 car_name = "voiture 4"
 car_color = 2
@@ -212,7 +213,6 @@ suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
 [node name="car_5" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
 position = Vector2( -3712, -4632 )
 car_name = "voiture autre"
 car_color = 3
@@ -223,7 +223,6 @@ suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
 [node name="car_6" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.298039, 0.2, 1, 1 )
 position = Vector2( -3560, -4768 )
 car_name = "voiture autre"
 car_color = 3
@@ -234,7 +233,6 @@ suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
 [node name="car_7" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
 position = Vector2( -3432, -4632 )
 car_name = "voiture autre"
 car_color = 4
@@ -245,7 +243,6 @@ suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
 [node name="car_8" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.298039, 0.2, 1, 1 )
 position = Vector2( -3280, -4768 )
 car_name = "voiture autre"
 car_color = 4
@@ -256,7 +253,6 @@ suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
 [node name="car_9" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
 position = Vector2( -3136, -4632 )
 car_name = "voiture autre"
 car_color = 5
@@ -267,7 +263,6 @@ suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
 [node name="car_10" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.298039, 0.2, 1, 1 )
 position = Vector2( -2984, -4768 )
 car_name = "voiture autre"
 car_color = 5
@@ -278,7 +273,6 @@ suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
 [node name="car_11" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
 position = Vector2( -2848, -4632 )
 car_name = "voiture autre"
 car_color = 6
@@ -289,7 +283,6 @@ suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
 [node name="car_12" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.298039, 0.2, 1, 1 )
 position = Vector2( -2696, -4768 )
 car_name = "voiture autre"
 car_color = 6
@@ -300,7 +293,6 @@ suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
 [node name="car_13" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
 position = Vector2( -2544, -4632 )
 car_name = "voiture autre"
 car_color = 7
@@ -311,7 +303,6 @@ suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
 [node name="car_14" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.298039, 0.2, 1, 1 )
 position = Vector2( -2392, -4768 )
 car_name = "voiture autre"
 car_color = 7
@@ -322,7 +313,6 @@ suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
 [node name="car_15" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
 position = Vector2( -2272, -4632 )
 car_name = "voiture autre"
 car_color = 8
@@ -333,7 +323,6 @@ suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
 [node name="car_16" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.298039, 0.2, 1, 1 )
 position = Vector2( -2120, -4768 )
 car_name = "voiture autre"
 car_color = 8
@@ -344,7 +333,6 @@ suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
 [node name="car_17" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
 position = Vector2( -1992, -4632 )
 car_name = "voiture autre"
 car_color = 9
@@ -355,7 +343,6 @@ suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
 [node name="car_18" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.298039, 0.2, 1, 1 )
 position = Vector2( -1840, -4768 )
 car_name = "voiture autre"
 car_color = 9
@@ -366,7 +353,6 @@ suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
 
 [node name="car_19" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.568627, 0.419608, 0.0235294, 1 )
 position = Vector2( -1696, -4632 )
 car_name = "voiture 19"
 car_color = 15
@@ -381,7 +367,6 @@ suspension_hardness_pourcentage = 50.0
 gearbox_pourcentage = 50.0
 
 [node name="car_20" parent="cars" instance=ExtResource( 2 )]
-modulate = Color( 0.298039, 0.2, 1, 1 )
 position = Vector2( -1544, -4768 )
 car_name = "voiture 20"
 car_color = 15
@@ -392,3 +377,45 @@ tilt_front_spoiler_pourcentage = 75.0
 tilt_back_spoiler_pourcentage = 75.0
 suspension_hardness_pourcentage = 70.0
 gearbox_pourcentage = 50.0
+
+[node name="ligth_rain" type="CPUParticles2D" parent="."]
+position = Vector2( 0, -4000 )
+emitting = false
+amount = 2000
+lifetime = 15.0
+speed_scale = 5.0
+emission_shape = 2
+emission_rect_extents = Vector2( 8000, 1 )
+direction = Vector2( 0, 100 )
+spread = 0.0
+gravity = Vector2( 0, 10 )
+initial_velocity = 500.0
+initial_velocity_random = 0.5
+scale_amount = 7.0
+scale_amount_random = 1.0
+color = Color( 0.670588, 0.976471, 1, 0.705882 )
+
+[node name="rain" type="CPUParticles2D" parent="."]
+position = Vector2( 0, -4000 )
+emitting = false
+amount = 5000
+lifetime = 15.0
+speed_scale = 5.0
+emission_shape = 2
+emission_rect_extents = Vector2( 8000, 1 )
+direction = Vector2( 0, 100 )
+spread = 0.0
+gravity = Vector2( 0, 10 )
+initial_velocity = 500.0
+initial_velocity_random = 0.5
+scale_amount = 7.0
+scale_amount_random = 1.0
+color = Color( 0.670588, 0.976471, 1, 0.705882 )
+
+[node name="weather_timer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[node name="tw_weather" type="Tween" parent="."]
+
+[connection signal="timeout" from="weather_timer" to="." method="_on_weather_timeout"]

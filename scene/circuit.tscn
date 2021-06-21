@@ -41,6 +41,25 @@ collision_mask = 8
 
 [node name="refresh" type="Timer" parent="."]
 
-[connection signal="body_entered" from="road_line/limit_interior" to="." method="_on_limit_interior_body_entered"]
-[connection signal="body_entered" from="road_line/limit_exterior" to="." method="_on_limit_exterior_body_entered"]
+[node name="ligthly_rain" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 2000
+emission_shape = 2
+emission_rect_extents = Vector2( 4000, 4000 )
+gravity = Vector2( 0, 0 )
+scale_amount = 7.0
+scale_amount_random = 1.0
+color = Color( 0.607843, 0.964706, 1, 0.25098 )
+
+[node name="rain" type="CPUParticles2D" parent="."]
+modulate = Color( 1, 1, 1, 0.501961 )
+emitting = false
+amount = 5000
+emission_shape = 2
+emission_rect_extents = Vector2( 4000, 4000 )
+gravity = Vector2( 0, 0 )
+scale_amount = 7.0
+scale_amount_random = 1.0
+color = Color( 0.607843, 0.964706, 1, 0.25098 )
+
 [connection signal="timeout" from="refresh" to="." method="_on_refresh_timeout"]

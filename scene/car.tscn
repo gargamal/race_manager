@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://script/car.gd" type="Script" id=1]
 [ext_resource path="res://font/DejaVuSans.ttf" type="DynamicFontData" id=2]
@@ -27,6 +27,10 @@ offsets = PoolRealArray( 0, 0.573643 )
 [sub_resource type="Gradient" id=6]
 offsets = PoolRealArray( 0.364341, 1 )
 colors = PoolColorArray( 1, 0.901961, 0.670588, 0.501961, 0.239216, 0.176471, 0.054902, 0.501961 )
+
+[sub_resource type="Gradient" id=7]
+offsets = PoolRealArray( 0.364341, 1 )
+colors = PoolColorArray( 0.764706, 1, 1, 0.501961, 0.054902, 0.215686, 0.239216, 0.501961 )
 
 [node name="car" type="KinematicBody2D" groups=[
 "car",
@@ -88,10 +92,19 @@ collision_mask = 8
 collide_with_areas = true
 
 [node name="detect_slow_turn" type="RayCast2D" parent="."]
-position = Vector2( 16, 0 )
+position = Vector2( 40, -1 )
+scale = Vector2( 0.2, 0.2 )
 enabled = true
 cast_to = Vector2( 50, 0 )
 collision_mask = 128
+collide_with_areas = true
+
+[node name="detect_circuit" type="RayCast2D" parent="."]
+position = Vector2( 40, 1 )
+scale = Vector2( 0.2, 0.2 )
+enabled = true
+cast_to = Vector2( 50, 0 )
+collision_mask = 198
 collide_with_areas = true
 
 [node name="detect_final_line" type="RayCast2D" parent="."]
@@ -103,15 +116,16 @@ collide_with_areas = true
 
 [node name="detect_return_road" type="RayCast2D" parent="."]
 enabled = true
-cast_to = Vector2( 300, 0 )
+cast_to = Vector2( 500, 0 )
 collision_mask = 192
 collide_with_areas = true
 
 [node name="detect_overtake" type="RayCast2D" parent="."]
+position = Vector2( 64, 0 )
+scale = Vector2( 0.2, 0.2 )
 enabled = true
-cast_to = Vector2( 150, 0 )
+cast_to = Vector2( 250, 0 )
 collision_mask = 8
-collide_with_areas = true
 
 [node name="number" type="Label" parent="."]
 margin_left = 24.0
@@ -252,6 +266,78 @@ initial_velocity = 50.0
 scale_amount = 5.0
 scale_amount_random = 1.0
 color_ramp = SubResource( 6 )
+
+[node name="rain_effect_bl" type="CPUParticles2D" parent="."]
+modulate = Color( 1, 1, 1, 0.04 )
+position = Vector2( -59, -21 )
+emitting = false
+amount = 512
+emission_shape = 2
+emission_rect_extents = Vector2( 1, 5 )
+direction = Vector2( -1, 0 )
+spread = 20.0
+gravity = Vector2( -98, 0 )
+initial_velocity = 100.0
+scale_amount = 5.0
+scale_amount_random = 1.0
+color_ramp = SubResource( 7 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="rain_effect_br" type="CPUParticles2D" parent="."]
+modulate = Color( 1, 1, 1, 0.156863 )
+position = Vector2( -59, 21 )
+emitting = false
+amount = 512
+emission_shape = 2
+emission_rect_extents = Vector2( 1, 5 )
+direction = Vector2( -1, 0 )
+spread = 20.0
+gravity = Vector2( -98, 0 )
+initial_velocity = 100.0
+scale_amount = 5.0
+scale_amount_random = 1.0
+color_ramp = SubResource( 7 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="rain_effect_fl" type="CPUParticles2D" parent="."]
+modulate = Color( 1, 1, 1, 0.156863 )
+position = Vector2( 24, -20 )
+emitting = false
+amount = 512
+emission_shape = 2
+emission_rect_extents = Vector2( 1, 5 )
+direction = Vector2( -1, 0 )
+spread = 20.0
+gravity = Vector2( -98, 0 )
+initial_velocity = 100.0
+scale_amount = 5.0
+scale_amount_random = 1.0
+color_ramp = SubResource( 7 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="rain_effect_fr" type="CPUParticles2D" parent="."]
+modulate = Color( 1, 1, 1, 0.156863 )
+position = Vector2( 25, 20 )
+emitting = false
+amount = 512
+emission_shape = 2
+emission_rect_extents = Vector2( 1, 5 )
+direction = Vector2( -1, 0 )
+spread = 20.0
+gravity = Vector2( -98, 0 )
+initial_velocity = 100.0
+scale_amount = 5.0
+scale_amount_random = 1.0
+color_ramp = SubResource( 7 )
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="pitstop_time" type="Timer" parent="."]
 one_shot = true

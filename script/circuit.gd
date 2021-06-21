@@ -2,16 +2,24 @@ tool
 extends Node2D
 
 
+enum TYPE_TURN { STRAIGHT_LINE = 64, SLOW_TURN = 128 }
+enum WEATHER { SUN, SUN_CLOUD, CLOUD, LIGHT_RAIN, RAIN }
+
+
 export(int)var nb_lap := 100
 export(int)var circuit_exterior_width := 500
 export(int)var road_width := 300
 export(NodePath) var node_path
 export(StreamTexture) var background
-export(int)var modulo_to_draw_interior := 2
 export(bool)var with_redraw := false setget with_redraw_editor 
+export(int)var weather_proba_sun = 1
+export(int)var weather_proba_sun_cloud = 1
+export(int)var weather_proba_cloud = 1
+export(int)var weather_proba_light_rain = 1
+export(int)var weather_proba_heavy_rain = 1
 
 
-enum TYPE_TURN { STRAIGHT_LINE = 64, SLOW_TURN = 128 }
+var previous_weather = WEATHER.SUN
 
 
 func _ready():
@@ -55,7 +63,7 @@ func build_road_type(root :Node2D, polygon_interior :Array, polygon_exterior :Ar
 	
 	for idx in range(size_exterior):
 		var angle_exterior = get_angle(polygon_exterior, idx, size_exterior)
-		var angle_interior = get_angle(polygon_interior, int(idx / modulo_to_draw_interior), size_interior)
+		var angle_interior = get_angle(polygon_interior, idx, size_interior)
 		var angle = angle_interior if angle_interior > angle_exterior else angle_exterior
 		
 		if angle_min <= angle and angle < angle_max:
@@ -69,10 +77,9 @@ func build_road_type(root :Node2D, polygon_interior :Array, polygon_exterior :Ar
 					points_merged.append(points_interior[idx_inter])
 				
 				var area_road_type = Area2D.new()
-				area_road_type.add_to_group("turn")
+				area_road_type.add_to_group("turn" if collision_layer == TYPE_TURN.SLOW_TURN else "line")
 				area_road_type.collision_layer = collision_layer
 				area_road_type.collision_mask = 8 # it's a car
-				area_road_type.connect("body_entered", self, "_on_limit_road_body_entered")
 				
 				var col_road_type = CollisionPolygon2D.new()
 				col_road_type.polygon = points_merged
@@ -87,9 +94,8 @@ func build_road_type(root :Node2D, polygon_interior :Array, polygon_exterior :Ar
 
 func add_point(size_interior :int, idx :int, points_exterior :Array, points_interior :Array, polygon_exterior :Array, polygon_interior :Array) -> void:
 	points_exterior.append(polygon_exterior[idx])
-	if int(points_exterior.size() / modulo_to_draw_interior) > points_interior.size():
-		var idx_inter = int(idx / modulo_to_draw_interior)
-		points_interior.append(polygon_interior[idx_inter if idx_inter < size_interior else 0])
+	if points_exterior.size() > points_interior.size():
+		points_interior.append(polygon_interior[idx if idx < size_interior else 0])
 
 
 func get_angle(polygon :Array, idx :int, size :int) -> float:
@@ -243,9 +249,8 @@ func build_interior(polygon) -> Array:
 	if size > 1:
 		var vect
 		for idx in range(size - 1):
-			if idx % modulo_to_draw_interior == 0:
-				vect = (polygon[idx + 1] - polygon[idx]).rotated(PI / 2).normalized() * ($road_line.width / 2)
-				build_polygon.append(polygon[idx] + vect)
+			vect = (polygon[idx + 1] - polygon[idx]).rotated(PI / 2).normalized() * ($road_line.width / 2)
+			build_polygon.append(polygon[idx] + vect)
 	
 	return build_polygon
 
@@ -266,21 +271,29 @@ func build_polygon_exterior(polygon) -> Array:
 	return build_polygon
 
 
-func _on_limit_interior_body_entered(body) -> void:
-	if body.is_in_group("car"):
-		body.limit_inner()
-
-
-func _on_limit_exterior_body_entered(body) -> void:
-	if body.is_in_group("car"):
-		body.limit_outer()
-
-
-func _on_limit_road_body_entered(body) -> void:
-	if body.is_in_group("car"):
-		body.limit_road()
-
 func _on_refresh_timeout():
 	if with_redraw and node_path and get_node(node_path) is Path2D:
 		_ready()
 		with_redraw_editor(false)
+
+func rain_effect_apply(weather):
+	if previous_weather == weather:
+		return
+	
+	previous_weather = weather
+	if weather == WEATHER.LIGHT_RAIN:
+		$ligthly_rain.emitting = true
+		$rain.emitting = false
+		$road_line.modulate = Color(0.85, 0.85, 0.85, 1.0)
+		
+	elif weather == WEATHER.RAIN:
+		$ligthly_rain.emitting = true
+		$rain.emitting = true
+		$road_line.modulate = Color(0.7, 0.7, 0.7, 1.0)
+		
+	else:
+		$ligthly_rain.emitting = false
+		$rain.emitting = false
+		$road_line.modulate = Color(1.0, 1.0, 1.0, 1.0)
+		
+

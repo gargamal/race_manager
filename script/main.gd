@@ -10,24 +10,30 @@ onready var world = $Viewports/ViewportContainer2/Viewport/race
 var car_1
 var car_2
 
+
 var ranking_tab_base := []
 var ranking_line := { "car":"", "total_time":0, "lap":0, "best_lap":0, "last_lap":0 }
 
 var lap_number = 0
 
 func _ready():
+	demo_script()
+	
 	viewport1.world_2d = viewport2.world_2d
 	$Params/Minimap/Viewport.world_2d = viewport1.world_2d
 	camera1.target = world.get_node("cars/car_1")
+	world.get_node("cars/car_1").human_player = true
 	car_1 = camera1.target
 	init_screen($Params/car_1, car_1)
-	camera2.target = world.get_node("cars/car_19")
+	camera2.target = world.get_node("cars/car_12")
 	car_2 = camera2.target
+	world.get_node("cars/car_12").human_player = true
 	init_screen($Params/car_2, car_2)
 	init_ranking()
 
 
 func init_screen(root :Panel, car :KinematicBody2D):
+	root.get_node("car_name").modulate = car.team_color
 	root.get_node("car_name").text = car.car_name
 	root.get_node("car_speed").text = "0 km /h"
 	root.get_node("last_lap").text = "last :---"
@@ -44,7 +50,9 @@ func init_ranking():
 	
 	for child in root.get_children():
 		if count > 1 and count <= nb_car + 1:
-			child.get_node("car_name").text = world.get_node("cars/car_" + str(count - 1)).car_name
+			var car_node = world.get_node("cars/car_" + str(count - 1))
+			child.modulate = car_node.team_color
+			child.get_node("car_name").text = car_node.car_name
 			child.get_node("time").text = "---"
 			child.get_node("gap").text = "---"
 			child.get_node("best_lap").text = "---"
@@ -61,6 +69,14 @@ func init_ranking():
 			child.get_node("lap").text = ""
 		count += 1
 
+
+func demo_script():
+	var count = 1
+	for child in world.get_node("cars").get_children():
+		child.car_name = "car n°" + str(count)
+		child.number_car = str(count)
+		count += 1
+
 func _process(_delta):
 	if Input.is_action_just_pressed("ui_accept"):
 		var _err = get_tree().reload_current_scene()
@@ -68,9 +84,10 @@ func _process(_delta):
 
 func update_screen(root :Panel, car :KinematicBody2D):
 	var speed = car.get_speed() * 3.6
-	root.get_node("car_speed").text = str(int(speed + 0.5)) + " km /h"
+	root.get_node("car_speed").text = "speed :" + str(int(speed + 0.5)) + " km /h"
 	root.get_node("last_lap").text = "last :" + ("---" if car.last_lap < 1 else format_time(car.last_lap))
 	root.get_node("best_lap").text = "best :" + ("---" if car.last_lap < 1 else format_time(car.best_lap))
+	root.get_node("energy_lvl").text = "energy :" + str(int(car.energy_level * 10.0 + 0.5) / 10.0) + " %"
 
 
 func format_time(time :int) -> String:
@@ -88,23 +105,27 @@ func update_ranking():
 	
 	var root = $Viewports/panel/ranking
 	var count = 0
+	var last_total_time := 0.0
+	var last_lap = 0
 	var nb_car = world.get_node("cars").get_child_count()
 	
 	for child in root.get_children():
 		if 1 < count and count <= nb_car + 1:
 			var line = ranking_tab_screen[count - 2]
 			var car = line.car
+			child.modulate = car.team_color
 			child.get_node("car_name").text =  car.car_name
 			child.get_node("time").text = format_time(line.last_lap)
 			child.get_node("best_lap").text = format_time(line.best_lap)
 			child.get_node("lap").text = str(line.lap)
-			if 2 < count and count <= nb_car:
-				var gap = ranking_tab_screen[count - 1].total_time - line.total_time
-				if gap > 0:
+			if 2 < count:
+				var gap = line.total_time - last_total_time
+				if gap > 0 and line.lap == last_lap:
 					child.get_node("gap").text = format_time(gap)
 				else:
 					child.get_node("gap").text = "---"
-			
+			last_total_time = line.total_time
+			last_lap = line.lap
 		count += 1
 
 
