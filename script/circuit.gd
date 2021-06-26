@@ -2,7 +2,7 @@ tool
 extends Node2D
 
 
-enum TYPE_TURN { STRAIGHT_LINE = 64, SLOW_TURN = 128 }
+const TYPE_LAYER = { "STRAIGHT_LINE": 64, "SLOW_TURN": 128, "CAR": 8 }
 enum WEATHER { SUN, SUN_CLOUD, CLOUD, LIGHT_RAIN, RAIN }
 
 
@@ -19,7 +19,7 @@ export(int)var weather_proba_light_rain = 1
 export(int)var weather_proba_heavy_rain = 1
 
 
-var previous_weather = WEATHER.SUN
+var previous_weather = WEATHER.CLOUD
 
 
 func _ready():
@@ -48,8 +48,8 @@ func _ready():
 				$straigth_lines.remove_child(child)
 			build_buzer(polygon_interior)
 			build_buzer(polygon_exterior_raw)
-			build_road_type($slow_turns, polygon_interior, polygon_exterior_raw, 0.02, 2.0, TYPE_TURN.SLOW_TURN)
-			build_road_type($straigth_lines, polygon_interior, polygon_exterior_raw, 0.0, 0.02, TYPE_TURN.STRAIGHT_LINE)
+			build_road_type($slow_turns, polygon_interior, polygon_exterior_raw, 0.02, 2.0, TYPE_LAYER["SLOW_TURN"])
+			build_road_type($straigth_lines, polygon_interior, polygon_exterior_raw, 0.0, 0.02, TYPE_LAYER["STRAIGHT_LINE"])
 
 
 func build_road_type(root :Node2D, polygon_interior :Array, polygon_exterior :Array, angle_min :float, angle_max :float, collision_layer :int) -> void:
@@ -77,9 +77,9 @@ func build_road_type(root :Node2D, polygon_interior :Array, polygon_exterior :Ar
 					points_merged.append(points_interior[idx_inter])
 				
 				var area_road_type = Area2D.new()
-				area_road_type.add_to_group("turn" if collision_layer == TYPE_TURN.SLOW_TURN else "line")
+				area_road_type.add_to_group("turn" if collision_layer == TYPE_LAYER["SLOW_TURN"] else "line")
 				area_road_type.collision_layer = collision_layer
-				area_road_type.collision_mask = 8 # it's a car
+				area_road_type.collision_mask = TYPE_LAYER["CAR"] # it's a car
 				
 				var col_road_type = CollisionPolygon2D.new()
 				col_road_type.polygon = points_merged
@@ -224,6 +224,7 @@ func add_square_col_to_finalize_exterior(limit, start, end) -> void:
 		square_bg.texture = background
 	$road_line/limit_exterior.add_child(square_bg)
 
+
 func get_limit(polygon_ext) -> Rect2:
 	var x_min = 100000
 	var y_min = 100000
@@ -284,16 +285,21 @@ func rain_effect_apply(weather):
 	if weather == WEATHER.LIGHT_RAIN:
 		$ligthly_rain.emitting = true
 		$rain.emitting = false
-		$road_line.modulate = Color(0.85, 0.85, 0.85, 1.0)
+		change_colorate_road(Color(0.85, 0.85, 0.85, 1.0))
 		
 	elif weather == WEATHER.RAIN:
 		$ligthly_rain.emitting = true
 		$rain.emitting = true
-		$road_line.modulate = Color(0.7, 0.7, 0.7, 1.0)
+		change_colorate_road(Color(0.7, 0.7, 0.7, 1.0))
 		
 	else:
 		$ligthly_rain.emitting = false
 		$rain.emitting = false
-		$road_line.modulate = Color(1.0, 1.0, 1.0, 1.0)
-		
+		change_colorate_road(Color(1.0, 1.0, 1.0, 1.0))
+
+
+func change_colorate_road(new_modulate):
+	if $road_line.modulate != new_modulate:
+		$tw_weather.interpolate_property($road_line, "modulate", modulate, new_modulate, 10.0, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		$tw_weather.start()
 

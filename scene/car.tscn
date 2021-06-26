@@ -44,88 +44,19 @@ script = ExtResource( 1 )
 scale = Vector2( 0.2, 0.2 )
 polygon = PoolVector2Array( -285, -95, 310, -90, 310, 95, -285, 95 )
 
+[node name="out_circuit" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 6
+
+[node name="col" type="CollisionPolygon2D" parent="out_circuit"]
+polygon = PoolVector2Array( -40, -13, 28, -10, 28, 10, -40, 14 )
+
 [node name="car_design" type="Sprite" parent="."]
 scale = Vector2( 0.2, 0.2 )
 texture = SubResource( 1 )
 hframes = 2
 vframes = 8
 frame = 1
-
-[node name="detect_limit_left" type="RayCast2D" parent="."]
-position = Vector2( 64, -18 )
-scale = Vector2( 0.2, 0.2 )
-enabled = true
-cast_to = Vector2( 500, 0 )
-collision_mask = 19
-collide_with_areas = true
-
-[node name="detect_limit_rigth" type="RayCast2D" parent="."]
-position = Vector2( 64, 18 )
-scale = Vector2( 0.2, 0.2 )
-enabled = true
-cast_to = Vector2( 500, 0 )
-collision_mask = 21
-collide_with_areas = true
-
-[node name="detect_turn_left" type="RayCast2D" parent="."]
-position = Vector2( 32, -24 )
-scale = Vector2( 0.2, 0.2 )
-enabled = true
-cast_to = Vector2( 500, -500 )
-collision_mask = 31
-collide_with_areas = true
-
-[node name="detect_turn_rigth" type="RayCast2D" parent="."]
-position = Vector2( 32, 24 )
-scale = Vector2( 0.2, 0.2 )
-enabled = true
-cast_to = Vector2( 500, 500 )
-collision_mask = 31
-collide_with_areas = true
-
-[node name="detect_crash" type="RayCast2D" parent="."]
-position = Vector2( 56, 0 )
-scale = Vector2( 0.2, 0.2 )
-enabled = true
-cast_to = Vector2( 500, 0 )
-collision_mask = 8
-collide_with_areas = true
-
-[node name="detect_slow_turn" type="RayCast2D" parent="."]
-position = Vector2( 40, -1 )
-scale = Vector2( 0.2, 0.2 )
-enabled = true
-cast_to = Vector2( 50, 0 )
-collision_mask = 128
-collide_with_areas = true
-
-[node name="detect_circuit" type="RayCast2D" parent="."]
-position = Vector2( 40, 1 )
-scale = Vector2( 0.2, 0.2 )
-enabled = true
-cast_to = Vector2( 50, 0 )
-collision_mask = 198
-collide_with_areas = true
-
-[node name="detect_final_line" type="RayCast2D" parent="."]
-position = Vector2( 11, 0 )
-enabled = true
-cast_to = Vector2( 50, 0 )
-collision_mask = 256
-collide_with_areas = true
-
-[node name="detect_return_road" type="RayCast2D" parent="."]
-enabled = true
-cast_to = Vector2( 500, 0 )
-collision_mask = 192
-collide_with_areas = true
-
-[node name="detect_overtake" type="RayCast2D" parent="."]
-position = Vector2( 64, 0 )
-scale = Vector2( 0.2, 0.2 )
-enabled = true
-cast_to = Vector2( 250, 0 )
-collision_mask = 8
 
 [node name="number" type="Label" parent="."]
 margin_left = 24.0
@@ -145,6 +76,121 @@ __meta__ = {
 
 [node name="helmet" type="Polygon2D" parent="."]
 polygon = PoolVector2Array( -3, -4, -6, -3, -7, 0, -7, 1, -6, 4, -3, 5, 0, 4, 1, 1, 1, 0, 0, -3 )
+
+[node name="detect_limit" type="RayCast2D" parent="."]
+position = Vector2( 64, -1.90735e-06 )
+scale = Vector2( 0.2, 0.2 )
+enabled = true
+cast_to = Vector2( 500, 0 )
+collision_mask = 22
+collide_with_areas = true
+
+[node name="detect_turn_left" type="RayCast2D" parent="."]
+position = Vector2( 32, -24 )
+scale = Vector2( 0.2, 0.2 )
+enabled = true
+cast_to = Vector2( 500, -500 )
+collision_mask = 22
+collide_with_areas = true
+
+[node name="detect_turn_rigth" type="RayCast2D" parent="."]
+position = Vector2( 32, 24 )
+scale = Vector2( 0.2, 0.2 )
+enabled = true
+cast_to = Vector2( 500, 500 )
+collision_mask = 22
+collide_with_areas = true
+
+[node name="detect_car_left" type="RayCast2D" parent="."]
+position = Vector2( 32, -24 )
+scale = Vector2( 0.2, 0.2 )
+enabled = true
+cast_to = Vector2( 500, -500 )
+collision_mask = 8
+collide_with_areas = true
+
+[node name="detect_car_rigth" type="RayCast2D" parent="."]
+position = Vector2( 32, 24 )
+scale = Vector2( 0.2, 0.2 )
+enabled = true
+cast_to = Vector2( 500, 500 )
+collision_mask = 8
+collide_with_areas = true
+
+[node name="detect_crash_l" type="RayCast2D" parent="."]
+position = Vector2( 64, -18 )
+scale = Vector2( 0.2, 0.2 )
+enabled = true
+cast_to = Vector2( 500, 0 )
+collision_mask = 8
+collide_with_areas = true
+
+[node name="detect_crash_r" type="RayCast2D" parent="."]
+position = Vector2( 64, 18 )
+scale = Vector2( 0.2, 0.2 )
+enabled = true
+cast_to = Vector2( 500, 0 )
+collision_mask = 8
+collide_with_areas = true
+
+[node name="detect_slow_turn" type="RayCast2D" parent="."]
+position = Vector2( 40, -1 )
+scale = Vector2( 0.2, 0.2 )
+enabled = true
+cast_to = Vector2( 50, 0 )
+collision_mask = 128
+collide_with_areas = true
+
+[node name="detect_circuit" type="RayCast2D" parent="."]
+position = Vector2( -61, -2.38419e-07 )
+scale = Vector2( 0.2, 0.2 )
+enabled = true
+cast_to = Vector2( 500, 0 )
+collision_mask = 198
+collide_with_areas = true
+
+[node name="detect_final_line" type="RayCast2D" parent="."]
+position = Vector2( -61, 0 )
+enabled = true
+cast_to = Vector2( 125, 0 )
+collision_mask = 256
+collide_with_areas = true
+
+[node name="detect_return_road" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 500, 0 )
+collision_mask = 192
+collide_with_areas = true
+
+[node name="detect_return_road_left" type="RayCast2D" parent="."]
+position = Vector2( 39, -24 )
+rotation = -0.785398
+enabled = true
+cast_to = Vector2( 500, 0 )
+collision_mask = 192
+collide_with_areas = true
+
+[node name="detect_return_road_right" type="RayCast2D" parent="."]
+position = Vector2( 40, 24 )
+rotation = 0.785398
+enabled = true
+cast_to = Vector2( 500, 0 )
+collision_mask = 192
+collide_with_areas = true
+
+[node name="detect_overtake_r" type="RayCast2D" parent="."]
+position = Vector2( 64, 18 )
+scale = Vector2( 0.2, 0.2 )
+enabled = true
+cast_to = Vector2( 250, 0 )
+collision_mask = 8
+
+[node name="detect_overtake_l" type="RayCast2D" parent="."]
+position = Vector2( 64, -18 )
+scale = Vector2( 0.2, 0.2 )
+enabled = true
+cast_to = Vector2( 250, 0 )
+collision_mask = 8
 
 [node name="wheel_effect_bl" type="CPUParticles2D" parent="."]
 modulate = Color( 1, 1, 1, 0.156863 )
@@ -341,12 +387,5 @@ __meta__ = {
 
 [node name="pitstop_time" type="Timer" parent="."]
 one_shot = true
-
-[node name="out_circuit" type="Area2D" parent="."]
-collision_layer = 8
-collision_mask = 6
-
-[node name="col" type="CollisionPolygon2D" parent="out_circuit"]
-polygon = PoolVector2Array( -40, -13, 28, -10, 28, 10, -40, 14 )
 
 [connection signal="timeout" from="pitstop_time" to="." method="_on_pitstop_time_timeout"]

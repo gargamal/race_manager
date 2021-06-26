@@ -19,14 +19,14 @@ __meta__ = {
 }
 
 [node name="ViewportContainer1" type="ViewportContainer" parent="Viewports"]
-margin_right = 720.0
+margin_right = 938.0
 margin_bottom = 746.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 stretch = true
 
 [node name="Viewport" type="Viewport" parent="Viewports/ViewportContainer1"]
-size = Vector2( 720, 746 )
+size = Vector2( 938, 746 )
 handle_input_locally = false
 disable_3d = true
 usage = 0
@@ -38,15 +38,15 @@ zoom = Vector2( 1.25, 1.25 )
 script = ExtResource( 3 )
 
 [node name="ViewportContainer2" type="ViewportContainer" parent="Viewports"]
-margin_left = 724.0
-margin_right = 1444.0
+margin_left = 942.0
+margin_right = 1881.0
 margin_bottom = 746.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 stretch = true
 
 [node name="Viewport" type="Viewport" parent="Viewports/ViewportContainer2"]
-size = Vector2( 720, 746 )
+size = Vector2( 939, 746 )
 handle_input_locally = false
 disable_3d = true
 usage = 0
@@ -59,20 +59,26 @@ current = true
 zoom = Vector2( 1.25, 1.25 )
 script = ExtResource( 3 )
 
-[node name="panel" type="Panel" parent="Viewports"]
-margin_left = 1448.0
-margin_right = 1881.0
-margin_bottom = 746.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.6
+[node name="panel_ranking" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_top = 0.01
+anchor_right = 0.5
+anchor_bottom = 0.01
+margin_left = -256.0
+margin_top = 53.2
+margin_right = 268.0
+margin_bottom = 796.2
+size_flags_stretch_ratio = 0.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ranking" type="VBoxContainer" parent="Viewports/panel"]
-margin_left = 4.0
-margin_right = 426.0
+[node name="ranking" type="VBoxContainer" parent="panel_ranking"]
+anchor_left = 0.05
+anchor_top = 0.01
+anchor_right = 0.05
+anchor_bottom = 0.01
+margin_right = 496.0
 margin_bottom = 746.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -80,8 +86,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="title" type="Label" parent="Viewports/panel/ranking"]
-margin_right = 422.0
+[node name="title" type="Label" parent="panel_ranking/ranking"]
+margin_right = 496.0
 margin_bottom = 33.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -93,9 +99,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="vb_title" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="vb_title" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 37.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 64.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -103,8 +109,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/vb_title"]
-margin_right = 94.0
+[node name="car_name" type="Label" parent="panel_ranking/ranking/vb_title"]
+margin_right = 111.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
@@ -114,9 +120,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/vb_title"]
-margin_left = 98.0
-margin_right = 192.0
+[node name="time" type="Label" parent="panel_ranking/ranking/vb_title"]
+margin_left = 115.0
+margin_right = 227.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
@@ -126,9 +132,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/vb_title"]
-margin_left = 196.0
-margin_right = 291.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/vb_title"]
+margin_left = 231.0
+margin_right = 342.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
@@ -138,9 +144,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/vb_title"]
-margin_left = 295.0
-margin_right = 389.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/vb_title"]
+margin_left = 346.0
+margin_right = 458.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
@@ -150,9 +156,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/vb_title"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/vb_title"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -160,9 +166,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_1" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_1" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 68.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 95.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -170,9 +176,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_1"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_1"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -181,10 +187,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_1"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_1"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -193,10 +199,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_1"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_1"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -205,18 +211,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_1"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_1"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_1"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_1"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -224,9 +230,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_2" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_2" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 99.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 126.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -234,9 +240,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_2"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_2"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -245,10 +251,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_2"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_2"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -257,10 +263,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_2"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_2"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -269,18 +275,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_2"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_2"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_2"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_2"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -288,9 +294,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_3" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_3" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 130.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 157.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -298,9 +304,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_3"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_3"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -309,10 +315,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_3"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_3"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -321,10 +327,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_3"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_3"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -333,18 +339,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_3"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_3"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_3"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_3"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -352,9 +358,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_4" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_4" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 161.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 188.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -362,9 +368,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_4"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_4"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -373,10 +379,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_4"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_4"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -385,10 +391,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_4"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_4"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -397,18 +403,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_4"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_4"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_4"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_4"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -416,9 +422,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_5" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_5" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 192.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 219.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -426,9 +432,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_5"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_5"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -437,10 +443,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_5"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_5"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -449,10 +455,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_5"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_5"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -461,18 +467,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_5"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_5"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_5"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_5"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -480,9 +486,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_6" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_6" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 223.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 250.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -490,9 +496,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_6"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_6"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -501,10 +507,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_6"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_6"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -513,10 +519,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_6"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_6"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -525,18 +531,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_6"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_6"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_6"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_6"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -544,9 +550,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_7" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_7" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 254.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 281.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -554,9 +560,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_7"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_7"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -565,10 +571,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_7"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_7"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -577,10 +583,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_7"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_7"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -589,18 +595,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_7"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_7"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_7"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_7"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -608,9 +614,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_8" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_8" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 285.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 312.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -618,9 +624,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_8"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_8"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -629,10 +635,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_8"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_8"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -641,10 +647,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_8"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_8"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -653,18 +659,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_8"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_8"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_8"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_8"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -672,9 +678,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_9" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_9" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 316.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 343.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -682,9 +688,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_9"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_9"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -693,10 +699,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_9"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_9"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -705,10 +711,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_9"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_9"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -717,18 +723,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_9"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_9"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_9"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_9"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -736,9 +742,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_10" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_10" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 347.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 374.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -746,9 +752,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_10"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_10"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -757,10 +763,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_10"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_10"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -769,10 +775,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_10"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_10"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -781,18 +787,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_10"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_10"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_10"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_10"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -800,9 +806,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_11" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_11" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 378.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 405.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -810,9 +816,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_11"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_11"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -821,10 +827,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_11"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_11"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -833,10 +839,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_11"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_11"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -845,18 +851,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_11"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_11"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_11"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_11"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -864,9 +870,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_12" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_12" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 409.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 436.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -874,9 +880,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_12"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_12"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -885,10 +891,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_12"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_12"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -897,10 +903,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_12"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_12"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -909,18 +915,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_12"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_12"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_12"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_12"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -928,9 +934,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_13" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_13" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 440.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 467.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -938,9 +944,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_13"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_13"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -949,10 +955,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_13"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_13"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -961,10 +967,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_13"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_13"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -973,18 +979,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_13"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_13"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_13"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_13"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -992,9 +998,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_14" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_14" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 471.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 498.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1002,9 +1008,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_14"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_14"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -1013,10 +1019,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_14"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_14"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -1025,10 +1031,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_14"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_14"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -1037,18 +1043,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_14"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_14"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_14"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_14"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1056,9 +1062,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_15" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_15" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 502.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 529.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1066,9 +1072,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_15"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_15"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -1077,10 +1083,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_15"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_15"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -1089,10 +1095,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_15"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_15"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -1101,18 +1107,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_15"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_15"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_15"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_15"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1120,9 +1126,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_16" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_16" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 533.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 560.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1130,9 +1136,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_16"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_16"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -1141,10 +1147,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_16"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_16"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -1153,10 +1159,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_16"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_16"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -1165,18 +1171,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_16"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_16"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_16"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_16"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1184,9 +1190,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_17" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_17" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 564.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 591.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1194,9 +1200,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_17"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_17"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -1205,10 +1211,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_17"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_17"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -1217,10 +1223,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_17"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_17"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -1229,18 +1235,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_17"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_17"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_17"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_17"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1248,9 +1254,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_18" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_18" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 595.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 622.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1258,9 +1264,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_18"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_18"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -1269,10 +1275,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_18"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_18"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -1281,10 +1287,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_18"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_18"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -1293,18 +1299,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_18"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_18"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_18"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_18"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1312,9 +1318,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_19" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_19" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 626.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 653.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1322,9 +1328,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_19"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_19"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -1333,10 +1339,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_19"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_19"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -1345,10 +1351,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_19"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_19"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -1357,18 +1363,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_19"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_19"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_19"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_19"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1376,9 +1382,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_20" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_20" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 657.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 684.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1386,9 +1392,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_20"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_20"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -1397,10 +1403,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_20"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_20"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -1409,10 +1415,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_20"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_20"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -1421,18 +1427,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_20"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_20"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_20"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_20"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1440,9 +1446,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_21" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_21" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 688.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 715.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1450,9 +1456,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_21"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_21"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -1461,10 +1467,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_21"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_21"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -1473,10 +1479,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_21"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_21"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -1485,18 +1491,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_21"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_21"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_21"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_21"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1504,9 +1510,9 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="line_22" type="HBoxContainer" parent="Viewports/panel/ranking"]
+[node name="line_22" type="HBoxContainer" parent="panel_ranking/ranking"]
 margin_top = 719.0
-margin_right = 422.0
+margin_right = 496.0
 margin_bottom = 746.0
 rect_pivot_offset = Vector2( -1387.2, -121.8 )
 size_flags_horizontal = 3
@@ -1515,9 +1521,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_name" type="Label" parent="Viewports/panel/ranking/line_22"]
+[node name="car_name" type="Label" parent="panel_ranking/ranking/line_22"]
 margin_top = 6.0
-margin_right = 94.0
+margin_right = 111.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Voiture 1"
@@ -1526,10 +1532,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="time" type="Label" parent="Viewports/panel/ranking/line_22"]
-margin_left = 98.0
+[node name="time" type="Label" parent="panel_ranking/ranking/line_22"]
+margin_left = 115.0
 margin_top = 6.0
-margin_right = 192.0
+margin_right = 227.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:20:850"
@@ -1538,10 +1544,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="gap" type="Label" parent="Viewports/panel/ranking/line_22"]
-margin_left = 196.0
+[node name="gap" type="Label" parent="panel_ranking/ranking/line_22"]
+margin_left = 231.0
 margin_top = 6.0
-margin_right = 291.0
+margin_right = 342.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
@@ -1550,18 +1556,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Viewports/panel/ranking/line_22"]
-margin_left = 295.0
+[node name="best_lap" type="Label" parent="panel_ranking/ranking/line_22"]
+margin_left = 346.0
 margin_top = 6.0
-margin_right = 389.0
+margin_right = 458.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "01:02:850"
 valign = 1
 
-[node name="lap" type="Label" parent="Viewports/panel/ranking/line_22"]
-margin_left = 393.0
-margin_right = 422.0
+[node name="lap" type="Label" parent="panel_ranking/ranking/line_22"]
+margin_left = 462.0
+margin_right = 496.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1569,7 +1575,21 @@ size_flags_stretch_ratio = 0.3
 text = "Lap"
 valign = 1
 
-[node name="Params" type="HBoxContainer" parent="."]
+[node name="see_ranking" type="Button" parent="."]
+modulate = Color( 1, 1, 1, 0.5 )
+anchor_left = 0.5
+anchor_top = 0.01
+anchor_right = 0.5
+anchor_bottom = 0.01
+margin_left = -90.0
+margin_right = 90.0
+margin_bottom = 50.0
+text = "See ranking"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="params" type="HBoxContainer" parent="."]
 anchor_left = 0.01
 anchor_top = 0.99
 anchor_right = 0.99
@@ -1579,14 +1599,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_1" type="Panel" parent="Params"]
+[node name="car_1" type="Panel" parent="params"]
 margin_right = 652.0
 margin_bottom = 305.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.15
 
-[node name="car_name" type="Label" parent="Params/car_1"]
+[node name="car_name" type="Label" parent="params/car_1"]
 margin_left = 32.0
 margin_top = 25.0
 margin_right = 256.0
@@ -1597,7 +1617,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_speed" type="Label" parent="Params/car_1"]
+[node name="position" type="Label" parent="params/car_1"]
+margin_left = 325.935
+margin_top = 25.0
+margin_right = 437.935
+margin_bottom = 57.0
+text = "car name"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_speed" type="Label" parent="params/car_1"]
 margin_left = 32.0
 margin_top = 57.0
 margin_right = 256.0
@@ -1608,7 +1639,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="last_lap" type="Label" parent="Params/car_1"]
+[node name="last_lap" type="Label" parent="params/car_1"]
 margin_left = 32.0
 margin_top = 89.0
 margin_right = 256.0
@@ -1619,7 +1650,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Params/car_1"]
+[node name="best_lap" type="Label" parent="params/car_1"]
 margin_left = 32.0
 margin_top = 121.0
 margin_right = 256.0
@@ -1630,7 +1661,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="energy_lvl" type="Label" parent="Params/car_1"]
+[node name="energy_lvl" type="Label" parent="params/car_1"]
 margin_left = 32.0
 margin_top = 153.0
 margin_right = 256.0
@@ -1641,7 +1672,29 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="btn_pitlane" type="Button" parent="Params/car_1"]
+[node name="tyre_health" type="Label" parent="params/car_1"]
+margin_left = 32.0
+margin_top = 185.0
+margin_right = 256.0
+margin_bottom = 217.0
+text = "100 %"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tyre_type" type="Label" parent="params/car_1"]
+margin_left = 32.0
+margin_top = 217.0
+margin_right = 256.0
+margin_bottom = 249.0
+text = "100 %"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="btn_pitlane" type="Button" parent="params/car_1"]
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -200.0
@@ -1653,7 +1706,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Minimap" type="ViewportContainer" parent="Params"]
+[node name="minimap" type="ViewportContainer" parent="params"]
 margin_left = 656.0
 margin_right = 1224.0
 margin_bottom = 305.0
@@ -1664,18 +1717,30 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Viewport" type="Viewport" parent="Params/Minimap"]
+[node name="view" type="Viewport" parent="params/minimap"]
 size = Vector2( 568, 305 )
 handle_input_locally = false
 disable_3d = true
 usage = 0
 render_target_update_mode = 3
 
-[node name="Camera" type="Camera2D" parent="Params/Minimap/Viewport"]
+[node name="Camera" type="Camera2D" parent="params/minimap/view"]
 current = true
 zoom = Vector2( 15, 15 )
 
-[node name="car_2" type="Panel" parent="Params"]
+[node name="weather" type="Label" parent="params/minimap"]
+anchor_left = 0.01
+anchor_top = 0.01
+anchor_right = 0.01
+anchor_bottom = 0.01
+margin_right = 40.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "sun"
+valign = 1
+
+[node name="car_2" type="Panel" parent="params"]
 margin_left = 1228.0
 margin_right = 1881.0
 margin_bottom = 305.0
@@ -1684,7 +1749,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.15
 
-[node name="car_name" type="Label" parent="Params/car_2"]
+[node name="car_name" type="Label" parent="params/car_2"]
 margin_left = 32.0
 margin_top = 25.0
 margin_right = 256.0
@@ -1695,7 +1760,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="car_speed" type="Label" parent="Params/car_2"]
+[node name="position" type="Label" parent="params/car_2"]
+margin_left = 325.935
+margin_top = 25.0
+margin_right = 437.935
+margin_bottom = 57.0
+text = "car name"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car_speed" type="Label" parent="params/car_2"]
 margin_left = 32.0
 margin_top = 57.0
 margin_right = 256.0
@@ -1706,7 +1782,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="last_lap" type="Label" parent="Params/car_2"]
+[node name="last_lap" type="Label" parent="params/car_2"]
 margin_left = 32.0
 margin_top = 89.0
 margin_right = 256.0
@@ -1717,7 +1793,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="best_lap" type="Label" parent="Params/car_2"]
+[node name="best_lap" type="Label" parent="params/car_2"]
 margin_left = 32.0
 margin_top = 121.0
 margin_right = 256.0
@@ -1728,7 +1804,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="energy_lvl" type="Label" parent="Params/car_2"]
+[node name="energy_lvl" type="Label" parent="params/car_2"]
 margin_left = 32.0
 margin_top = 153.0
 margin_right = 256.0
@@ -1739,7 +1815,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="btn_pitlane" type="Button" parent="Params/car_2"]
+[node name="btn_pitlane" type="Button" parent="params/car_2"]
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -200.0
@@ -1751,8 +1827,33 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="tyre_health" type="Label" parent="params/car_2"]
+margin_left = 32.0
+margin_top = 185.0
+margin_right = 256.0
+margin_bottom = 217.0
+text = "100 %"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tyre_type" type="Label" parent="params/car_2"]
+margin_left = 32.0
+margin_top = 217.0
+margin_right = 256.0
+margin_bottom = 249.0
+text = "100 %"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="refresh_stat" type="Timer" parent="."]
 wait_time = 0.1
 autostart = true
 
+[connection signal="mouse_entered" from="see_ranking" to="." method="_on_see_ranking_mouse_entered"]
+[connection signal="mouse_exited" from="see_ranking" to="." method="_on_see_ranking_mouse_exited"]
+[connection signal="pressed" from="see_ranking" to="." method="_on_see_ranking_pressed"]
 [connection signal="timeout" from="refresh_stat" to="." method="_on_Timer_timeout"]

@@ -26,6 +26,7 @@ func _ready():
 	proba_heavy_rain = int(float($circuit.weather_proba_heavy_rain) / float(total_weather_proba) * 100.0 + 0.5)
 	
 	_on_weather_timeout()
+	previous_weather = weather
 	$circuit.with_redraw_editor(false)
 	$path_road.visible = false
 	for place in range(1, 21):
@@ -41,53 +42,31 @@ func spawn_cars():
 
 func change_colorate_sky(new_modulate):
 	if modulate != new_modulate:
-		$tw_weather.interpolate_property(self, "modulate", modulate, new_modulate, 5.0, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		$tw_weather.interpolate_property(self, "modulate", modulate, new_modulate, 10.0, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		$tw_weather.start()
-		modulate = new_modulate
 
 
 func colorate_sky():
 	if weather == WEATHER.SUN:
-		if modulate != Color(1.0, 1.0, 1.0, 1.0):
-			change_colorate_sky(Color(1.0, 1.0, 1.0, 1.0))
-			$ligth_rain.emitting = false
-			$rain.emitting = false
-		
+		change_colorate_sky(Color(1.0, 1.0, 1.0, 1.0))
+	
 	elif weather == WEATHER.SUN_CLOUD: 
-		if modulate != Color(0.9, 0.9, 0.9, 1.0):
-			change_colorate_sky(Color(0.9, 0.9, 0.9, 1.0))
-			$ligth_rain.emitting = false
-			$rain.emitting = false
-		
+		change_colorate_sky(Color(0.9, 0.9, 0.9, 1.0))
+	
 	elif weather == WEATHER.CLOUD: 
-		if modulate != Color(0.8, 0.8, 0.8, 1.0):
-			change_colorate_sky(Color(0.8, 0.8, 0.8, 1.0))
-			$ligth_rain.emitting = false
-			$rain.emitting = false
-		
+		change_colorate_sky(Color(0.8, 0.8, 0.8, 1.0))
+	
 	elif weather == WEATHER.LIGHT_RAIN and previous_weather in [WEATHER.SUN, WEATHER.SUN_CLOUD, WEATHER.CLOUD]:
-		if modulate != Color(0.75, 0.75, 0.75, 1.0):
-			change_colorate_sky(Color(0.75, 0.75, 0.75, 1.0))
-			$ligth_rain.emitting = true
-			$rain.emitting = false
+		change_colorate_sky(Color(0.75, 0.75, 0.75, 1.0))
 	
 	elif weather == WEATHER.LIGHT_RAIN and previous_weather in [WEATHER.LIGHT_RAIN, WEATHER.RAIN]:
-		if modulate != Color(0.7, 0.7, 0.7, 1.0):
-			change_colorate_sky(Color(0.7, 0.7, 0.7, 1.0))
-			$ligth_rain.emitting = true
-			$rain.emitting = true
-			
+		change_colorate_sky(Color(0.7, 0.7, 0.7, 1.0))
+	
 	elif weather == WEATHER.RAIN and previous_weather == WEATHER.LIGHT_RAIN:
-		if modulate != Color(0.65, 0.65, 0.65, 1.0):
-			change_colorate_sky(Color(0.65, 0.65, 0.65, 1.0))
-			$ligth_rain.emitting = true
-			$rain.emitting = true
-			
+		change_colorate_sky(Color(0.65, 0.65, 0.65, 1.0))
+	
 	elif weather == WEATHER.RAIN and previous_weather == WEATHER.RAIN:
-		if modulate != Color(0.6, 0.6, 0.6, 1.0):
-			change_colorate_sky(Color(0.6, 0.6, 0.6, 1.0))
-			$ligth_rain.emitting = true
-			$rain.emitting = true
+		change_colorate_sky(Color(0.6, 0.6, 0.6, 1.0))
 
 
 func estimate_weather():
@@ -120,6 +99,8 @@ func estimate_road_condition():
 		road_condition = ROAD_CONDITION.VERY_WET
 	elif previous_weather == WEATHER.RAIN and weather == WEATHER.RAIN:
 		road_condition = ROAD_CONDITION.TOTALY_WET
+	else:
+		road_condition = ROAD_CONDITION.DRY
 
 
 func _on_weather_timeout():
@@ -127,4 +108,5 @@ func _on_weather_timeout():
 	estimate_road_condition()
 	colorate_sky()
 	$circuit.rain_effect_apply(weather)
+	get_tree().current_scene.update_weather(weather)
 

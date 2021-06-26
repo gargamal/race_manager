@@ -19,27 +19,25 @@ texture_mode = 1
 collision_layer = 4
 collision_mask = 2147483656
 
-[node name="col" type="CollisionPolygon2D" parent="road_line/limit_interior"]
-
 [node name="bg" type="Polygon2D" parent="road_line/limit_interior"]
+
+[node name="col" type="CollisionPolygon2D" parent="road_line/limit_interior"]
 
 [node name="limit_exterior" type="Area2D" parent="road_line" groups=[
 "exterior",
 ]]
-collision_layer = 2
+collision_layer = 524290
 collision_mask = 8
 
-[node name="col" type="CollisionPolygon2D" parent="road_line/limit_exterior"]
-
 [node name="bg" type="Polygon2D" parent="road_line/limit_exterior"]
+
+[node name="col" type="CollisionPolygon2D" parent="road_line/limit_exterior"]
 
 [node name="buzers" type="Node2D" parent="."]
 
 [node name="slow_turns" type="Node2D" parent="."]
 
 [node name="straigth_lines" type="Node2D" parent="."]
-
-[node name="refresh" type="Timer" parent="."]
 
 [node name="ligthly_rain" type="CPUParticles2D" parent="."]
 emitting = false
@@ -61,5 +59,9 @@ gravity = Vector2( 0, 0 )
 scale_amount = 7.0
 scale_amount_random = 1.0
 color = Color( 0.607843, 0.964706, 1, 0.25098 )
+
+[node name="tw_weather" type="Tween" parent="."]
+
+[node name="refresh" type="Timer" parent="."]
 
 [connection signal="timeout" from="refresh" to="." method="_on_refresh_timeout"]
