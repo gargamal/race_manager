@@ -213,9 +213,11 @@ position = Vector2( -3832, -4768 )
 car_name = "voiture 4"
 car_color = 2
 team_position = 1
-suspension_hardness_pourcentage = 70.0
-gearbox_pourcentage = 50.0
-tyre = 3
+tilt_front_spoiler_pourcentage = 10.0
+tilt_back_spoiler_pourcentage = 10.0
+suspension_hardness_pourcentage = 5.0
+gearbox_pourcentage = 5.0
+tyre = 0
 
 [node name="car_5" parent="cars" instance=ExtResource( 2 )]
 position = Vector2( -3712, -4632 )

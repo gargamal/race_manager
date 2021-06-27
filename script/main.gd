@@ -25,12 +25,12 @@ func _ready():
 	
 	viewport1.world_2d = viewport2.world_2d
 	$params/minimap/view.world_2d = viewport1.world_2d
-	car_1 = world.get_node("cars/car_7")
+	car_1 = world.get_node("cars/car_3")
 	camera1.target = car_1
 	car_1.human_player = true
 	init_screen($params/car_1, car_1)
 	
-	car_2 = world.get_node("cars/car_8")
+	car_2 = world.get_node("cars/car_4")
 	camera2.target = car_2
 	car_2.human_player = true
 	init_screen($params/car_2, car_2)

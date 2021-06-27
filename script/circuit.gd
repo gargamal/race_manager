@@ -4,6 +4,8 @@ extends Node2D
 
 const TYPE_LAYER = { "STRAIGHT_LINE": 64, "SLOW_TURN": 128, "CAR": 8 }
 enum WEATHER { SUN, SUN_CLOUD, CLOUD, LIGHT_RAIN, RAIN }
+enum OUT_CIRCUIT { IN_CIRCUIT, EXTERIOR, INTERIOR }
+enum IN_CIRCUIT { NONE, LINE, TURN }
 
 
 export(int)var nb_lap := 100
@@ -79,8 +81,9 @@ func build_road_type(root :Node2D, polygon_interior :Array, polygon_exterior :Ar
 				var area_road_type = Area2D.new()
 				area_road_type.add_to_group("turn" if collision_layer == TYPE_LAYER["SLOW_TURN"] else "line")
 				area_road_type.collision_layer = collision_layer
-				area_road_type.collision_mask = TYPE_LAYER["CAR"] # it's a car
-				
+				area_road_type.collision_mask = TYPE_LAYER["CAR"]
+				area_road_type.connect("body_entered", self, "_on_slow_turn_body_entered" if collision_layer == TYPE_LAYER["SLOW_TURN"] else "_on_line_straight_body_entered")
+
 				var col_road_type = CollisionPolygon2D.new()
 				col_road_type.polygon = points_merged
 				
@@ -303,3 +306,21 @@ func change_colorate_road(new_modulate):
 		$tw_weather.interpolate_property($road_line, "modulate", modulate, new_modulate, 10.0, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		$tw_weather.start()
 
+
+func _on_limit_interior_body_entered(car):
+	car.out_circuit = OUT_CIRCUIT.INTERIOR
+
+func _on_limit_interior_body_exited(car):
+	car.out_circuit = OUT_CIRCUIT.IN_CIRCUIT
+
+func _on_limit_exterior_body_entered(car):
+	car.out_circuit = OUT_CIRCUIT.EXTERIOR
+
+func _on_limit_exterior_body_exited(car):
+	car.out_circuit = OUT_CIRCUIT.IN_CIRCUIT
+
+func _on_line_straight_body_entered(car):
+	car.in_circuit = IN_CIRCUIT.LINE
+
+func _on_slow_turn_body_entered(car):
+	car.in_circuit = IN_CIRCUIT.TURN

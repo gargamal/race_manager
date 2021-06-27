@@ -64,4 +64,8 @@ color = Color( 0.607843, 0.964706, 1, 0.25098 )
 
 [node name="refresh" type="Timer" parent="."]
 
+[connection signal="body_entered" from="road_line/limit_interior" to="." method="_on_limit_interior_body_entered"]
+[connection signal="body_exited" from="road_line/limit_interior" to="." method="_on_limit_interior_body_exited"]
+[connection signal="body_entered" from="road_line/limit_exterior" to="." method="_on_limit_exterior_body_entered"]
+[connection signal="body_exited" from="road_line/limit_exterior" to="." method="_on_limit_exterior_body_exited"]
 [connection signal="timeout" from="refresh" to="." method="_on_refresh_timeout"]

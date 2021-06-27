@@ -25,6 +25,8 @@ enum DIRECTION { TURN_LEFT, TURN_RIGHT, TURN_AND_BRAKE_LEFT, TURN_AND_BRAKE_RIGH
 enum ROAD_TYPE { INNER, OUTER, ROAD, PITLANE, STRAIGHT_AND_OVERTAKE }
 enum TYRE { SOFT, MEDIUM, HARD, INTERMEDIATE, WET }
 enum ROAD_CONDITION { DRY, SLIGHTLY_WET, WET, VERY_WET, TOTALY_WET }
+enum OUT_CIRCUIT { IN_CIRCUIT, EXTERIOR, INTERIOR }
+enum IN_CIRCUIT { NONE, LINE, TURN }
 
 
 export(String) var car_name := "voiture"
@@ -50,7 +52,6 @@ var velocity := Vector2.ZERO
 var direction_angle := 0.0
 var gravar_sys_time := 0.0
 var road_type = ROAD_TYPE.ROAD
-var gravar_nb_turn := 0
 var max_speed := 0.0
 var time_max_speed := 0.0
 var current_direction := 0
@@ -82,6 +83,8 @@ var coef_accelerate_final
 var make_param_update = true
 var actual_weather
 var count := 0.0
+var out_circuit = OUT_CIRCUIT.IN_CIRCUIT
+var in_circuit = IN_CIRCUIT.LINE
 
 func set_coef_accelerate(new_coef_accelerate :float) -> void:
 	if new_coef_accelerate > 2.0: coef_accelerate = 2.0
@@ -291,8 +294,7 @@ func update_param(with_update :bool) -> void:
 		direction_angle = direction_angle_final
 		coef_accelerate = coef_accelerate_final
 	
-	var with_slow_turn = $detect_slow_turn.is_colliding()
-	direction_angle = slow_direction_angle_degree * PI / 360.0 if with_slow_turn else fast_direction_angle_degree * PI / 360.0
+	direction_angle = slow_direction_angle_degree * PI / 360.0 if in_circuit == IN_CIRCUIT.TURN else fast_direction_angle_degree * PI / 360.0
 
 
 func update_param_car():
@@ -304,7 +306,7 @@ func update_param_car():
 	var speed_lost_by_back = 15.0 * (tilt_back_spoiler_pourcentage / 100.0)
 	var speed_diff_by_gearbox = 40.0 * gearbox_pourcentage / 100.0
 	
-	var coef_angle = 5.0
+	var coef_angle = 2.5
 	var angle_diff_by_front = coef_angle * (tilt_front_spoiler_pourcentage / 100.0)
 	var angle_diff_by_suspension_front = coef_angle * suspension_hardness_pourcentage / 100.0
 	
@@ -496,33 +498,28 @@ func get_angle_in_pitlane() -> float:
 func limit_inner():
 	if road_type != ROAD_TYPE.PITLANE:
 		road_type = ROAD_TYPE.INNER
-		gravar_nb_turn = 0
 
 
 func limit_road():
 	if road_type != ROAD_TYPE.PITLANE:
 		road_type = ROAD_TYPE.ROAD
-		gravar_nb_turn = 0
 
 
 func limit_outer(): 
 	if road_type != ROAD_TYPE.PITLANE:
 		road_type = ROAD_TYPE.OUTER
-		gravar_nb_turn = 0
 
 
 func limit_pitlane():
 	road_type = ROAD_TYPE.PITLANE
 	is_in_pitlane_area = true
 	state_in_pitlane = STATE_IN_PITLANE.ENTER
-	gravar_nb_turn = 0
 
 
 func exit_pitlane():
 	road_type = ROAD_TYPE.ROAD
 	has_pit_stop = false
 	is_in_pitlane_area = false
-	gravar_nb_turn = 0
 
 
 func turn_and_brake(direction:int) -> void:
@@ -539,11 +536,9 @@ func turn(direction :int, angle :float) -> void:
 
 
 func turn_in_gravar(direction :int) -> void:
-	if get_speed() > MIN_SPEED and (gravar_nb_turn % 1) == 0 and road_type in [ROAD_TYPE.INNER, ROAD_TYPE.OUTER]:
+	if get_speed() > MIN_SPEED and road_type in [ROAD_TYPE.INNER, ROAD_TYPE.OUTER]:
 		var velocity_rotation = GRAVAR_ANGLE * (1 if direction == DIRECTION.TURN_RIGHT else -1)
 		velocity = velocity.rotated(velocity_rotation)
-
-	gravar_nb_turn += 1
 
 
 func turn_in_pitlane(direction :int) -> void:
@@ -632,7 +627,7 @@ func move_car_out_circuit(direction):
 		velocity /= GRAVAR_COEF_BRAKE
 	
 	if get_speed() < GRAVAR_SPEED:
-		velocity *= GRAVAR_COEF_BRAKE
+		velocity = velocity.normalized() * GRAVAR_SPEED * SCALE
 	
 	if direction == DIRECTION.TURN_LEFT or direction == DIRECTION.TURN_RIGHT:
 		turn_in_gravar(direction)
@@ -645,8 +640,6 @@ func calculate_road():
 
 
 func calculate_road_pitlane():
-	var detect_in_circuit = $detect_circuit.is_colliding() and ($detect_circuit.get_collider().is_in_group("turn") or $detect_circuit.get_collider().is_in_group("line"))
-	
 	if has_pit_stop and road_type != ROAD_TYPE.PITLANE:
 		var is_turn_pitlane_left = $detect_turn_left.is_colliding() and $detect_turn_left.get_collider().is_in_group("pitlane")
 		var is_turn_pitlane_right = $detect_turn_rigth.is_colliding() and $detect_turn_rigth.get_collider().is_in_group("pitlane")
@@ -655,22 +648,17 @@ func calculate_road_pitlane():
 		if is_turn_pitlane_left or is_turn_pitlane_right or is_limit_pitlane:
 			road_type = ROAD_TYPE.PITLANE
 
+
 func calculate_road_circuit() -> void:
-	var is_in_circuit = $detect_circuit.is_colliding()
-	var detect_out_circuit_interior = is_in_circuit and $detect_circuit.get_collider().is_in_group("interior") 
-	var detect_out_circuit_exterior = is_in_circuit and $detect_circuit.get_collider().is_in_group("exterior")
-	var detect_out_circuit = detect_out_circuit_interior or detect_out_circuit_exterior
-	var detect_in_circuit = is_in_circuit and ($detect_circuit.get_collider().is_in_group("turn") or $detect_circuit.get_collider().is_in_group("line"))
-	
-	if road_type in [ROAD_TYPE.INNER, ROAD_TYPE.OUTER] and detect_in_circuit:
+	if road_type in [ROAD_TYPE.INNER, ROAD_TYPE.OUTER] and out_circuit == OUT_CIRCUIT.IN_CIRCUIT:
 		limit_road()
 		road_type = ROAD_TYPE.ROAD
 		
-	elif road_type in [ROAD_TYPE.ROAD, ROAD_TYPE.STRAIGHT_AND_OVERTAKE] and detect_out_circuit:
-		if detect_out_circuit_interior:
+	elif road_type in [ROAD_TYPE.ROAD, ROAD_TYPE.STRAIGHT_AND_OVERTAKE] and out_circuit in [OUT_CIRCUIT.EXTERIOR, OUT_CIRCUIT.INTERIOR]:
+		if out_circuit == OUT_CIRCUIT.INTERIOR:
 			limit_inner()
 			road_type = ROAD_TYPE.INNER
-		elif detect_out_circuit_exterior:
+		elif out_circuit == OUT_CIRCUIT.EXTERIOR:
 			limit_outer()
 			road_type = ROAD_TYPE.OUTER
 
@@ -679,19 +667,15 @@ func calculate_road_overtake() -> void:
 	if road_type in [ROAD_TYPE.INNER, ROAD_TYPE.OUTER, ROAD_TYPE.PITLANE]:
 		return
 	
-	var detect_in_circuit = $detect_circuit.is_colliding() and ($detect_circuit.get_collider().is_in_group("turn") or $detect_circuit.get_collider().is_in_group("line"))
 	var with_col_limit_int = $detect_limit.is_colliding() and $detect_limit.get_collider().is_in_group("interior")
 	var with_col_limit_ext = $detect_limit.is_colliding() and $detect_limit.get_collider().is_in_group("exterior")
-	var detect_out_exterior = $detect_circuit.is_colliding() and $detect_circuit.get_collider().is_in_group("exterior")
-	var detect_out_interior = $detect_circuit.is_colliding() and $detect_circuit.get_collider().is_in_group("interior")
-	var is_in_turn =  $detect_slow_turn.is_colliding() 
 
-	if not detect_in_circuit or (road_type == ROAD_TYPE.STRAIGHT_AND_OVERTAKE and (with_col_limit_int or with_col_limit_ext)):
+	if out_circuit in [OUT_CIRCUIT.EXTERIOR, OUT_CIRCUIT.INTERIOR] or (road_type == ROAD_TYPE.STRAIGHT_AND_OVERTAKE and (with_col_limit_int or with_col_limit_ext)):
 		state_in_overtake = STATE_IN_OVERTAKE.END
 		nb_tick = 0.0
 		if road_type == ROAD_TYPE.STRAIGHT_AND_OVERTAKE: 
-			if detect_out_exterior: road_type = ROAD_TYPE.OUTER
-			elif detect_out_interior: road_type = ROAD_TYPE.INNER
+			if out_circuit == OUT_CIRCUIT.EXTERIOR: road_type = ROAD_TYPE.OUTER
+			elif out_circuit == OUT_CIRCUIT.INTERIOR: road_type = ROAD_TYPE.INNER
 			else: road_type = ROAD_TYPE.ROAD
 		return
 	
@@ -704,15 +688,15 @@ func calculate_road_overtake() -> void:
 	
 	var with_overtake_car = $detect_overtake_l.is_colliding() or $detect_overtake_r.is_colliding()
 	
-	if nb_tick > OVERTAKE_TIME or not detect_in_circuit:
+	if nb_tick > OVERTAKE_TIME or out_circuit in [OUT_CIRCUIT.EXTERIOR, OUT_CIRCUIT.INTERIOR]:
 		state_in_overtake = STATE_IN_OVERTAKE.END
 		nb_tick = 0.0
 		if road_type == ROAD_TYPE.STRAIGHT_AND_OVERTAKE: 
-			if detect_out_exterior: road_type = ROAD_TYPE.OUTER
-			elif detect_out_interior: road_type = ROAD_TYPE.INNER
+			if out_circuit == OUT_CIRCUIT.EXTERIOR: road_type = ROAD_TYPE.OUTER
+			elif out_circuit == OUT_CIRCUIT.INTERIOR: road_type = ROAD_TYPE.INNER
 			else: road_type = ROAD_TYPE.ROAD
 	
-	elif not is_in_turn and detect_in_circuit and with_overtake_car and state_in_overtake == STATE_IN_OVERTAKE.END:
+	elif in_circuit == IN_CIRCUIT.LINE and out_circuit == OUT_CIRCUIT.IN_CIRCUIT and with_overtake_car and state_in_overtake == STATE_IN_OVERTAKE.END:
 		road_type = ROAD_TYPE.STRAIGHT_AND_OVERTAKE
 		state_in_overtake = STATE_IN_OVERTAKE.BEGIN
 		nb_tick = 0.0
