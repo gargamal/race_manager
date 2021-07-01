@@ -37,10 +37,10 @@ export(Color) var text_color = Color(1.0, 1.0, 1.0, 1.0)
 export(String) var number_car = "99"
 export(Color) var helmet_color = Color(1.0, 1.0, 1.0, 1.0)
 export(bool) var has_pit_stop = false
-export(float) var tilt_front_spoiler_pourcentage = 30 # 0 à 100
-export(float) var tilt_back_spoiler_pourcentage = 30 # 0 à 100
-export(float) var suspension_hardness_pourcentage = 100 # 0 à 100
-export(float) var gearbox_pourcentage = 100 # 0 à 100
+export(float) var tilt_front_spoiler = 30
+export(float) var tilt_back_spoiler = 30
+export(float) var suspension_hardness = 100
+export(float) var gearbox = 100
 export(TYRE) var tyre = TYRE.MEDIUM
 export(bool) var human_player = false
 
@@ -85,26 +85,11 @@ var actual_weather
 var count := 0.0
 var out_circuit = OUT_CIRCUIT.IN_CIRCUIT
 var in_circuit = IN_CIRCUIT.LINE
-
-func set_coef_accelerate(new_coef_accelerate :float) -> void:
-	if new_coef_accelerate > 2.0: coef_accelerate = 2.0
-	elif new_coef_accelerate < 0.5: coef_accelerate = 0.5
-	else: coef_accelerate = new_coef_accelerate
-
-func set_tilt_front_spoiler_degree(new_tilt_front_spoiler_pourcentage :float) -> void:
-	if new_tilt_front_spoiler_pourcentage > 100.0: tilt_front_spoiler_pourcentage = 100.0
-	elif new_tilt_front_spoiler_pourcentage < 0.0: tilt_front_spoiler_pourcentage = 0.0
-	else: tilt_front_spoiler_pourcentage = new_tilt_front_spoiler_pourcentage
-	
-func set_tilt_back_spoiler_degree(new_tilt_back_spoiler_pourcentage :float) -> void:
-	if new_tilt_back_spoiler_pourcentage > 100.0: tilt_back_spoiler_pourcentage= 100.0
-	elif new_tilt_back_spoiler_pourcentage < 10.0: tilt_back_spoiler_pourcentage = 10.0
-	else: tilt_back_spoiler_pourcentage = new_tilt_back_spoiler_pourcentage
-	
-func set_suspension_hardness_pourcentage(new_suspension_hardness_pourcentage :float) -> void:
-	if new_suspension_hardness_pourcentage > 100.0: suspension_hardness_pourcentage = 100.0
-	elif new_suspension_hardness_pourcentage < 0.0: suspension_hardness_pourcentage = 0.0
-	else: suspension_hardness_pourcentage = new_suspension_hardness_pourcentage
+var tilt_front_spoiler_pit_stop
+var tilt_back_spoiler_pit_stop
+var suspension_hardness_pit_stop
+var gearbox_pit_stop
+var tyre_pit_stop
 
 
 func team_color_init():
@@ -216,7 +201,13 @@ func update_ray_cast():
 
 
 func play_effect(speed_measured :float) -> void:
-	$vortex.modulate = Color(1.0, 1.0, 1.0, min(1.0, pow(speed_measured / 200.0, 4.0)))
+	var effect_with_speed = min(1.0, pow(speed_measured / 200.0, 4.0))
+	$vortex.modulate = Color(1.0, 1.0, 1.0, effect_with_speed)
+	$rain_effect_bl.modulate = Color(1.0, 1.0, 1.0, effect_with_speed)
+	$rain_effect_br.modulate = Color(1.0, 1.0, 1.0, effect_with_speed)
+	$rain_effect_fl.modulate = Color(1.0, 1.0, 1.0, effect_with_speed)
+	$rain_effect_fr.modulate = Color(1.0, 1.0, 1.0, effect_with_speed)
+	
 	
 	var effect_wheel = min(0.2, pow(speed_measured / 200.0, 3.0))
 	$wheel_effect_bl.modulate = Color(1.0, 1.0, 1.0, effect_wheel)
@@ -271,7 +262,7 @@ func update_tyre_wear(delta):
 		TYRE.SOFT: coef_tyre = 1.0
 		_: coef_tyre = 1.0
 	
-	var tyre_wear = tilt_front_spoiler_pourcentage / 100.0 * tilt_back_spoiler_pourcentage / 100.0 * coef_accelerate * delta * coef_tyre * coef_condition
+	var tyre_wear = tilt_front_spoiler / 100.0 * tilt_back_spoiler / 100.0 * coef_accelerate * delta * coef_tyre * coef_condition
 	tyre_health -= tyre_wear
 
 
@@ -302,21 +293,21 @@ func update_param_car():
 	direction_angle_inital = direction_angle
 	coef_accelerate_inital = coef_accelerate
 	
-	var speed_lost_by_front = 15.0 * (tilt_front_spoiler_pourcentage / 100.0)
-	var speed_lost_by_back = 15.0 * (tilt_back_spoiler_pourcentage / 100.0)
-	var speed_diff_by_gearbox = 40.0 * gearbox_pourcentage / 100.0
+	var speed_lost_by_front = 15.0 * (tilt_front_spoiler / 100.0)
+	var speed_lost_by_back = 15.0 * (tilt_back_spoiler / 100.0)
+	var speed_diff_by_gearbox = 40.0 * gearbox / 100.0
 	
-	var coef_angle = 2.5
-	var angle_diff_by_front = coef_angle * (tilt_front_spoiler_pourcentage / 100.0)
-	var angle_diff_by_suspension_front = coef_angle * suspension_hardness_pourcentage / 100.0
+	var coef_angle = 2.0
+	var angle_diff_by_front = coef_angle * (tilt_front_spoiler / 100.0)
+	var angle_diff_by_suspension_front = coef_angle * suspension_hardness / 100.0
 	
-	var angle_diff_by_back = (coef_angle / 2.0) * (tilt_back_spoiler_pourcentage / 100.0)
-	var angle_diff_by_suspension_back = (coef_angle / 3.0)  * (suspension_hardness_pourcentage / 100.0)
+	var angle_diff_by_back = (coef_angle / 2.0) * (tilt_back_spoiler / 100.0)
+	var angle_diff_by_suspension_back = (coef_angle / 3.0)  * (suspension_hardness / 100.0)
 	
 	coef_accelerate = 0.1
-	coef_accelerate += 0.2 * (tilt_back_spoiler_pourcentage / 100.0) 
-	coef_accelerate += 0.8 * (100.0 - gearbox_pourcentage) / 100.0
-	coef_accelerate += 0.4 * (100.0 - suspension_hardness_pourcentage) / 100.0
+	coef_accelerate += 0.2 * (tilt_back_spoiler / 100.0) 
+	coef_accelerate += 0.8 * (100.0 - gearbox) / 100.0
+	coef_accelerate += 0.4 * (100.0 - suspension_hardness) / 100.0
 	max_speed = limit_speed - speed_lost_by_front - speed_lost_by_back + speed_diff_by_gearbox
 	time_max_speed = calculate_time(max_speed / 2.0) * 5.0
 
@@ -447,12 +438,12 @@ func get_angle_in_overtake(delta) -> float:
 
 
 func get_angle_in_pitlane() -> float:
-	var enter_dir_car = (get_tree().current_scene.get_node("pitlane/enter").global_position - self.global_position)
-	var enter_garage_dir_car = (get_tree().current_scene.get_node("pitlane/teams/team_" + str(team_position + 1) + "_in").global_position - self.global_position)
-	var garage_dir_car = (get_tree().current_scene.get_node("pitlane/teams/team_" + str(team_position + 1)).global_position - self.global_position)
-	var exit_garage_dir_car = (get_tree().current_scene.get_node("pitlane/teams/team_" + str(team_position + 1) + "_out").global_position - self.global_position)
-	var exit_dir_car = (get_tree().current_scene.get_node("pitlane/exit").global_position - self.global_position)
-	var return_dir_car = (get_tree().current_scene.get_node("pitlane/return_in_road").global_position - self.global_position)
+	var enter_dir_car = race_node.get_node("pitlane/enter").global_position - self.global_position
+	var enter_garage_dir_car = race_node.get_node("pitlane/teams/team_" + str(team_position + 1) + "_in").global_position - self.global_position
+	var garage_dir_car = race_node.get_node("pitlane/teams/team_" + str(team_position + 1)).global_position - self.global_position
+	var exit_garage_dir_car = race_node.get_node("pitlane/teams/team_" + str(team_position + 1) + "_out").global_position - self.global_position
+	var exit_dir_car = race_node.get_node("pitlane/exit").global_position - self.global_position
+	var return_dir_car = race_node.get_node("pitlane/return_in_road").global_position - self.global_position
 	
 	match state_in_pitlane:
 		STATE_IN_PITLANE.ENTER:
@@ -575,7 +566,7 @@ func move_car(delta):
 	if road_type == ROAD_TYPE.ROAD:
 		move_car_circuit(direction, delta)
 	elif road_type == ROAD_TYPE.STRAIGHT_AND_OVERTAKE:
-		move_car_overtake(direction, delta)
+		move_car_overtake(delta)
 	elif road_type == ROAD_TYPE.PITLANE:
 		move_car_pitlane(direction)
 	elif road_type in [ROAD_TYPE.INNER, ROAD_TYPE.OUTER]:
@@ -617,7 +608,7 @@ func move_car_pitlane(direction):
 			turn_in_pitlane(direction)
 
 
-func move_car_overtake(direction, delta):
+func move_car_overtake(delta):
 	accelerate(delta)
 	velocity = velocity.rotated(get_angle_in_overtake(delta)) 
 
@@ -758,7 +749,6 @@ func direction_out_circuit() -> int:
 
 func direction_in_circuit() -> int:
 	var with_col_limit = $detect_limit.is_colliding()
-	var is_col_car = $detect_crash_l.is_colliding() or $detect_crash_r.is_colliding()
 	var dist_left = get_distance_collision($detect_turn_left)
 	var dist_right = get_distance_collision($detect_turn_rigth)
 	var dist_car_left = get_distance_collision($detect_car_left)
@@ -766,9 +756,7 @@ func direction_in_circuit() -> int:
 	var car_on_left = $detect_car_left.is_colliding() and dist_car_left < CAR_HEIGHT / 2.0
 	var car_on_right = $detect_car_rigth.is_colliding() and dist_car_right < CAR_HEIGHT / 2.0
 	var with_turn_left_bad_col = $detect_turn_left.is_colliding() and $detect_turn_left.get_collider().is_in_group("interior")
-	var with_turn_left_good_col = $detect_turn_left.is_colliding() and $detect_turn_left.get_collider().is_in_group("exterior")
 	var with_turn_right_bad_col = $detect_turn_rigth.is_colliding() and $detect_turn_rigth.get_collider().is_in_group("exterior")
-	var with_turn_right_good_col = $detect_turn_rigth.is_colliding() and $detect_turn_rigth.get_collider().is_in_group("interior")
 	
 	if with_turn_left_bad_col or with_turn_right_bad_col:
 		return DIRECTION.TURN_AND_BRAKE_RIGHT if dist_left - dist_right < 0 else DIRECTION.TURN_AND_BRAKE_LEFT
@@ -852,3 +840,9 @@ func get_speed() -> float:
 
 func _on_pitstop_time_timeout():
 	mechanic_working = false
+	tilt_front_spoiler = tilt_front_spoiler_pit_stop
+	tilt_back_spoiler = tilt_back_spoiler_pit_stop
+	suspension_hardness = suspension_hardness_pit_stop
+	gearbox = gearbox_pit_stop
+	tyre = tyre_pit_stop
+	tyre_health = 100.0

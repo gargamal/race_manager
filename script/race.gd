@@ -101,6 +101,8 @@ func estimate_road_condition():
 		road_condition = ROAD_CONDITION.TOTALY_WET
 	else:
 		road_condition = ROAD_CONDITION.DRY
+		
+	$pitlane/rain.emitting = road_condition != ROAD_CONDITION.DRY
 
 
 func _on_weather_timeout():

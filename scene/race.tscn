@@ -171,6 +171,20 @@ polygon = PoolVector2Array( 2946.49, -973.265, 2811.94, -1101.08, 2034.96, -1201
 [node name="pitlane" parent="." instance=ExtResource( 6 )]
 position = Vector2( -137.649, -2179.57 )
 
+[node name="rain" type="CPUParticles2D" parent="pitlane"]
+modulate = Color( 1, 1, 1, 0.501961 )
+emitting = false
+amount = 5000
+emission_shape = 2
+emission_rect_extents = Vector2( 4000, 4000 )
+gravity = Vector2( 0, 0 )
+scale_amount = 7.0
+scale_amount_random = 1.0
+color = Color( 0.607843, 0.964706, 1, 0.25098 )
+__meta__ = {
+"_editor_description_": ""
+}
+
 [node name="cars" type="Node2D" parent="."]
 
 [node name="car_1" parent="cars" instance=ExtResource( 2 )]
@@ -179,9 +193,6 @@ car_name = "voiture 1"
 text_color = Color( 0, 0.0392157, 1, 1 )
 number_car = "01"
 helmet_color = Color( 0.231373, 0.0313726, 0.866667, 1 )
-tilt_front_spoiler_pourcentage = 60.0
-tilt_back_spoiler_pourcentage = 60.0
-gearbox_pourcentage = 45.0
 tyre = 3
 
 [node name="car_2" parent="cars" instance=ExtResource( 2 )]
@@ -190,10 +201,6 @@ car_name = "voiture 2"
 text_color = Color( 0.12549, 1, 0, 1 )
 number_car = "02"
 helmet_color = Color( 0.419608, 0.960784, 0.145098, 1 )
-tilt_front_spoiler_pourcentage = 80.0
-tilt_back_spoiler_pourcentage = 80.0
-suspension_hardness_pourcentage = 75.0
-gearbox_pourcentage = 45.0
 tyre = 2
 
 [node name="car_3" parent="cars" instance=ExtResource( 2 )]
@@ -202,10 +209,6 @@ car_name = "voiture 3"
 car_color = 2
 team_position = 1
 helmet_color = Color( 0.00784314, 0, 1, 1 )
-tilt_front_spoiler_pourcentage = 75.0
-tilt_back_spoiler_pourcentage = 75.0
-suspension_hardness_pourcentage = 50.0
-gearbox_pourcentage = 50.0
 tyre = 0
 
 [node name="car_4" parent="cars" instance=ExtResource( 2 )]
@@ -213,41 +216,25 @@ position = Vector2( -3832, -4768 )
 car_name = "voiture 4"
 car_color = 2
 team_position = 1
-tilt_front_spoiler_pourcentage = 10.0
-tilt_back_spoiler_pourcentage = 10.0
-suspension_hardness_pourcentage = 5.0
-gearbox_pourcentage = 5.0
-tyre = 0
+tyre = 3
 
 [node name="car_5" parent="cars" instance=ExtResource( 2 )]
 position = Vector2( -3712, -4632 )
 car_name = "voiture autre"
 car_color = 3
 team_position = 2
-tilt_front_spoiler_pourcentage = 75.0
-tilt_back_spoiler_pourcentage = 75.0
-suspension_hardness_pourcentage = 70.0
-gearbox_pourcentage = 50.0
 
 [node name="car_6" parent="cars" instance=ExtResource( 2 )]
 position = Vector2( -3560, -4768 )
 car_name = "voiture autre"
 car_color = 3
 team_position = 2
-tilt_front_spoiler_pourcentage = 75.0
-tilt_back_spoiler_pourcentage = 75.0
-suspension_hardness_pourcentage = 70.0
-gearbox_pourcentage = 50.0
 
 [node name="car_7" parent="cars" instance=ExtResource( 2 )]
 position = Vector2( -3432, -4632 )
 car_name = "voiture autre"
 car_color = 4
 team_position = 3
-tilt_front_spoiler_pourcentage = 75.0
-tilt_back_spoiler_pourcentage = 75.0
-suspension_hardness_pourcentage = 70.0
-gearbox_pourcentage = 50.0
 tyre = 0
 
 [node name="car_8" parent="cars" instance=ExtResource( 2 )]
@@ -256,10 +243,6 @@ car_name = "voiture autre"
 car_color = 4
 team_position = 3
 helmet_color = Color( 0.360784, 1, 0, 1 )
-tilt_front_spoiler_pourcentage = 75.0
-tilt_back_spoiler_pourcentage = 75.0
-suspension_hardness_pourcentage = 70.0
-gearbox_pourcentage = 50.0
 tyre = 3
 
 [node name="car_9" parent="cars" instance=ExtResource( 2 )]
@@ -268,40 +251,24 @@ car_name = "voiture autre"
 car_color = 5
 team_position = 4
 helmet_color = Color( 0.803922, 0, 1, 1 )
-tilt_front_spoiler_pourcentage = 75.0
-tilt_back_spoiler_pourcentage = 75.0
-suspension_hardness_pourcentage = 70.0
-gearbox_pourcentage = 50.0
 
 [node name="car_10" parent="cars" instance=ExtResource( 2 )]
 position = Vector2( -2984, -4768 )
 car_name = "voiture autre"
 car_color = 5
 team_position = 4
-tilt_front_spoiler_pourcentage = 75.0
-tilt_back_spoiler_pourcentage = 75.0
-suspension_hardness_pourcentage = 70.0
-gearbox_pourcentage = 50.0
 
 [node name="car_11" parent="cars" instance=ExtResource( 2 )]
 position = Vector2( -2848, -4632 )
 car_name = "voiture autre"
 car_color = 6
 team_position = 5
-tilt_front_spoiler_pourcentage = 75.0
-tilt_back_spoiler_pourcentage = 75.0
-suspension_hardness_pourcentage = 70.0
-gearbox_pourcentage = 50.0
 
 [node name="car_12" parent="cars" instance=ExtResource( 2 )]
 position = Vector2( -2696, -4768 )
 car_name = "voiture autre"
 car_color = 6
 team_position = 5
-tilt_front_spoiler_pourcentage = 80.0
-tilt_back_spoiler_pourcentage = 80.0
-suspension_hardness_pourcentage = 80.0
-gearbox_pourcentage = 50.0
 tyre = 0
 
 [node name="car_13" parent="cars" instance=ExtResource( 2 )]
@@ -309,60 +276,36 @@ position = Vector2( -2544, -4632 )
 car_name = "voiture autre"
 car_color = 7
 team_position = 6
-tilt_front_spoiler_pourcentage = 75.0
-tilt_back_spoiler_pourcentage = 75.0
-suspension_hardness_pourcentage = 70.0
-gearbox_pourcentage = 50.0
 
 [node name="car_14" parent="cars" instance=ExtResource( 2 )]
 position = Vector2( -2392, -4768 )
 car_name = "voiture autre"
 car_color = 7
 team_position = 6
-tilt_front_spoiler_pourcentage = 75.0
-tilt_back_spoiler_pourcentage = 75.0
-suspension_hardness_pourcentage = 70.0
-gearbox_pourcentage = 50.0
 
 [node name="car_15" parent="cars" instance=ExtResource( 2 )]
 position = Vector2( -2272, -4632 )
 car_name = "voiture autre"
 car_color = 8
 team_position = 7
-tilt_front_spoiler_pourcentage = 75.0
-tilt_back_spoiler_pourcentage = 75.0
-suspension_hardness_pourcentage = 70.0
-gearbox_pourcentage = 50.0
 
 [node name="car_16" parent="cars" instance=ExtResource( 2 )]
 position = Vector2( -2120, -4768 )
 car_name = "voiture autre"
 car_color = 8
 team_position = 7
-tilt_front_spoiler_pourcentage = 75.0
-tilt_back_spoiler_pourcentage = 75.0
-suspension_hardness_pourcentage = 70.0
-gearbox_pourcentage = 50.0
 
 [node name="car_17" parent="cars" instance=ExtResource( 2 )]
 position = Vector2( -1992, -4632 )
 car_name = "voiture autre"
 car_color = 9
 team_position = 8
-tilt_front_spoiler_pourcentage = 75.0
-tilt_back_spoiler_pourcentage = 75.0
-suspension_hardness_pourcentage = 70.0
-gearbox_pourcentage = 50.0
 
 [node name="car_18" parent="cars" instance=ExtResource( 2 )]
 position = Vector2( -1840, -4768 )
 car_name = "voiture autre"
 car_color = 9
 team_position = 8
-tilt_front_spoiler_pourcentage = 75.0
-tilt_back_spoiler_pourcentage = 75.0
-suspension_hardness_pourcentage = 70.0
-gearbox_pourcentage = 50.0
 
 [node name="car_19" parent="cars" instance=ExtResource( 2 )]
 position = Vector2( -1696, -4632 )
@@ -373,10 +316,6 @@ limit_speed = 120.0
 text_color = Color( 0.960784, 0.968627, 0.105882, 1 )
 number_car = "07"
 helmet_color = Color( 0.839216, 0.996078, 0.0941176, 1 )
-tilt_front_spoiler_pourcentage = 80.0
-tilt_back_spoiler_pourcentage = 80.0
-suspension_hardness_pourcentage = 50.0
-gearbox_pourcentage = 50.0
 
 [node name="car_20" parent="cars" instance=ExtResource( 2 )]
 position = Vector2( -1544, -4768 )
@@ -385,44 +324,6 @@ car_color = 15
 team_position = 9
 text_color = Color( 0.960784, 0.596078, 0.596078, 1 )
 helmet_color = Color( 0.92549, 0.0705882, 0.0705882, 1 )
-tilt_front_spoiler_pourcentage = 75.0
-tilt_back_spoiler_pourcentage = 75.0
-suspension_hardness_pourcentage = 70.0
-gearbox_pourcentage = 50.0
-
-[node name="ligth_rain" type="CPUParticles2D" parent="."]
-position = Vector2( 0, -4000 )
-emitting = false
-amount = 2000
-lifetime = 15.0
-speed_scale = 5.0
-emission_shape = 2
-emission_rect_extents = Vector2( 8000, 1 )
-direction = Vector2( 0, 100 )
-spread = 0.0
-gravity = Vector2( 0, 10 )
-initial_velocity = 500.0
-initial_velocity_random = 0.5
-scale_amount = 7.0
-scale_amount_random = 1.0
-color = Color( 0.670588, 0.976471, 1, 0.705882 )
-
-[node name="rain" type="CPUParticles2D" parent="."]
-position = Vector2( 0, -4000 )
-emitting = false
-amount = 5000
-lifetime = 15.0
-speed_scale = 5.0
-emission_shape = 2
-emission_rect_extents = Vector2( 8000, 1 )
-direction = Vector2( 0, 100 )
-spread = 0.0
-gravity = Vector2( 0, 10 )
-initial_velocity = 500.0
-initial_velocity_random = 0.5
-scale_amount = 7.0
-scale_amount_random = 1.0
-color = Color( 0.670588, 0.976471, 1, 0.705882 )
 
 [node name="weather_timer" type="Timer" parent="."]
 wait_time = 20.0

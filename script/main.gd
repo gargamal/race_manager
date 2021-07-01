@@ -2,9 +2,12 @@ extends Node
 
 
 enum TYRE { SOFT, MEDIUM, HARD, INTERMEDIATE, WET }
+const tyre_array = [ "soft", "Medium", "Hard", "Intermediate", "Wet" ]
 enum WEATHER { SUN, SUN_CLOUD, CLOUD, LIGHT_RAIN, RAIN }
 
 
+export (NodePath) var tyre_option_path
+onready var tyre_option = get_node(tyre_option_path)
 onready var viewport1 = $Viewports/ViewportContainer1/Viewport
 onready var viewport2 = $Viewports/ViewportContainer2/Viewport
 onready var camera1 = $Viewports/ViewportContainer1/Viewport/Camera
@@ -13,7 +16,8 @@ onready var world = $Viewports/ViewportContainer2/Viewport/race
 
 var car_1
 var car_2
-
+var car_select
+var tyre_selected
 
 var ranking_tab_base := []
 var ranking_line := { "car":"", "total_time":0, "lap":0, "best_lap":0, "last_lap":0 }
@@ -36,6 +40,14 @@ func _ready():
 	init_screen($params/car_2, car_2)
 	
 	init_ranking()
+	add_tyre_option()
+	get_tree().paused = false
+	$panel_pitstop.visible = false
+
+
+func add_tyre_option():
+	for item in tyre_array:
+		tyre_option.add_item(item)
 
 
 func init_screen(root :Panel, car :KinematicBody2D):
@@ -58,8 +70,6 @@ func demo_script():
 func _process(_delta):
 	if Input.is_action_just_pressed("ui_select"):
 		var _err = get_tree().reload_current_scene()
-	elif Input.is_action_just_pressed("ui_accept"):
-		get_tree().paused = !get_tree().paused
 
 
 func update_screen(root :Panel, car :KinematicBody2D):
@@ -223,3 +233,57 @@ func _on_see_ranking_mouse_entered():
 
 func _on_see_ranking_mouse_exited():
 	$see_ranking.modulate = Color(1.0, 1.0, 1.0, 0.5)
+
+
+func _on_tyre_option_item_selected(index):
+	tyre_selected = index
+
+
+func _on_btn_pitlane_car_1_pressed():
+	car_select = camera1.target
+	on_btn_pitlane_car()
+
+
+func _on_btn_pitlane_car_2_pressed():
+	car_select = camera2.target
+	on_btn_pitlane_car()
+
+
+func on_btn_pitlane_car():
+	$panel_pitstop.visible = true
+	tyre_option.select(car_select.tyre)
+	tyre_selected = car_select.tyre
+	$panel_pitstop/car_name.text = car_select.car_name
+	$panel_pitstop/tilt_back_spoiler_param.text = str(car_select.tilt_back_spoiler)
+	$panel_pitstop/tilt_front_spoiler_param.text = str(car_select.tilt_front_spoiler)
+	$panel_pitstop/gearbox_param.text = str(car_select.gearbox)
+	$panel_pitstop/suspension_hardness_param.text = str(car_select.suspension_hardness)
+	
+	$panel_pitstop/tyre_param_pit.text = "XXX" if car_select.tyre_pit_stop == null else tyre_array[car_select.tyre_pit_stop]
+	$panel_pitstop/tilt_back_spoiler_param_pit.text = "XXX" if car_select.tilt_back_spoiler_pit_stop == null else str(car_select.tilt_back_spoiler_pit_stop)
+	$panel_pitstop/tilt_front_spoiler_param_pit.text = "XXX" if car_select.tilt_front_spoiler_pit_stop == null else str(car_select.tilt_front_spoiler_pit_stop)
+	$panel_pitstop/suspension_hardness_param_pit.text = "XXX" if car_select.suspension_hardness_pit_stop == null else str(car_select.suspension_hardness_pit_stop)
+	$panel_pitstop/gearbox_param_pit.text = "XXX" if car_select.gearbox_pit_stop == null else str(car_select.gearbox_pit_stop)
+	
+	get_tree().paused = true
+
+
+func _on_apply_pressed():
+	get_tree().paused = false
+	$panel_pitstop.visible = false
+	car_select.has_pit_stop = true
+	car_select.tyre_pit_stop = tyre_selected
+	if $panel_pitstop/tilt_back_spoiler_param.text.is_valid_float():
+		car_select.tilt_back_spoiler_pit_stop = float($panel_pitstop/tilt_back_spoiler_param.text)
+	if $panel_pitstop/tilt_front_spoiler_param.text.is_valid_float():
+		car_select.tilt_front_spoiler_pit_stop = float($panel_pitstop/tilt_front_spoiler_param.text)
+	if $panel_pitstop/gearbox_param.text.is_valid_float():
+		car_select.gearbox_pit_stop = float($panel_pitstop/gearbox_param.text)
+	if $panel_pitstop/suspension_hardness_param.text.is_valid_float():
+		car_select.suspension_hardness_pit_stop = float($panel_pitstop/suspension_hardness_param.text)
+
+
+func _on_escap_pressed():
+	get_tree().paused = false
+	$panel_pitstop.visible = false
+

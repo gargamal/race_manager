@@ -1,11 +1,13 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scene/race.tscn" type="PackedScene" id=1]
 [ext_resource path="res://script/main.gd" type="Script" id=2]
 [ext_resource path="res://script/camera.gd" type="Script" id=3]
+[ext_resource path="res://sprite/cars.png" type="Texture" id=4]
 
 [node name="Main" type="Node"]
 script = ExtResource( 2 )
+tyre_option_path = NodePath("panel_pitstop/tyre_option")
 
 [node name="Viewports" type="HBoxContainer" parent="."]
 anchor_left = 0.01
@@ -60,6 +62,7 @@ zoom = Vector2( 1.25, 1.25 )
 script = ExtResource( 3 )
 
 [node name="panel_ranking" type="Panel" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.01
 anchor_right = 0.5
@@ -1590,6 +1593,7 @@ __meta__ = {
 }
 
 [node name="params" type="HBoxContainer" parent="."]
+pause_mode = 2
 anchor_left = 0.01
 anchor_top = 0.99
 anchor_right = 0.99
@@ -1694,7 +1698,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="btn_pitlane" type="Button" parent="params/car_1"]
+[node name="btn_pitlane_car_1" type="Button" parent="params/car_1"]
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -200.0
@@ -1729,10 +1733,10 @@ current = true
 zoom = Vector2( 15, 15 )
 
 [node name="weather" type="Label" parent="params/minimap"]
-anchor_left = 0.01
-anchor_top = 0.01
-anchor_right = 0.01
-anchor_bottom = 0.01
+anchor_left = 0.03
+anchor_top = 0.03
+anchor_right = 0.03
+anchor_bottom = 0.03
 margin_right = 40.0
 margin_bottom = 14.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -1815,18 +1819,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="btn_pitlane" type="Button" parent="params/car_2"]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -200.0
-margin_top = 25.0
-margin_right = -32.0
-margin_bottom = 64.0
-text = "Go Pitlane"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="tyre_health" type="Label" parent="params/car_2"]
 margin_left = 32.0
 margin_top = 185.0
@@ -1849,11 +1841,262 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="btn_pitlane_car_2" type="Button" parent="params/car_2"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -200.0
+margin_top = 25.0
+margin_right = -32.0
+margin_bottom = 64.0
+text = "Go Pitlane"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="refresh_stat" type="Timer" parent="."]
 wait_time = 0.1
 autostart = true
 
+[node name="panel_pitstop" type="Panel" parent="."]
+pause_mode = 2
+modulate = Color( 1, 1, 1, 0.9 )
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="car" type="Sprite" parent="panel_pitstop"]
+position = Vector2( 1206.35, 175.43 )
+texture = ExtResource( 4 )
+hframes = 2
+vframes = 8
+
+[node name="car_name" type="Label" parent="panel_pitstop"]
+margin_left = 32.0
+margin_top = 37.43
+margin_right = 212.0
+margin_bottom = 69.43
+text = "CAR NAME"
+valign = 1
+
+[node name="tyre" type="Label" parent="panel_pitstop"]
+margin_left = 32.0
+margin_top = 69.0
+margin_right = 212.0
+margin_bottom = 101.0
+text = "TYRE"
+valign = 1
+
+[node name="tyre_option" type="OptionButton" parent="panel_pitstop"]
+margin_left = 224.0
+margin_top = 69.0
+margin_right = 437.0
+margin_bottom = 89.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tilt_back_spoiler" type="Label" parent="panel_pitstop"]
+margin_left = 32.0
+margin_top = 100.0
+margin_right = 212.0
+margin_bottom = 132.0
+text = "TILT BACK SPOILER"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tilt_back_spoiler_param" type="TextEdit" parent="panel_pitstop"]
+margin_left = 224.0
+margin_top = 100.0
+margin_right = 424.0
+margin_bottom = 132.0
+text = "100"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tilt_front_spoiler" type="Label" parent="panel_pitstop"]
+margin_left = 32.0
+margin_top = 133.0
+margin_right = 212.0
+margin_bottom = 165.0
+text = "TILT FRONT SPOILER"
+valign = 1
+
+[node name="tilt_front_spoiler_param" type="TextEdit" parent="panel_pitstop"]
+margin_left = 224.0
+margin_top = 132.0
+margin_right = 424.0
+margin_bottom = 164.0
+text = "90"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="gearbox" type="Label" parent="panel_pitstop"]
+margin_left = 32.0
+margin_top = 165.0
+margin_right = 212.0
+margin_bottom = 197.0
+text = "GEARBOX"
+valign = 1
+
+[node name="gearbox_param" type="TextEdit" parent="panel_pitstop"]
+margin_left = 224.0
+margin_top = 164.0
+margin_right = 424.0
+margin_bottom = 196.0
+text = "95"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="suspension_hardness" type="Label" parent="panel_pitstop"]
+margin_left = 32.0
+margin_top = 197.0
+margin_right = 212.0
+margin_bottom = 229.0
+text = "SUSPENSION HARDNESS"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="suspension_hardness_param" type="TextEdit" parent="panel_pitstop"]
+margin_left = 224.0
+margin_top = 196.0
+margin_right = 424.0
+margin_bottom = 228.0
+text = "95"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tyre_pit" type="Label" parent="panel_pitstop"]
+margin_left = 32.0
+margin_top = 268.43
+margin_right = 212.0
+margin_bottom = 300.43
+text = "TYRE"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tyre_param_pit" type="Label" parent="panel_pitstop"]
+margin_left = 224.0
+margin_top = 268.43
+margin_right = 424.0
+margin_bottom = 300.43
+text = "100"
+
+[node name="tilt_back_spoiler_pit" type="Label" parent="panel_pitstop"]
+margin_left = 32.0
+margin_top = 299.43
+margin_right = 212.0
+margin_bottom = 331.43
+text = "TILT BACK SPOILER"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tilt_back_spoiler_param_pit" type="Label" parent="panel_pitstop"]
+margin_left = 224.0
+margin_top = 299.43
+margin_right = 424.0
+margin_bottom = 331.43
+text = "100"
+
+[node name="tilt_front_spoiler_pit" type="Label" parent="panel_pitstop"]
+margin_left = 32.0
+margin_top = 332.43
+margin_right = 212.0
+margin_bottom = 364.43
+text = "TILT FRONT SPOILER"
+valign = 1
+
+[node name="tilt_front_spoiler_param_pit" type="Label" parent="panel_pitstop"]
+margin_left = 224.0
+margin_top = 331.43
+margin_right = 424.0
+margin_bottom = 363.43
+text = "90"
+
+[node name="gearbox_pit" type="Label" parent="panel_pitstop"]
+margin_left = 32.0
+margin_top = 364.43
+margin_right = 212.0
+margin_bottom = 396.43
+text = "GEARBOX"
+valign = 1
+
+[node name="gearbox_param_pit" type="Label" parent="panel_pitstop"]
+margin_left = 224.0
+margin_top = 363.43
+margin_right = 424.0
+margin_bottom = 395.43
+text = "95"
+
+[node name="suspension_hardness_pit" type="Label" parent="panel_pitstop"]
+margin_left = 32.0
+margin_top = 396.43
+margin_right = 212.0
+margin_bottom = 428.43
+text = "SUSPENSION HARDNESS"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="suspension_hardness_param_pit" type="Label" parent="panel_pitstop"]
+margin_left = 224.0
+margin_top = 395.43
+margin_right = 424.0
+margin_bottom = 427.43
+text = "95"
+
+[node name="apply" type="Button" parent="panel_pitstop"]
+anchor_left = 0.45
+anchor_top = 0.9
+anchor_right = 0.55
+anchor_bottom = 0.95
+margin_left = -213.2
+margin_top = -9.59998
+margin_right = -170.8
+margin_bottom = 10.2
+text = "Go Pitlane"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="escap" type="Button" parent="panel_pitstop"]
+anchor_left = 0.45
+anchor_top = 0.9
+anchor_right = 0.55
+anchor_bottom = 0.95
+margin_left = 170.8
+margin_top = -4.40002
+margin_right = 213.2
+margin_bottom = 15.4
+text = "Escap"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="mouse_entered" from="see_ranking" to="." method="_on_see_ranking_mouse_entered"]
 [connection signal="mouse_exited" from="see_ranking" to="." method="_on_see_ranking_mouse_exited"]
 [connection signal="pressed" from="see_ranking" to="." method="_on_see_ranking_pressed"]
+[connection signal="pressed" from="params/car_1/btn_pitlane_car_1" to="." method="_on_btn_pitlane_car_1_pressed"]
+[connection signal="pressed" from="params/car_2/btn_pitlane_car_2" to="." method="_on_btn_pitlane_car_2_pressed"]
 [connection signal="timeout" from="refresh_stat" to="." method="_on_Timer_timeout"]
+[connection signal="item_selected" from="panel_pitstop/tyre_option" to="." method="_on_tyre_option_item_selected"]
+[connection signal="pressed" from="panel_pitstop/apply" to="." method="_on_apply_pressed"]
+[connection signal="pressed" from="panel_pitstop/escap" to="." method="_on_escap_pressed"]
