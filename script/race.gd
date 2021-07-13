@@ -10,9 +10,9 @@ var proba_sun_cloud = 0
 var proba_cloud = 0
 var proba_light_rain = 0
 var proba_heavy_rain = 0
-var weather = WEATHER.SUN
+var weather = WEATHER.RAIN
 var previous_weather = weather
-var road_condition = ROAD_CONDITION.DRY
+var road_condition = ROAD_CONDITION.WET
 var cars = []
 
 

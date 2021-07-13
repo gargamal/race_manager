@@ -1,8 +1,0 @@
-- sous la pluie réduire l'accélération en fonction des pneus et du temps
-- gestion des pneus / usure
- 
-- faire un écran de règlages
-- faire un arrêt au stand
-
-Note de pilote
-- test de dépassement

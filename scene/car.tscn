@@ -1,34 +1,37 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://script/car.gd" type="Script" id=1]
 [ext_resource path="res://font/DejaVuSans.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://sprite/car/suspension.png" type="Texture" id=3]
+[ext_resource path="res://sprite/car/tyres.png" type="Texture" id=4]
+[ext_resource path="res://sprite/car/chassis.png" type="Texture" id=5]
+[ext_resource path="res://sprite/car/helmet.png" type="Texture" id=6]
+[ext_resource path="res://sprite/car/fins.png" type="Texture" id=7]
+[ext_resource path="res://sprite/car/engine.png" type="Texture" id=8]
+[ext_resource path="res://sprite/car/body.png" type="Texture" id=9]
 
-[sub_resource type="StreamTexture" id=1]
-flags = 4
-load_path = "res://.import/cars.png-36c4d12441ace5b4041b0840d5a48616.stex"
-
-[sub_resource type="DynamicFont" id=2]
-size = 40
+[sub_resource type="DynamicFont" id=1]
+size = 35
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 use_filter = true
 font_data = ExtResource( 2 )
 
-[sub_resource type="Gradient" id=3]
+[sub_resource type="Gradient" id=2]
 offsets = PoolRealArray( 0, 0.472868, 1 )
 colors = PoolColorArray( 0.211765, 0.211765, 0.211765, 1, 0.519531, 0.519531, 0.519531, 1, 0.211765, 0.211765, 0.211765, 1 )
 
-[sub_resource type="Curve" id=4]
+[sub_resource type="Curve" id=3]
 _data = [ Vector2( 0, 0.986364 ), 0.0, -0.310151, 0, 0, Vector2( 1, 0.00137544 ), 0.288416, 0.0, 0, 0 ]
 
-[sub_resource type="Gradient" id=5]
+[sub_resource type="Gradient" id=4]
 offsets = PoolRealArray( 0, 0.573643 )
 
-[sub_resource type="Gradient" id=6]
+[sub_resource type="Gradient" id=5]
 offsets = PoolRealArray( 0.364341, 1 )
 colors = PoolColorArray( 1, 0.901961, 0.670588, 0.501961, 0.239216, 0.176471, 0.054902, 0.501961 )
 
-[sub_resource type="Gradient" id=7]
+[sub_resource type="Gradient" id=6]
 offsets = PoolRealArray( 0.364341, 1 )
 colors = PoolColorArray( 0.764706, 1, 1, 0.501961, 0.054902, 0.215686, 0.239216, 0.501961 )
 
@@ -42,24 +45,48 @@ script = ExtResource( 1 )
 
 [node name="col" type="CollisionPolygon2D" parent="."]
 scale = Vector2( 0.2, 0.2 )
-polygon = PoolVector2Array( -285, -95, 310, -90, 310, 95, -285, 95 )
+polygon = PoolVector2Array( -310, -100, 330, -100, 330, 95, -310, 100 )
 
-[node name="car_design" type="Sprite" parent="."]
-scale = Vector2( 0.2, 0.2 )
-texture = SubResource( 1 )
-hframes = 2
-vframes = 8
-frame = 1
+[node name="chassis" type="Sprite" parent="."]
+modulate = Color( 0.839216, 0.839216, 0.839216, 1 )
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 5 )
+
+[node name="suspensions" type="Sprite" parent="."]
+modulate = Color( 0.588235, 0.588235, 0.588235, 1 )
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 3 )
+
+[node name="engine" type="Sprite" parent="."]
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 8 )
+
+[node name="tyres" type="Sprite" parent="."]
+modulate = Color( 0.411765, 0.411765, 0.411765, 1 )
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 4 )
+
+[node name="fins" type="Sprite" parent="."]
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 7 )
+
+[node name="body" type="Sprite" parent="."]
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 9 )
+
+[node name="helmet" type="Sprite" parent="."]
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 6 )
 
 [node name="number" type="Label" parent="."]
-margin_left = 24.0
+margin_left = 21.0
 margin_top = 5.0
-margin_right = 74.0
+margin_right = 71.0
 margin_bottom = 53.0
 rect_rotation = -90.0
 rect_scale = Vector2( 0.2, 0.2 )
 size_flags_stretch_ratio = 0.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 1 )
 text = "99"
 align = 1
 valign = 1
@@ -67,11 +94,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="helmet" type="Polygon2D" parent="."]
-polygon = PoolVector2Array( -3, -4, -6, -3, -7, 0, -7, 1, -6, 4, -3, 5, 0, 4, 1, 1, 1, 0, 0, -3 )
-
 [node name="detect_limit" type="RayCast2D" parent="."]
-position = Vector2( 64, -1.90735e-06 )
+position = Vector2( 68, -2.71051e-20 )
 scale = Vector2( 0.2, 0.2 )
 enabled = true
 cast_to = Vector2( 500, 0 )
@@ -79,7 +103,7 @@ collision_mask = 22
 collide_with_areas = true
 
 [node name="detect_turn_left" type="RayCast2D" parent="."]
-position = Vector2( 32, -24 )
+position = Vector2( 36, -24 )
 scale = Vector2( 0.2, 0.2 )
 enabled = true
 cast_to = Vector2( 500, -500 )
@@ -87,7 +111,7 @@ collision_mask = 22
 collide_with_areas = true
 
 [node name="detect_turn_rigth" type="RayCast2D" parent="."]
-position = Vector2( 32, 24 )
+position = Vector2( 36, 24 )
 scale = Vector2( 0.2, 0.2 )
 enabled = true
 cast_to = Vector2( 500, 500 )
@@ -95,7 +119,7 @@ collision_mask = 22
 collide_with_areas = true
 
 [node name="detect_car_left" type="RayCast2D" parent="."]
-position = Vector2( 32, -24 )
+position = Vector2( 37, -24 )
 scale = Vector2( 0.2, 0.2 )
 enabled = true
 cast_to = Vector2( 500, -500 )
@@ -103,7 +127,7 @@ collision_mask = 8
 collide_with_areas = true
 
 [node name="detect_car_rigth" type="RayCast2D" parent="."]
-position = Vector2( 32, 24 )
+position = Vector2( 37, 24 )
 scale = Vector2( 0.2, 0.2 )
 enabled = true
 cast_to = Vector2( 500, 500 )
@@ -111,7 +135,7 @@ collision_mask = 8
 collide_with_areas = true
 
 [node name="detect_crash_l" type="RayCast2D" parent="."]
-position = Vector2( 64, -18 )
+position = Vector2( 66, -23 )
 scale = Vector2( 0.2, 0.2 )
 enabled = true
 cast_to = Vector2( 500, 0 )
@@ -119,7 +143,7 @@ collision_mask = 8
 collide_with_areas = true
 
 [node name="detect_crash_r" type="RayCast2D" parent="."]
-position = Vector2( 64, 18 )
+position = Vector2( 66, 23 )
 scale = Vector2( 0.2, 0.2 )
 enabled = true
 cast_to = Vector2( 500, 0 )
@@ -127,9 +151,9 @@ collision_mask = 8
 collide_with_areas = true
 
 [node name="detect_final_line" type="RayCast2D" parent="."]
-position = Vector2( -61, 0 )
+position = Vector2( -39, 0 )
 enabled = true
-cast_to = Vector2( 125, 0 )
+cast_to = Vector2( 100, 0 )
 collision_mask = 256
 collide_with_areas = true
 
@@ -140,7 +164,7 @@ collision_mask = 192
 collide_with_areas = true
 
 [node name="detect_return_road_left" type="RayCast2D" parent="."]
-position = Vector2( 39, -24 )
+position = Vector2( 48, -24 )
 rotation = -0.785398
 enabled = true
 cast_to = Vector2( 175, 0 )
@@ -148,7 +172,7 @@ collision_mask = 192
 collide_with_areas = true
 
 [node name="detect_return_road_right" type="RayCast2D" parent="."]
-position = Vector2( 40, 24 )
+position = Vector2( 48, 24 )
 rotation = 0.785398
 enabled = true
 cast_to = Vector2( 175, 0 )
@@ -156,14 +180,14 @@ collision_mask = 192
 collide_with_areas = true
 
 [node name="detect_overtake_r" type="RayCast2D" parent="."]
-position = Vector2( 64, 18 )
+position = Vector2( 66, 22 )
 scale = Vector2( 0.2, 0.2 )
 enabled = true
 cast_to = Vector2( 250, 0 )
 collision_mask = 8
 
 [node name="detect_overtake_l" type="RayCast2D" parent="."]
-position = Vector2( 64, -18 )
+position = Vector2( 66, -22 )
 scale = Vector2( 0.2, 0.2 )
 enabled = true
 cast_to = Vector2( 250, 0 )
@@ -171,72 +195,83 @@ collision_mask = 8
 
 [node name="wheel_effect_bl" type="CPUParticles2D" parent="."]
 modulate = Color( 1, 1, 1, 0.156863 )
-position = Vector2( -41, -21 )
+position = Vector2( -40, -19 )
+emitting = false
 amount = 128
 lifetime = 0.5
 speed_scale = 5.0
 emission_shape = 2
 emission_rect_extents = Vector2( 1, 3.5 )
 gravity = Vector2( -98, 0 )
-scale_amount = 4.0
-color_ramp = SubResource( 3 )
+scale_amount = 2.5
+color_ramp = SubResource( 2 )
 
 [node name="wheel_effect_br" type="CPUParticles2D" parent="."]
-position = Vector2( -41.5039, 21.5953 )
+modulate = Color( 1, 1, 1, 0.156863 )
+position = Vector2( -40, 19 )
+emitting = false
 amount = 128
 lifetime = 0.5
 speed_scale = 5.0
 emission_shape = 2
 emission_rect_extents = Vector2( 1, 3.5 )
 gravity = Vector2( -98, 0 )
-scale_amount = 4.0
-color_ramp = SubResource( 3 )
+scale_amount = 2.5
+color_ramp = SubResource( 2 )
 __meta__ = {
 "_editor_description_": ""
 }
 
 [node name="wheel_effect_fr" type="CPUParticles2D" parent="."]
-position = Vector2( 42, 20.2976 )
+modulate = Color( 1, 1, 1, 0.156863 )
+position = Vector2( 47, 19 )
+emitting = false
 amount = 128
 lifetime = 0.5
 speed_scale = 5.0
 emission_shape = 2
 emission_rect_extents = Vector2( 1, 3.5 )
 gravity = Vector2( -98, 0 )
-scale_amount = 4.0
-color_ramp = SubResource( 3 )
+scale_amount = 2.5
+color_ramp = SubResource( 2 )
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="wheel_effect_fl" type="CPUParticles2D" parent="."]
-position = Vector2( 41.8929, -19.4047 )
+modulate = Color( 1, 1, 1, 0.156863 )
+position = Vector2( 48, -19 )
+emitting = false
 amount = 128
 lifetime = 0.5
 speed_scale = 5.0
 emission_shape = 2
 emission_rect_extents = Vector2( 1, 3.5 )
 gravity = Vector2( -98, 0 )
-scale_amount = 4.0
-color_ramp = SubResource( 3 )
+scale_amount = 2.5
+color_ramp = SubResource( 2 )
 __meta__ = {
 "_editor_description_": ""
 }
 
 [node name="vortex" type="CPUParticles2D" parent="."]
-position = Vector2( -61, 0 )
+position = Vector2( -63, 0 )
+emitting = false
 amount = 256
 lifetime = 1.5
 speed_scale = 2.0
 lifetime_randomness = 1.0
 emission_shape = 3
-emission_points = PoolVector2Array( -2, -14, -2, 15 )
+emission_points = PoolVector2Array( -2, -13, -2, 13 )
 emission_colors = PoolColorArray(  )
 gravity = Vector2( -98, 0 )
-scale_amount = 3.0
-scale_amount_curve = SubResource( 4 )
-color_ramp = SubResource( 5 )
+scale_amount = 2.0
+scale_amount_curve = SubResource( 3 )
+color_ramp = SubResource( 4 )
 
 [node name="gravar_effect_bl" type="CPUParticles2D" parent="."]
 modulate = Color( 1, 1, 1, 0.4 )
-position = Vector2( -59, -21 )
+position = Vector2( -53, -19 )
 emitting = false
 amount = 512
 emission_shape = 2
@@ -246,11 +281,11 @@ gravity = Vector2( -98, 0 )
 initial_velocity = 50.0
 scale_amount = 5.0
 scale_amount_random = 1.0
-color_ramp = SubResource( 6 )
+color_ramp = SubResource( 5 )
 
 [node name="gravar_effect_br" type="CPUParticles2D" parent="."]
 modulate = Color( 1, 1, 1, 0.4 )
-position = Vector2( -59, 21 )
+position = Vector2( -53, 19 )
 emitting = false
 amount = 512
 emission_shape = 2
@@ -260,11 +295,11 @@ gravity = Vector2( -98, 0 )
 initial_velocity = 50.0
 scale_amount = 5.0
 scale_amount_random = 1.0
-color_ramp = SubResource( 6 )
+color_ramp = SubResource( 5 )
 
 [node name="gravar_effect_fl" type="CPUParticles2D" parent="."]
 modulate = Color( 1, 1, 1, 0.4 )
-position = Vector2( 24, -20 )
+position = Vector2( 34, -19 )
 emitting = false
 amount = 512
 emission_shape = 2
@@ -274,11 +309,11 @@ gravity = Vector2( -98, 0 )
 initial_velocity = 50.0
 scale_amount = 5.0
 scale_amount_random = 1.0
-color_ramp = SubResource( 6 )
+color_ramp = SubResource( 5 )
 
 [node name="gravar_effect_fr" type="CPUParticles2D" parent="."]
 modulate = Color( 1, 1, 1, 0.4 )
-position = Vector2( 25, 20 )
+position = Vector2( 34, 19 )
 emitting = false
 amount = 512
 emission_shape = 2
@@ -288,11 +323,11 @@ gravity = Vector2( -98, 0 )
 initial_velocity = 50.0
 scale_amount = 5.0
 scale_amount_random = 1.0
-color_ramp = SubResource( 6 )
+color_ramp = SubResource( 5 )
 
 [node name="rain_effect_bl" type="CPUParticles2D" parent="."]
 modulate = Color( 1, 1, 1, 0.04 )
-position = Vector2( -59, -21 )
+position = Vector2( -53, -19 )
 emitting = false
 amount = 512
 emission_shape = 2
@@ -303,14 +338,14 @@ gravity = Vector2( -98, 0 )
 initial_velocity = 100.0
 scale_amount = 5.0
 scale_amount_random = 1.0
-color_ramp = SubResource( 7 )
+color_ramp = SubResource( 6 )
 __meta__ = {
 "_editor_description_": ""
 }
 
 [node name="rain_effect_br" type="CPUParticles2D" parent="."]
 modulate = Color( 1, 1, 1, 0.156863 )
-position = Vector2( -59, 21 )
+position = Vector2( -53, 19 )
 emitting = false
 amount = 512
 emission_shape = 2
@@ -321,14 +356,14 @@ gravity = Vector2( -98, 0 )
 initial_velocity = 100.0
 scale_amount = 5.0
 scale_amount_random = 1.0
-color_ramp = SubResource( 7 )
+color_ramp = SubResource( 6 )
 __meta__ = {
 "_editor_description_": ""
 }
 
 [node name="rain_effect_fl" type="CPUParticles2D" parent="."]
 modulate = Color( 1, 1, 1, 0.156863 )
-position = Vector2( 24, -20 )
+position = Vector2( 34, -19 )
 emitting = false
 amount = 512
 emission_shape = 2
@@ -339,14 +374,14 @@ gravity = Vector2( -98, 0 )
 initial_velocity = 100.0
 scale_amount = 5.0
 scale_amount_random = 1.0
-color_ramp = SubResource( 7 )
+color_ramp = SubResource( 6 )
 __meta__ = {
 "_editor_description_": ""
 }
 
 [node name="rain_effect_fr" type="CPUParticles2D" parent="."]
 modulate = Color( 1, 1, 1, 0.156863 )
-position = Vector2( 25, 20 )
+position = Vector2( 34, 19 )
 emitting = false
 amount = 512
 emission_shape = 2
@@ -357,7 +392,7 @@ gravity = Vector2( -98, 0 )
 initial_velocity = 100.0
 scale_amount = 5.0
 scale_amount_random = 1.0
-color_ramp = SubResource( 7 )
+color_ramp = SubResource( 6 )
 __meta__ = {
 "_editor_description_": ""
 }

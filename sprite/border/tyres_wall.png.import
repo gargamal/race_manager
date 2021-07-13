@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/gravar.png-e6246a5f44396ec664f3b2a1f86d3eaf.stex"
+path="res://.import/tyres_wall.png-4f7afba1bac5d5bec0fc2b3b54ba44a1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprite/gravar.png"
-dest_files=[ "res://.import/gravar.png-e6246a5f44396ec664f3b2a1f86d3eaf.stex" ]
+source_file="res://sprite/border/tyres_wall.png"
+dest_files=[ "res://.import/tyres_wall.png-4f7afba1bac5d5bec0fc2b3b54ba44a1.stex" ]
 
 [params]
 

@@ -12,7 +12,6 @@ export(int)var nb_lap := 100
 export(int)var circuit_exterior_width := 500
 export(int)var road_width := 300
 export(NodePath) var node_path
-export(StreamTexture) var background
 export(bool)var with_redraw := false setget with_redraw_editor 
 export(int)var weather_proba_sun = 1
 export(int)var weather_proba_sun_cloud = 1
@@ -25,10 +24,6 @@ var previous_weather = WEATHER.CLOUD
 
 
 func _ready():
-	if background:
-		$road_line/limit_exterior/bg.texture = background
-		$road_line/limit_interior/bg.texture = background
-	
 	if node_path and get_node(node_path) is Path2D:
 		var node := get_node(node_path)
 		var polygon = get_polygon_adjust(node)
@@ -38,9 +33,7 @@ func _ready():
 			var polygon_exterior_raw = build_polygon_exterior(polygon)
 			var polygon_exterior_circuit = build_exterior(polygon)
 			$road_line/limit_interior/col.polygon = polygon_interior
-			$road_line/limit_interior/bg.polygon = polygon_interior
 			$road_line/limit_exterior/col.polygon = polygon_exterior_circuit
-			$road_line/limit_exterior/bg.polygon = polygon_exterior_circuit
 			$road_line.points = polygon
 			for child in $buzers.get_children(): 
 				$buzers.remove_child(child)
@@ -223,8 +216,6 @@ func add_square_col_to_finalize_exterior(limit, start, end) -> void:
 	
 	var square_bg = Polygon2D.new()
 	square_bg.polygon = new_square_ext
-	if background:
-		square_bg.texture = background
 	$road_line/limit_exterior.add_child(square_bg)
 
 

@@ -16,28 +16,30 @@ texture_mode = 1
 [node name="limit_interior" type="Area2D" parent="road_line" groups=[
 "interior",
 ]]
+visible = false
 collision_layer = 4
 collision_mask = 2147483656
 
-[node name="bg" type="Polygon2D" parent="road_line/limit_interior"]
-
 [node name="col" type="CollisionPolygon2D" parent="road_line/limit_interior"]
+visible = false
 
 [node name="limit_exterior" type="Area2D" parent="road_line" groups=[
 "exterior",
 ]]
+visible = false
 collision_layer = 524290
 collision_mask = 8
 
-[node name="bg" type="Polygon2D" parent="road_line/limit_exterior"]
-
 [node name="col" type="CollisionPolygon2D" parent="road_line/limit_exterior"]
+visible = false
 
 [node name="buzers" type="Node2D" parent="."]
 
 [node name="slow_turns" type="Node2D" parent="."]
+visible = false
 
 [node name="straigth_lines" type="Node2D" parent="."]
+visible = false
 
 [node name="ligthly_rain" type="CPUParticles2D" parent="."]
 emitting = false

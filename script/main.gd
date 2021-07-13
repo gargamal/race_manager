@@ -8,11 +8,9 @@ enum WEATHER { SUN, SUN_CLOUD, CLOUD, LIGHT_RAIN, RAIN }
 
 export (NodePath) var tyre_option_path
 onready var tyre_option = get_node(tyre_option_path)
-onready var viewport1 = $Viewports/ViewportContainer1/Viewport
-onready var viewport2 = $Viewports/ViewportContainer2/Viewport
-onready var camera1 = $Viewports/ViewportContainer1/Viewport/Camera
-onready var camera2 = $Viewports/ViewportContainer2/Viewport/Camera
-onready var world = $Viewports/ViewportContainer2/Viewport/race
+onready var viewport = $cars_view/car_view/view
+onready var camera = $cars_view/car_view/view/Camera
+onready var world = $cars_view/car_view/view/race
 
 var car_1
 var car_2
@@ -27,17 +25,12 @@ var lap_number = 0
 func _ready():
 	demo_script()
 	
-	viewport1.world_2d = viewport2.world_2d
-	$params/minimap/view.world_2d = viewport1.world_2d
+	$params/minimap/view.world_2d = viewport.world_2d
 	car_1 = world.get_node("cars/car_3")
-	camera1.target = car_1
+	car_2 = world.get_node("cars/car_4")
+	camera.target = car_1
 	car_1.human_player = true
 	init_screen($params/car_1, car_1)
-	
-	car_2 = world.get_node("cars/car_4")
-	camera2.target = car_2
-	car_2.human_player = true
-	init_screen($params/car_2, car_2)
 	
 	init_ranking()
 	add_tyre_option()
@@ -51,7 +44,7 @@ func add_tyre_option():
 
 
 func init_screen(root :Panel, car :KinematicBody2D):
-	root.get_node("car_name").modulate = car.team_color
+	root.get_node("car_name").modulate = car.text_color
 	root.get_node("car_name").text = car.car_name
 	root.get_node("position").text = "P: 0"
 	root.get_node("car_speed").text = "0 km /h"
@@ -240,12 +233,12 @@ func _on_tyre_option_item_selected(index):
 
 
 func _on_btn_pitlane_car_1_pressed():
-	car_select = camera1.target
+	car_select = car_1
 	on_btn_pitlane_car()
 
 
 func _on_btn_pitlane_car_2_pressed():
-	car_select = camera2.target
+	car_select = car_2
 	on_btn_pitlane_car()
 
 

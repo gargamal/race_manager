@@ -17,7 +17,6 @@ const OVERTAKE_TIME := 0.2
 const PITLANE_COEF_BRAKE := 1.1
 const PITLANE_SPEED := 35.0
 const PITLANE_ANGLE := PI * 8.0 / 360.0
-enum CAR_COLOR {RED, GOLD, SKY, SAND, GREEN, PURPLE, ORANGE, BROWN, BLUE, PINK, GRASS, CYAN, DARK_RED, WATER, WINE, DARK}
 enum TEAM { TEAM_1, TEAM_2, TEAM_3, TEAM_4, TEAM_5, TEAM_6, TEAM_7, TEAM_8, TEAM_9, TEAM_10, TEAM_11 }
 enum STATE_IN_PITLANE {ENTER, ENTER_GARAGE, GARAGE, EXIT_GARAGE, EXIT, RETURN_ROAD }
 enum STATE_IN_OVERTAKE { BEGIN, CONTINUE, END }
@@ -30,12 +29,13 @@ enum IN_CIRCUIT { NONE, LINE, TURN }
 
 
 export(String) var car_name := "voiture"
-export(CAR_COLOR) var car_color
 export(TEAM) var team_position
 export(float) var limit_speed := 100.0 # to m/s
 export(Color) var text_color = Color(1.0, 1.0, 1.0, 1.0)
 export(String) var number_car = "99"
 export(Color) var helmet_color = Color(1.0, 1.0, 1.0, 1.0)
+export(Color) var body_color = Color(1.0, 1.0, 1.0, 1.0)
+export(Color) var fins_color = Color(1.0, 1.0, 1.0, 1.0)
 export(bool) var has_pit_stop = false
 export(float) var tilt_front_spoiler = 30
 export(float) var tilt_back_spoiler = 30
@@ -59,6 +59,7 @@ var is_in_pitlane_area = false
 var state_in_pitlane = STATE_IN_PITLANE.ENTER
 var state_in_overtake = STATE_IN_OVERTAKE.END
 var mechanic_working = false
+var garage_is_busy = false
 var circuit_width = 0.0
 var coef_accelerate := 0.5
 var slow_direction_angle_degree := 5.0
@@ -92,26 +93,6 @@ var gearbox_pit_stop
 var tyre_pit_stop
 
 
-func team_color_init():
-	match car_color:
-		CAR_COLOR.RED: team_color = Color(1.0, 0.2, 0.2, 1.0)
-		CAR_COLOR.GOLD: team_color = Color(0.9, 1.0, 0.4, 1.0)
-		CAR_COLOR.SKY: team_color = Color(0.4, 0.9, 1.0, 1.0)
-		CAR_COLOR.SAND: team_color = Color(1.0, 0.8, 0.3, 1.0)
-		CAR_COLOR.GREEN: team_color = Color(0.2, 1.0, 0.2, 1.0)
-		CAR_COLOR.PURPLE: team_color = Color(1.0, 0.2, 1.0, 1.0)
-		CAR_COLOR.ORANGE: team_color = Color(1.0, 0.3, 0.0, 1.0)
-		CAR_COLOR.BROWN: team_color = Color(0.5, 0.3, 0.2, 1.0)
-		CAR_COLOR.BLUE: team_color = Color(0.2, 0.2, 1.0, 1.0)
-		CAR_COLOR.PINK: team_color = Color(1.0, 0.6, 1.0, 1.0)
-		CAR_COLOR.GRASS: team_color = Color(0.7, 1.0, 0.3, 1.0)
-		CAR_COLOR.CYAN: team_color = Color(0.0, 0.0, 1.0, 1.0)
-		CAR_COLOR.DARK_RED: team_color = Color(0.7, 0.0, 0.0, 1.0)
-		CAR_COLOR.WATER: team_color = Color(0.0, 1.0, 1.0, 1.0)
-		CAR_COLOR.WINE: team_color = Color(0.6, 0.1, 0.2, 1.0)
-		CAR_COLOR.DARK: team_color = Color(0.5, 0.5, 0.5, 1.0)
-
-
 func _ready():
 	race_node = get_parent().get_parent()
 	circuit_width = race_node.get_node("circuit/road_line").width
@@ -121,7 +102,8 @@ func _ready():
 	$number.text = number_car
 	$number.modulate = text_color
 	$helmet.modulate = helmet_color
-	$car_design.frame = car_color
+	$body.modulate = body_color
+	$fins.modulate = fins_color
 	direction_angle = (fast_direction_angle_degree / 360.0) * PI
 	gravar_sys_time = calculate_time(GRAVAR_SPEED * SCALE)
 	max_speed = limit_speed
@@ -137,8 +119,6 @@ func _ready():
 	$detect_turn_rigth.cast_to = Vector2(circuit_height_ray_cast * cos(PI / 4.0), circuit_height_ray_cast * sin(PI / 4.0))
 	$detect_turn_rigth.enabled = true
 	
-	team_color_init()
-	
 	time_max_speed = calculate_time(limit_speed / 2.0) * 5.0
 	actual_weather = race_node.weather
 	update_param(true)
@@ -150,6 +130,10 @@ func _physics_process(delta):
 	
 	if mechanic_working:
 		update_param(true)
+		return
+		
+	elif garage_is_busy:
+		move_car(delta)
 		return
 	
 	update_param(make_param_update)
@@ -221,7 +205,10 @@ func play_effect(speed_measured :float) -> void:
 	$gravar_effect_fl.emitting = emitting_gravar_effect
 	$gravar_effect_fr.emitting = emitting_gravar_effect
 	
-	if race_node.road_condition == ROAD_CONDITION.SLIGHTLY_WET:
+	
+	if mechanic_working or garage_is_busy :
+		rain_effect_apply(false, Color(1.0, 1.0, 1.0, 0.0))
+	elif race_node.road_condition == ROAD_CONDITION.SLIGHTLY_WET:
 		rain_effect_apply(true, Color(1.0, 1.0, 1.0, 0.04))
 	elif race_node.road_condition == ROAD_CONDITION.WET:
 		rain_effect_apply(true, Color(1.0, 1.0, 1.0, 0.08))
@@ -230,7 +217,7 @@ func play_effect(speed_measured :float) -> void:
 	elif race_node.road_condition == ROAD_CONDITION.TOTALY_WET:
 		rain_effect_apply(true, Color(1.0, 1.0, 1.0, 0.16))
 	else:
-		rain_effect_apply(false, Color(1.0, 1.0, 1.0, 0.16))
+		rain_effect_apply(false, Color(1.0, 1.0, 1.0, 0.0))
 
 func rain_effect_apply(emitting, modulate_effect):
 	$rain_effect_bl.emitting = emitting
@@ -596,13 +583,20 @@ func move_car_circuit(direction, delta):
 
 
 func move_car_pitlane(direction):
-	if is_in_pitlane_area:
+	garage_is_busy = $detect_crash_l.is_colliding() or $detect_crash_r.is_colliding()
+	if car_name == "car n°4":
+		print(garage_is_busy)
+	
+	if not garage_is_busy and is_in_pitlane_area:
 		var angle = get_angle_in_pitlane()
 		velocity = Vector2(1, 0).rotated(angle) * PITLANE_SPEED * SCALE
 	
-	else :
+	elif not garage_is_busy :
 		if (velocity.length() / SCALE) / PITLANE_COEF_BRAKE > PITLANE_SPEED: 
 			velocity /= PITLANE_COEF_BRAKE
+			
+		if (velocity.length() / SCALE) < PITLANE_SPEED:
+			velocity = velocity.normalized() * PITLANE_SPEED * SCALE
 
 		if direction == DIRECTION.TURN_LEFT or direction == DIRECTION.TURN_RIGHT:
 			turn_in_pitlane(direction)
