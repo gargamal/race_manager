@@ -584,8 +584,6 @@ func move_car_circuit(direction, delta):
 
 func move_car_pitlane(direction):
 	garage_is_busy = $detect_crash_l.is_colliding() or $detect_crash_r.is_colliding()
-	if car_name == "car n°4":
-		print(garage_is_busy)
 	
 	if not garage_is_busy and is_in_pitlane_area:
 		var angle = get_angle_in_pitlane()
