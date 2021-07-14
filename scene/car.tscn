@@ -10,9 +10,9 @@
 [ext_resource path="res://sprite/car/engine.png" type="Texture" id=8]
 [ext_resource path="res://sprite/car/body.png" type="Texture" id=9]
 
-[sub_resource type="DynamicFont" id=1]
-size = 35
-outline_size = 2
+[sub_resource type="DynamicFont" id=7]
+size = 37
+outline_size = 4
 outline_color = Color( 0, 0, 0, 1 )
 use_filter = true
 font_data = ExtResource( 2 )
@@ -86,7 +86,7 @@ margin_bottom = 53.0
 rect_rotation = -90.0
 rect_scale = Vector2( 0.2, 0.2 )
 size_flags_stretch_ratio = 0.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 7 )
 text = "99"
 align = 1
 valign = 1

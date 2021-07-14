@@ -1,0 +1,227 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scene/car.tscn" type="PackedScene" id=1]
+
+[node name="cars" type="Node2D"]
+
+[node name="car_1" parent="." instance=ExtResource( 1 )]
+position = Vector2( 1024, -256 )
+car_name = "voiture 1"
+text_color = Color( 0, 0.0392157, 1, 1 )
+number_car = "01"
+helmet_color = Color( 0.231373, 0.0313726, 0.866667, 1 )
+body_color = Color( 0, 0.952941, 1, 1 )
+fins_color = Color( 1, 0.772549, 0, 1 )
+team_color = Color( 0, 0.952941, 1, 1 )
+tyre = 3
+
+[node name="car_2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 1024, 259 )
+car_name = "voiture 2"
+text_color = Color( 0, 0.0392157, 1, 1 )
+number_car = "02"
+helmet_color = Color( 0.231373, 0.0313726, 0.866667, 1 )
+body_color = Color( 0, 0.952941, 1, 1 )
+fins_color = Color( 1, 0.772549, 0, 1 )
+team_color = Color( 0, 0.952941, 1, 1 )
+tilt_front_spoiler = 70.0
+tilt_back_spoiler = 70.0
+
+[node name="car_3" parent="." instance=ExtResource( 1 )]
+position = Vector2( 771.25, -256 )
+car_name = "voiture 3"
+team_position = 1
+number_car = "03"
+helmet_color = Color( 0.00784314, 0, 1, 1 )
+body_color = Color( 1, 0.14902, 0.14902, 1 )
+fins_color = Color( 0.2, 0.152941, 0.152941, 1 )
+team_color = Color( 1, 0.14902, 0.14902, 1 )
+tilt_front_spoiler = 80.0
+tilt_back_spoiler = 80.0
+tyre = 0
+
+[node name="car_4" parent="." instance=ExtResource( 1 )]
+position = Vector2( 771.25, 259 )
+car_name = "voiture 4"
+team_position = 1
+number_car = "04"
+helmet_color = Color( 0.00784314, 0, 1, 1 )
+body_color = Color( 1, 0.14902, 0.14902, 1 )
+fins_color = Color( 0.2, 0.152941, 0.152941, 1 )
+team_color = Color( 1, 0.14902, 0.14902, 1 )
+tilt_front_spoiler = 60.0
+tilt_back_spoiler = 60.0
+tyre = 0
+
+[node name="car_5" parent="." instance=ExtResource( 1 )]
+position = Vector2( 515.25, -256 )
+car_name = "voiture 5"
+team_position = 2
+text_color = Color( 0.913725, 0.980392, 0.141176, 1 )
+number_car = "05"
+body_color = Color( 0.129412, 1, 0.121569, 1 )
+fins_color = Color( 0.913725, 0.980392, 0.141176, 1 )
+team_color = Color( 0.129412, 1, 0.121569, 1 )
+tilt_front_spoiler = 55.0
+tilt_back_spoiler = 80.0
+
+[node name="car_6" parent="." instance=ExtResource( 1 )]
+position = Vector2( 515.25, 259 )
+car_name = "voiture 6"
+team_position = 2
+text_color = Color( 0.913725, 0.980392, 0.141176, 1 )
+number_car = "06"
+helmet_color = Color( 0.658824, 0.141176, 0.980392, 1 )
+body_color = Color( 0.129412, 1, 0.121569, 1 )
+fins_color = Color( 0.913725, 0.980392, 0.141176, 1 )
+team_color = Color( 0.129412, 1, 0.121569, 1 )
+
+[node name="car_7" parent="." instance=ExtResource( 1 )]
+position = Vector2( 256, -250 )
+car_name = "voiture 7"
+team_position = 2
+text_color = Color( 0.278431, 0.286275, 0.215686, 1 )
+number_car = "07"
+body_color = Color( 0.890196, 0.121569, 1, 1 )
+fins_color = Color( 0.278431, 0.286275, 0.215686, 1 )
+team_color = Color( 0.890196, 0.121569, 1, 1 )
+
+[node name="car_8" parent="." instance=ExtResource( 1 )]
+position = Vector2( 256, 256 )
+car_name = "voiture 8"
+team_position = 3
+text_color = Color( 0.278431, 0.286275, 0.215686, 1 )
+number_car = "08"
+helmet_color = Color( 0.564706, 0.545098, 0.0235294, 1 )
+body_color = Color( 0.890196, 0.121569, 1, 1 )
+fins_color = Color( 0.278431, 0.286275, 0.215686, 1 )
+team_color = Color( 0.890196, 0.121569, 1, 1 )
+tyre = 3
+
+[node name="car_9" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, -250 )
+car_name = "voiture 9"
+team_position = 4
+text_color = Color( 0, 0.0117647, 0.294118, 1 )
+number_car = "09"
+body_color = Color( 0.0666667, 0.329412, 0.94902, 1 )
+fins_color = Color( 0, 0.0117647, 0.294118, 1 )
+team_color = Color( 0.0666667, 0.329412, 0.94902, 1 )
+
+[node name="car_10" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, 256 )
+car_name = "voiture 10"
+team_position = 4
+text_color = Color( 0, 0.0117647, 0.294118, 1 )
+number_car = "10"
+body_color = Color( 0.0666667, 0.329412, 0.94902, 1 )
+fins_color = Color( 0, 0.0117647, 0.294118, 1 )
+team_color = Color( 0.0666667, 0.329412, 0.94902, 1 )
+
+[node name="car_11" parent="." instance=ExtResource( 1 )]
+position = Vector2( -256, -256 )
+car_name = "voiture 11"
+team_position = 5
+text_color = Color( 0.584314, 0.00784314, 0.00784314, 1 )
+number_car = "11"
+body_color = Color( 1, 0.211765, 0, 1 )
+fins_color = Color( 0.584314, 0.00784314, 0.00784314, 1 )
+team_color = Color( 1, 0.211765, 0, 1 )
+
+[node name="car_12" parent="." instance=ExtResource( 1 )]
+position = Vector2( -256, 256 )
+car_name = "voiture 12"
+team_position = 5
+text_color = Color( 0.584314, 0.00784314, 0.00784314, 1 )
+number_car = "12"
+body_color = Color( 1, 0.211765, 0, 1 )
+fins_color = Color( 0.584314, 0.00784314, 0.00784314, 1 )
+team_color = Color( 1, 0.211765, 0, 1 )
+
+[node name="car_13" parent="." instance=ExtResource( 1 )]
+position = Vector2( -512, -256 )
+car_name = "voiture 13"
+team_position = 6
+text_color = Color( 0.541176, 0, 0.733333, 1 )
+number_car = "13"
+helmet_color = Color( 0.0352941, 0.666667, 0.666667, 1 )
+body_color = Color( 1, 0.6, 0.901961, 1 )
+fins_color = Color( 0.541176, 0, 0.733333, 1 )
+team_color = Color( 1, 0.6, 0.901961, 1 )
+
+[node name="car_14" parent="." instance=ExtResource( 1 )]
+position = Vector2( -512, 256 )
+car_name = "voiture 14"
+team_position = 6
+text_color = Color( 0.541176, 0, 0.733333, 1 )
+number_car = "14"
+helmet_color = Color( 0.0705882, 0.666667, 0.0352941, 1 )
+body_color = Color( 1, 0.6, 0.901961, 1 )
+fins_color = Color( 0.541176, 0, 0.733333, 1 )
+team_color = Color( 1, 0.6, 0.901961, 1 )
+
+[node name="car_15" parent="." instance=ExtResource( 1 )]
+position = Vector2( -764.75, -256 )
+car_name = "voiture 15"
+team_position = 7
+number_car = "15"
+body_color = Color( 0.372549, 0.137255, 0.054902, 1 )
+fins_color = Color( 0.0823529, 0, 0, 1 )
+team_color = Color( 0.372549, 0.137255, 0.054902, 1 )
+
+[node name="car_16" parent="." instance=ExtResource( 1 )]
+position = Vector2( -768, 256 )
+car_name = "voiture 16"
+team_position = 7
+number_car = "16"
+body_color = Color( 0.372549, 0.137255, 0.054902, 1 )
+fins_color = Color( 0.0823529, 0, 0, 1 )
+team_color = Color( 0.372549, 0.137255, 0.054902, 1 )
+
+[node name="car_17" parent="." instance=ExtResource( 1 )]
+position = Vector2( -1024, -253 )
+car_name = "voiture 17"
+team_position = 8
+number_car = "17"
+body_color = Color( 0.254902, 0.254902, 0.254902, 1 )
+fins_color = Color( 0.462745, 0.462745, 0.462745, 1 )
+team_color = Color( 0.254902, 0.254902, 0.254902, 1 )
+
+[node name="car_18" parent="." instance=ExtResource( 1 )]
+position = Vector2( -1024, 256 )
+car_name = "voiture 18"
+team_position = 8
+number_car = "18"
+body_color = Color( 0.254902, 0.254902, 0.254902, 1 )
+fins_color = Color( 0.462745, 0.462745, 0.462745, 1 )
+team_color = Color( 0.254902, 0.254902, 0.254902, 1 )
+tilt_front_spoiler = 90.0
+tilt_back_spoiler = 90.0
+tyre = 0
+
+[node name="car_19" parent="." instance=ExtResource( 1 )]
+position = Vector2( -1280, -253 )
+car_name = "voiture 19"
+team_position = 9
+limit_speed = 120.0
+text_color = Color( 0.0431373, 0.0431373, 0.00392157, 1 )
+number_car = "19"
+helmet_color = Color( 0.839216, 0.996078, 0.0941176, 1 )
+body_color = Color( 0.960784, 0.968627, 0.105882, 1 )
+fins_color = Color( 0.968627, 0.592157, 0.105882, 1 )
+team_color = Color( 0.960784, 0.968627, 0.105882, 1 )
+
+[node name="car_20" parent="." instance=ExtResource( 1 )]
+position = Vector2( -1280, 260 )
+car_name = "voiture 20"
+team_position = 9
+text_color = Color( 0.0431373, 0.0431373, 0.00392157, 1 )
+number_car = "20"
+helmet_color = Color( 0.92549, 0.0705882, 0.0705882, 1 )
+body_color = Color( 0.960784, 0.968627, 0.105882, 1 )
+fins_color = Color( 0.968627, 0.592157, 0.105882, 1 )
+team_color = Color( 0.960784, 0.968627, 0.105882, 1 )
+tilt_front_spoiler = 90.0
+tilt_back_spoiler = 90.0
+gearbox = 50.0
+tyre = 4

@@ -36,6 +36,7 @@ export(String) var number_car = "99"
 export(Color) var helmet_color = Color(1.0, 1.0, 1.0, 1.0)
 export(Color) var body_color = Color(1.0, 1.0, 1.0, 1.0)
 export(Color) var fins_color = Color(1.0, 1.0, 1.0, 1.0)
+export(Color) var team_color = Color(1.0, 1.0, 1.0, 1.0)
 export(bool) var has_pit_stop = false
 export(float) var tilt_front_spoiler = 30
 export(float) var tilt_back_spoiler = 30
@@ -46,7 +47,6 @@ export(bool) var human_player = false
 
 
 var race_node
-var team_color = Color(1.0, 1.0, 1.0, 1.0)
 var sys_time := 0.0
 var velocity := Vector2.ZERO
 var direction_angle := 0.0
@@ -150,7 +150,7 @@ func _physics_process(delta):
 		velocity = velocity.rotated(bounce / 2.0)
 		brake()
 		
-	if get_speed() > GRAVAR_SPEED and road_type == ROAD_TYPE.ROAD and not ($detect_crash_l.is_colliding() or $detect_crash_r.is_colliding()) and collision and collision.collider is KinematicBody2D and collision.collider.is_in_group("car"):
+	if road_type == ROAD_TYPE.ROAD and get_speed() > GRAVAR_SPEED and not ($detect_crash_l.is_colliding() or $detect_crash_r.is_colliding()) and collision and collision.collider is KinematicBody2D and collision.collider.is_in_group("car"):
 		var bounce = velocity.angle_to(velocity.bounce(collision.normal))
 		if 0.0 < bounce and bounce < PI / 4.0 or -3.0 * PI / 4.0 < bounce and bounce < 0.0:
 			turn(DIRECTION.TURN_LEFT, bounce / 10.0)
@@ -585,19 +585,21 @@ func move_car_circuit(direction, delta):
 func move_car_pitlane(direction):
 	garage_is_busy = $detect_crash_l.is_colliding() or $detect_crash_r.is_colliding()
 	
-	if not garage_is_busy and is_in_pitlane_area:
-		var angle = get_angle_in_pitlane()
-		velocity = Vector2(1, 0).rotated(angle) * PITLANE_SPEED * SCALE
-	
-	elif not garage_is_busy :
-		if (velocity.length() / SCALE) / PITLANE_COEF_BRAKE > PITLANE_SPEED: 
-			velocity /= PITLANE_COEF_BRAKE
-			
+	if not garage_is_busy:
+		if is_in_pitlane_area:
+			var angle = get_angle_in_pitlane()
+			velocity = Vector2(1, 0).rotated(angle) * PITLANE_SPEED * SCALE
+		
+		else:
+			if (velocity.length() / SCALE) / PITLANE_COEF_BRAKE > PITLANE_SPEED: 
+				velocity /= PITLANE_COEF_BRAKE
+				
+			if direction == DIRECTION.TURN_LEFT or direction == DIRECTION.TURN_RIGHT:
+				turn_in_pitlane(direction)
+		
 		if (velocity.length() / SCALE) < PITLANE_SPEED:
 			velocity = velocity.normalized() * PITLANE_SPEED * SCALE
-
-		if direction == DIRECTION.TURN_LEFT or direction == DIRECTION.TURN_RIGHT:
-			turn_in_pitlane(direction)
+		
 
 
 func move_car_overtake(delta):

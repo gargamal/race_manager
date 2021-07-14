@@ -12,25 +12,30 @@ onready var viewport = $cars_view/car_view/view
 onready var camera = $cars_view/car_view/view/Camera
 onready var world = $cars_view/car_view/view/race
 
+var minimal_map = preload("res://scene/minimal_map.tscn")
 var car_1
 var car_2
 var car_select
 var tyre_selected
-
 var ranking_tab_base := []
 var ranking_line := { "car":"", "total_time":0, "lap":0, "best_lap":0, "last_lap":0 }
 
 var lap_number = 0
 
 func _ready():
-	demo_script()
-	
-	$params/minimap/view.world_2d = viewport.world_2d
 	car_1 = world.get_node("cars/car_3")
 	car_2 = world.get_node("cars/car_4")
 	camera.target = car_1
 	car_1.human_player = true
+	car_2.human_player = true
 	init_screen($params/car_1, car_1)
+	init_screen($params/car_2, car_2)
+	$params/car_1/active_vue.text = "ACTIVATE"
+	$params/car_2/active_vue.text = "DESACTIVATE"
+	
+	var inst_minimal_map = minimal_map.instance()
+	inst_minimal_map.start(world)
+	$params/minimap/view.add_child(inst_minimal_map)
 	
 	init_ranking()
 	add_tyre_option()
@@ -44,20 +49,12 @@ func add_tyre_option():
 
 
 func init_screen(root :Panel, car :KinematicBody2D):
-	root.get_node("car_name").modulate = car.text_color
+	root.get_node("car_name").modulate = car.team_color
 	root.get_node("car_name").text = car.car_name
 	root.get_node("position").text = "P: 0"
 	root.get_node("car_speed").text = "0 km /h"
 	root.get_node("last_lap").text = "last :---"
 	root.get_node("best_lap").text = "best :---"
-
-
-func demo_script():
-	var count = 1
-	for child in world.get_node("cars").get_children():
-		child.car_name = "car n°" + str(count)
-		child.number_car = str(count)
-		count += 1
 
 
 func _process(_delta):
@@ -84,6 +81,7 @@ func tyre_name(tyre :int) -> String:
 		TYRE.SOFT: return "Soft"
 		TYRE.WET: return "Wet"
 		_: return "..."
+
 
 func init_ranking():
 	lap_number = 0
@@ -280,3 +278,14 @@ func _on_escap_pressed():
 	get_tree().paused = false
 	$panel_pitstop.visible = false
 
+
+func _on_activate_vue_car_1_pressed():
+	camera.target = car_1
+	$params/car_1/active_vue.text = "ACTIVATE"
+	$params/car_2/active_vue.text = "DESACTIVATE"
+
+
+func _on_activate_vue_car_2_pressed():
+	camera.target = car_2
+	$params/car_1/active_vue.text = "DESACTIVATE"
+	$params/car_2/active_vue.text = "ACTIVATE"

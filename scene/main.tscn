@@ -1689,6 +1689,32 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="active_vue" type="Label" parent="params/car_1"]
+margin_left = 426.378
+margin_top = 164.799
+margin_right = 650.378
+margin_bottom = 196.799
+text = "ACTIF"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="activate_vue" type="Button" parent="params/car_1"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -200.0
+margin_top = 200.0
+margin_right = -32.0
+margin_bottom = 239.0
+text = "See car"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
 [node name="minimap" type="ViewportContainer" parent="params"]
 margin_left = 656.0
 margin_right = 1224.0
@@ -1706,10 +1732,6 @@ handle_input_locally = false
 disable_3d = true
 usage = 0
 render_target_update_mode = 3
-
-[node name="Camera" type="Camera2D" parent="params/minimap/view"]
-current = true
-zoom = Vector2( 15, 15 )
 
 [node name="weather" type="Label" parent="params/minimap"]
 anchor_left = 0.03
@@ -1830,6 +1852,32 @@ margin_bottom = 64.0
 text = "Go Pitlane"
 __meta__ = {
 "_edit_use_anchors_": false
+}
+
+[node name="active_vue" type="Label" parent="params/car_2"]
+margin_left = 426.378
+margin_top = 164.799
+margin_right = 650.378
+margin_bottom = 196.799
+text = "ACTIF"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="activate_vue" type="Button" parent="params/car_2"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -200.0
+margin_top = 200.0
+margin_right = -32.0
+margin_bottom = 239.0
+text = "See car"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
 }
 
 [node name="refresh_stat" type="Timer" parent="."]
@@ -2069,7 +2117,9 @@ __meta__ = {
 [connection signal="mouse_exited" from="see_ranking" to="." method="_on_see_ranking_mouse_exited"]
 [connection signal="pressed" from="see_ranking" to="." method="_on_see_ranking_pressed"]
 [connection signal="pressed" from="params/car_1/btn_pitlane_car_1" to="." method="_on_btn_pitlane_car_1_pressed"]
+[connection signal="pressed" from="params/car_1/activate_vue" to="." method="_on_activate_vue_car_1_pressed"]
 [connection signal="pressed" from="params/car_2/btn_pitlane_car_2" to="." method="_on_btn_pitlane_car_2_pressed"]
+[connection signal="pressed" from="params/car_2/activate_vue" to="." method="_on_activate_vue_car_2_pressed"]
 [connection signal="timeout" from="refresh_stat" to="." method="_on_Timer_timeout"]
 [connection signal="item_selected" from="panel_pitstop/tyre_option" to="." method="_on_tyre_option_item_selected"]
 [connection signal="pressed" from="panel_pitstop/apply" to="." method="_on_apply_pressed"]

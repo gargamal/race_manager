@@ -29,6 +29,7 @@ func _ready():
 	previous_weather = weather
 	$circuit.with_redraw_editor(false)
 	$path_road.visible = false
+	cars = []
 	for place in range(1, 21):
 		cars.append(get_node("cars/car_" + str(place)))
 	spawn_cars()
